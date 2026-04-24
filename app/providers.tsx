@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useLanguageStore } from '@/lib/languageStore';
 import { useAuthStore } from '@/lib/authStore';
+import { ThemeProvider } from 'next-themes';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const fetchTranslations = useLanguageStore((state) => state.fetchTranslations);
@@ -13,5 +14,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
     fetchUser();
   }, [fetchTranslations, fetchUser]);
 
-  return <>{children}</>;
+  return (
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      {children}
+    </ThemeProvider>
+  );
 }
