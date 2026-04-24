@@ -2,26 +2,22 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { 
   Trophy, 
   Mail, 
-  Lock, 
-  Eye, 
-  EyeOff, 
+  Send,
   ArrowLeft,
   Award,
   Zap,
   Users,
   Heart,
-  Star,
-  Shield
+  Star
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useAuthStore } from "@/lib/authStore";
 import { toast } from "sonner";
+import axios from "axios";
 
 const features = [
   { icon: Award, label: "EXCELLENCE" },
@@ -32,28 +28,20 @@ const features = [
   { icon: Star, label: "VICTORY" },
 ];
 
-export default function LoginPage() {
-  const router = useRouter();
-  const login = useAuthStore((state: any) => state.login);
+export default function ForgotPasswordPage() {
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const [fieldErrors, setFieldErrors] = useState<any>({});
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setFieldErrors({});
     try {
-      await login(formData);
-      toast.success("Welcome back champion!");
-      router.push("/dashboard");
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/forgot-password`, { email });
+      setSubmitted(true);
+      toast.success("Password reset link sent to your email.");
     } catch (error: any) {
-      if (error.response?.data?.errors) {
-        setFieldErrors(error.response.data.errors);
-      } else {
-        toast.error(error.response?.data?.message || "Invalid credentials");
-      }
+      toast.error(error.response?.data?.message || "Failed to send reset link.");
     } finally {
       setLoading(false);
     }
@@ -73,7 +61,7 @@ export default function LoginPage() {
       <div className="container mx-auto px-6 relative z-10 py-12">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
           
-          {/* Left Side: Club Branding & Features Grid */}
+          {/* Left Side: Branding & Features */}
           <motion.div 
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -91,11 +79,11 @@ export default function LoginPage() {
 
             <div className="mb-10 space-y-3">
               <h2 className="text-4xl md:text-5xl font-bold leading-tight text-foreground">
-                Welcome <br />
-                <span className="text-primary">Back Champion</span>
+                Recover Your <br />
+                <span className="text-primary">Champion Status</span>
               </h2>
               <p className="text-muted-foreground max-w-sm leading-relaxed font-medium">
-                Access your elite dashboard and continue your winning journey.
+                Reset your credentials and get back to the race.
               </p>
             </div>
 
@@ -111,7 +99,7 @@ export default function LoginPage() {
             </div>
           </motion.div>
 
-          {/* Right Side: Login Form (Elite Style) */}
+          {/* Right Side: Form */}
           <motion.div 
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -136,82 +124,63 @@ export default function LoginPage() {
               </div>
               
               <div className="mb-10 relative z-10">
-                <h2 className="text-3xl font-bold text-foreground">Login</h2>
-                <p className="text-sm text-muted-foreground mt-2 hidden lg:block">Access your champion dashboard.</p>
+                <h2 className="text-3xl font-bold text-foreground">Reset Password</h2>
+                <p className="text-sm text-muted-foreground mt-2 hidden lg:block">Safe recovery for your club account.</p>
               </div>
               
-              <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
-                <div className="relative">
-                  <Input
-                    label="Email Address"
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="pl-11"
-                    placeholder="Enter your email"
-                    error={fieldErrors.email?.[0]}
-                  />
-                  <Mail className="absolute left-4 top-[42px] w-4 h-4 text-muted-foreground/50" />
-                </div>
-
-                <div className="relative">
-                  <Input
-                    label="Password"
-                    type={showPassword ? "text" : "password"}
-                    required
-                    value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    className="pl-11 pr-11"
-                    placeholder="••••••••"
-                    error={fieldErrors.password?.[0]}
-                  />
-                  <Lock className="absolute left-4 top-[42px] w-4 h-4 text-muted-foreground/50" />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-[42px] text-muted-foreground/40 hover:text-foreground transition-colors"
-                  >
-                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                  </button>
-                </div>
-
-                <div className="flex items-center justify-between pt-1">
-                  <div className="flex items-center space-x-2">
-                    <input 
-                      type="checkbox" 
-                      id="remember" 
-                      className="w-4 h-4 rounded border-border bg-background/50 text-primary focus:ring-primary/20 transition-all"
+              {!submitted ? (
+                <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+                  <div className="relative">
+                    <Input
+                      label="Email Address"
+                      placeholder="Enter your email address"
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="pl-11 h-12"
                     />
-                    <label htmlFor="remember" className="text-[11px] font-bold capitalize text-muted-foreground/60 cursor-pointer hover:text-primary transition-colors">
-                      Remember Me
-                    </label>
+                    <Mail className="absolute left-4 top-[44px] w-4 h-4 text-muted-foreground/40" />
                   </div>
-                  <Link href="/forgot-password" title="Forgot Password" className="text-[11px] font-bold capitalize text-primary hover:opacity-80 transition-opacity">
-                    Lost password?
-                  </Link>
-                </div>
 
-                <div className="pt-2">
+                  <div className="pt-2">
+                    <Button 
+                      type="submit" 
+                      className="w-full h-14 shadow-xl shadow-primary/10 capitalize text-lg font-bold" 
+                      variant="premium"
+                      isLoading={loading}
+                      rightIcon={<Send className="w-5 h-5 ml-2" />}
+                    >
+                      Send Recovery Link
+                    </Button>
+                  </div>
+                </form>
+              ) : (
+                <div className="text-center py-6 space-y-6 relative z-10">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                    <Mail className="w-8 h-8 text-primary" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-foreground">Check your email</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      We've sent a recovery link to <span className="text-foreground font-bold">{email}</span>.
+                    </p>
+                  </div>
                   <Button 
-                    type="submit" 
-                    className="w-full h-14 shadow-xl shadow-primary/10 capitalize text-lg font-bold" 
-                    variant="premium"
-                    isLoading={loading}
-                    rightIcon={<Trophy className="w-5 h-5 ml-2" />}
+                    variant="outline" 
+                    className="w-full h-12 rounded-xl"
+                    onClick={() => setSubmitted(false)}
                   >
-                    Sign In to Portal
+                    Try a different email
                   </Button>
                 </div>
-              </form>
+              )}
 
               <div className="mt-10 pt-10 border-t border-border/50 text-center relative z-10">
-                <p className="text-sm text-muted-foreground">
-                  Not a member yet?{" "}
-                  <Link href="/register" className="text-primary font-bold hover:underline">
-                    Join the Club
-                  </Link>
-                </p>
+                <Link href="/login" className="flex items-center justify-center text-sm font-bold text-primary hover:underline">
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Back to Login
+                </Link>
               </div>
             </div>
           </motion.div>
