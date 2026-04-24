@@ -1,12 +1,33 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Trophy, ArrowLeft, Search, Compass, Ghost, Home } from "lucide-react";
+import { Trophy, Compass, Ghost, Home, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
+  const [mounted, setMounted] = useState(false);
+  const [particles, setParticles] = useState<any[]>([]);
+
+  useEffect(() => {
+    setMounted(true);
+    // Generate particles only on the client to avoid hydration mismatch
+    const newParticles = [...Array(6)].map((_, i) => ({
+      id: i,
+      x: Math.random() * 50 - 25,
+      y: Math.random() * 50 - 25,
+      duration: 5 + Math.random() * 5,
+      width: 20 + Math.random() * 40,
+      height: 20 + Math.random() * 40,
+      top: Math.random() * 100,
+      left: Math.random() * 100,
+    }));
+    setParticles(newParticles);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <div className="min-h-screen w-full bg-background flex items-center justify-center relative overflow-hidden font-sans">
       {/* Immersive Background */}
@@ -15,28 +36,28 @@ export default function NotFound() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-secondary/5 blur-[120px] rounded-full animate-pulse delay-700" />
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03]" />
         
-        {/* Floating Particles Mockup */}
-        {[...Array(6)].map((_, i) => (
+        {/* Floating Particles */}
+        {particles.map((p) => (
           <motion.div
-            key={i}
+            key={p.id}
             initial={{ opacity: 0, scale: 0 }}
             animate={{ 
               opacity: [0.1, 0.3, 0.1], 
               scale: [1, 1.2, 1],
-              x: [0, Math.random() * 50 - 25, 0],
-              y: [0, Math.random() * 50 - 25, 0]
+              x: [0, p.x, 0],
+              y: [0, p.y, 0]
             }}
             transition={{ 
-              duration: 5 + Math.random() * 5, 
+              duration: p.duration, 
               repeat: Infinity,
-              delay: i * 0.5 
+              delay: p.id * 0.5 
             }}
             className="absolute bg-primary/20 rounded-full blur-xl"
             style={{
-              width: `${20 + Math.random() * 40}px`,
-              height: `${20 + Math.random() * 40}px`,
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
+              width: `${p.width}px`,
+              height: `${p.height}px`,
+              top: `${p.top}%`,
+              left: `${p.left}%`,
             }}
           />
         ))}
@@ -50,7 +71,7 @@ export default function NotFound() {
           className="text-center"
         >
           {/* 404 Watermark */}
-          <h1 className="text-[250px] font-black tracking-tighter text-foreground/[0.03] select-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none leading-none">
+          <h1 className="text-[250px] font-black tracking-tighter text-foreground/5 select-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none leading-none">
             404
           </h1>
 
@@ -81,15 +102,15 @@ export default function NotFound() {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-12 relative z-20">
+          <div className="flex flex-row items-center justify-center gap-6 pt-12 relative z-20">
             <Button asChild variant="premium" className="h-16 px-10 rounded-2xl text-lg font-bold shadow-2xl shadow-primary/30 group">
-              <Link href="/">
+              <Link href="/" className="flex items-center">
                 <Home className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
                 Return to Arena
               </Link>
             </Button>
             <Button asChild variant="outline" className="h-16 px-10 rounded-2xl text-lg font-bold group border-border/50 hover:border-primary/50 bg-background/50 backdrop-blur-sm">
-              <Link href="/dashboard">
+              <Link href="/dashboard" className="flex items-center">
                 <LayoutDashboard className="w-5 h-5 mr-3 group-hover:rotate-6 transition-transform" />
                 Go to Dashboard
               </Link>
@@ -113,5 +134,3 @@ export default function NotFound() {
     </div>
   );
 }
-
-import { LayoutDashboard } from "lucide-react";

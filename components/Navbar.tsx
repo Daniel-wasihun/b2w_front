@@ -35,6 +35,8 @@ const memberLinks = [
   { name: "Races", href: "/races" },
   { name: "Events", href: "/events" },
   { name: "Programs", href: "/programs" },
+  { name: "Gallery", href: "/gallery" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export const Navbar = () => {

@@ -7,9 +7,12 @@ import { User, Bell, Shield, Palette, Globe, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuthStore } from "@/lib/authStore";
+import { useLanguageStore } from "@/lib/languageStore";
+import { localize } from "@/lib/utils";
 
 export default function SettingsPage() {
   const { user } = useAuthStore();
+  const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
   return (
     <DashboardLayout>
@@ -54,7 +57,7 @@ export default function SettingsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">Full Name</label>
-                    <Input defaultValue={user?.name} placeholder="Enter your name" />
+                    <Input defaultValue={localize(user?.name, currentLanguage) || ""} placeholder="Enter your name" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">Email Address</label>
