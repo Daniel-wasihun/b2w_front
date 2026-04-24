@@ -9,6 +9,7 @@ interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (credentials: any) => Promise<void>;
+  register: (formData: any) => Promise<any>;
   logout: () => Promise<void>;
   fetchUser: () => Promise<void>;
 }
@@ -31,6 +32,37 @@ export const useAuthStore = create<AuthState>((set) => ({
     } catch (error: any) {
       const message = error.response?.data?.message || 'Invalid credentials';
       toast.error(message);
+      
+      // Handle specific validation errors
+      if (error.response?.data?.errors) {
+        Object.values(error.response.data.errors).forEach((err: any) => {
+          if (Array.isArray(err)) err.forEach(msg => toast.error(msg));
+          else toast.error(err);
+        });
+      }
+      throw error;
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  register: async (formData) => {
+    set({ isLoading: true });
+    try {
+      const { data } = await apiClient.post<ApiResponse>('/auth/register', formData);
+      toast.success(data.message || 'Registration successful! Welcome champion.');
+      return data;
+    } catch (error: any) {
+      const message = error.response?.data?.message || 'Registration failed';
+      toast.error(message);
+
+      // Handle specific validation errors
+      if (error.response?.data?.errors) {
+        Object.values(error.response.data.errors).forEach((err: any) => {
+          if (Array.isArray(err)) err.forEach(msg => toast.error(msg));
+          else toast.error(err);
+        });
+      }
       throw error;
     } finally {
       set({ isLoading: false });

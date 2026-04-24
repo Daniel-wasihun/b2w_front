@@ -3,9 +3,10 @@
  */
 export interface User {
   id: number;
-  name: string;
+  name: string | Record<string, string>;
   email: string;
   is_active: boolean;
+  roles?: { id: number; name: string; slug: string }[];
   created_at?: string;
   updated_at?: string;
 }
