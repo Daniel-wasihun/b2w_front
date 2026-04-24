@@ -2,43 +2,31 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
   error?: string;
-  icon?: React.ReactNode;
+  label?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, label, error, icon, ...props }, ref) => {
+  ({ className, type, label, error, ...props }, ref) => {
     return (
-      <div className="w-full space-y-1.5">
+      <div className="w-full space-y-2">
         {label && (
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 ml-1">
+          <label className="text-xs font-bold capitalize text-foreground/60 ml-1">
             {label}
           </label>
         )}
-        <div className="relative group">
-          {icon && (
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-zinc-900 dark:group-focus-within:text-zinc-100 transition-colors">
-              {icon}
-            </div>
+        <input
+          type={type}
+          className={cn(
+            "flex h-12 w-full rounded-xl border border-border bg-background/50 px-4 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground/40 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/5 focus-visible:border-primary/30 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-300 hover:border-primary/20",
+            error && "border-destructive focus-visible:ring-destructive/10 focus-visible:border-destructive/40",
+            className
           )}
-          <input
-            type={type}
-            className={cn(
-              "flex h-12 w-full rounded-xl border border-zinc-200 bg-zinc-50/50 px-4 py-2 text-sm transition-all outline-none",
-              "file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-zinc-400",
-              "focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100 focus:bg-white dark:focus:bg-zinc-900",
-              "dark:border-zinc-800 dark:bg-zinc-900/50 dark:text-zinc-100",
-              icon && "pl-11",
-              error && "border-red-500 focus:border-red-500 focus:ring-red-500/5",
-              className
-            )}
-            ref={ref}
-            {...props}
-          />
-        </div>
+          ref={ref}
+          {...props}
+        />
         {error && (
-          <p className="text-xs font-medium text-red-500 ml-1 animate-in fade-in slide-in-from-top-1">
+          <p className="text-[11px] font-bold text-destructive/90 ml-1 mt-1">
             {error}
           </p>
         )}
