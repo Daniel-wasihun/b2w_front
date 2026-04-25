@@ -20,8 +20,14 @@ interface LanguageState {
 
 export const useLanguageStore = create<LanguageState>((set, get) => ({
   currentLanguage: Cookies.get('lang') || 'en',
-  availableLanguages: [],
-  translations: {},
+  availableLanguages: [
+    { key: 'en', name: 'English', icon: '🇺🇸' },
+    { key: 'am', name: 'Amharic', icon: '🇪🇹' }
+  ],
+  translations: {
+    hero: { title: "Unlock Your Potential", subtitle: "Join the elite arena of champions." },
+    nav: { home: "Home", programs: "Programs", events: "Events", news: "News", contact: "Contact" }
+  },
   isLoading: false,
 
   setLanguage: async (lang: string) => {

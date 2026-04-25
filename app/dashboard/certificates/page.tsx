@@ -42,7 +42,7 @@ export default function DashboardCertificatesPage() {
             <p className="text-muted-foreground">Access and download your blockchain-verified achievement certificates.</p>
           </div>
           <div className="relative w-full md:w-64">
-            <Input placeholder="Search certificates..." className="pl-10" />
+            <Input placeholder="Search certificates..." className="pl-10 rounded-[5px]" />
             <Search className="absolute left-3 top-3.5 w-4 h-4 text-muted-foreground" />
           </div>
         </div>
@@ -50,49 +50,49 @@ export default function DashboardCertificatesPage() {
         {loading ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
-              <Card key={i} className="h-48 animate-pulse bg-muted/50" />
+              <Card key={i} className="h-48 animate-pulse bg-muted/50 rounded-[5px]" />
             ))}
           </div>
         ) : certificates.length === 0 ? (
-          <Card className="p-16 text-center border-dashed flex flex-col items-center">
-            <div className="w-20 h-20 rounded-full bg-primary/5 flex items-center justify-center mb-6">
+          <Card className="p-16 text-center border-dashed flex flex-col items-center rounded-[5px]">
+            <div className="w-20 h-20 rounded-[5px] bg-primary/5 flex items-center justify-center mb-6">
               <Award className="w-10 h-10 text-primary/40" />
             </div>
             <h3 className="text-xl font-bold">No certificates earned yet</h3>
             <p className="text-muted-foreground max-w-sm mt-2">
               Finish competitions in the top ranks to earn verified certificates that boost your career.
             </p>
-            <Button variant="outline" className="mt-6 rounded-xl">View Requirements</Button>
+            <Button variant="outline" className="mt-6 rounded-[5px]">View Requirements</Button>
           </Card>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {certificates.map((cert: any) => (
-              <Card key={cert.id} className="group border-border/50 hover:shadow-lg transition-all overflow-hidden">
+              <Card key={cert.id} className="group border-border/50 hover:shadow-lg transition-all overflow-hidden rounded-[5px]">
                 <CardHeader className="pb-4">
                   <div className="flex justify-between items-start">
-                    <div className="p-2 premium-gradient rounded-lg text-white">
+                    <div className="p-2 premium-gradient rounded-[5px] text-white">
                       <Award className="w-5 h-5" />
                     </div>
-                    <Badge variant="success" className="flex items-center">
+                    <Badge variant="success" className="flex items-center rounded-[5px]">
                       <ShieldCheck className="w-3 h-3 mr-1" />
                       Verified
                     </Badge>
                   </div>
-                  <CardTitle className="mt-4 text-lg">{cert.race?.title || 'Achievement Certificate'}</CardTitle>
+                  <CardTitle className="mt-4 text-lg font-serif">{cert.race?.title || 'Achievement Certificate'}</CardTitle>
                   <CardDescription>Issued on {new Date(cert.issued_at).toLocaleDateString()}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
                     <p className="text-xs font-bold capitalize text-muted-foreground">Verification Code</p>
-                    <code className="text-[11px] bg-muted px-2 py-1 rounded block truncate">{cert.verification_code}</code>
+                    <code className="text-[11px] bg-muted px-2 py-1 rounded-[5px] block truncate">{cert.verification_code}</code>
                   </div>
                 </CardContent>
                 <CardFooter className="grid grid-cols-2 gap-2">
-                  <Button variant="outline" size="sm" onClick={() => handleDownload(cert.uuid)}>
+                  <Button variant="outline" size="sm" className="rounded-[5px]" onClick={() => handleDownload(cert.uuid)}>
                     <Download className="w-4 h-4 mr-2" />
                     Download
                   </Button>
-                  <Button variant="ghost" size="sm" className="hover:text-primary">
+                  <Button variant="ghost" size="sm" className="rounded-[5px] hover:text-primary">
                     <ExternalLink className="w-4 h-4 mr-2" />
                     Verify
                   </Button>

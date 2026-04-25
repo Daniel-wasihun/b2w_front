@@ -11,7 +11,7 @@ interface LogoProps {
 export const Logo = ({ scrolled }: LogoProps) => {
   return (
     <Link href="/" className="flex items-center space-x-3 group">
-      <div className="p-2 premium-gradient rounded-xl shadow-lg shadow-primary/20 transition-transform group-hover:scale-110">
+      <div className="p-2 premium-gradient rounded-[5px] shadow-lg shadow-primary/20 transition-transform group-hover:scale-110">
         <Trophy className="text-white w-6 h-6" />
       </div>
       <span className={cn(
