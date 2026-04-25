@@ -8,8 +8,8 @@ export const FeaturedEvent = () => {
   return (
     <section className="py-12 bg-muted/50">
        <div className="container mx-auto px-6">
-          <div className="bg-card p-1 rounded-[3rem] shadow-2xl overflow-hidden relative group border border-border/50">
-             <div className="flex flex-col lg:flex-row bg-card rounded-[2.8rem] overflow-hidden">
+          <div className="bg-card p-1 rounded-[5px] shadow-2xl overflow-hidden relative group border border-border/50">
+             <div className="flex flex-col lg:flex-row bg-card rounded-[5px] overflow-hidden">
                 <div className="lg:w-1/2 relative h-[400px] lg:h-auto overflow-hidden">
                    <img 
                       src="https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?q=80&w=1000" 
@@ -17,7 +17,7 @@ export const FeaturedEvent = () => {
                       alt="Featured Event"
                    />
                    <div className="absolute top-8 left-8">
-                      <Badge className="bg-secondary text-primary border-none px-4 py-2 font-bold shadow-lg">Featured Event</Badge>
+                      <Badge className="bg-secondary text-primary border-none px-4 py-2 font-bold shadow-lg rounded-[5px]">Featured Event</Badge>
                    </div>
                 </div>
                 <div className="lg:w-1/2 p-12 lg:p-20 space-y-8 flex flex-col justify-center">
@@ -37,7 +37,7 @@ export const FeaturedEvent = () => {
                          <p className="font-bold text-primary">Convention Hall A</p>
                       </div>
                    </div>
-                   <Button size="lg" className="rounded-2xl h-16 px-10 font-bold shadow-glow-primary w-fit">
+                   <Button size="lg" className="rounded-[5px] h-16 px-10 font-bold shadow-glow-primary w-fit">
                       Get Early Bird Ticket
                    </Button>
                 </div>
