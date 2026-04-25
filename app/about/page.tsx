@@ -8,7 +8,7 @@ import { HeroHeader } from "@/components/HeroHeader";
 import { Narrative } from "@/components/about/Narrative";
 import { Philosophy } from "@/components/about/Philosophy";
 import { Leadership } from "@/components/about/Leadership";
-import { AboutCTA } from "@/components/about/AboutCTA";
+
 
 export default function AboutPage() {
   return (
@@ -24,7 +24,7 @@ export default function AboutPage() {
       <Narrative />
       <Leadership />
       <Philosophy />
-      <AboutCTA />
+
     </main>
   );
 }
