@@ -21,6 +21,7 @@ interface PremiumCardProps {
   socials?: Social[];
   onClick?: () => void;
   className?: string;
+  action?: React.ReactNode;
 }
 
 export const PremiumCard = ({
@@ -32,6 +33,7 @@ export const PremiumCard = ({
   socials,
   onClick,
   className,
+  action,
 }: PremiumCardProps) => {
   return (
     <motion.div
@@ -112,6 +114,11 @@ export const PremiumCard = ({
         <div className="text-sm text-muted-foreground leading-relaxed line-clamp-4">
           {description}
         </div>
+        {action && (
+          <div className="pt-4">
+            {action}
+          </div>
+        )}
       </div>
     </motion.div>
   );

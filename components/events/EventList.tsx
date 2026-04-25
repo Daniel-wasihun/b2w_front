@@ -4,7 +4,9 @@ import React from "react";
 import { motion } from "framer-motion";
 import { PremiumCard } from "@/components/ui/premium-card";
 import { localize } from "@/lib/utils";
-import { Bell } from "lucide-react";
+import { Bell, UserPlus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 interface EventListProps {
   events: any[];
@@ -14,6 +16,8 @@ interface EventListProps {
 }
 
 export const EventList = ({ events, loading, currentLanguage, category }: EventListProps) => {
+  const router = useRouter();
+
   if (loading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -77,6 +81,18 @@ export const EventList = ({ events, loading, currentLanguage, category }: EventL
               socials={[
                 { type: "linkedin", url: "#" }
               ]}
+              action={
+                <Button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push('/register');
+                  }}
+                  className="w-full h-11 rounded-[5px] font-bold shadow-glow-primary bg-primary text-white hover:bg-primary/90 mt-2"
+                >
+                  <UserPlus size={16} className="mr-2" />
+                  Register Now
+                </Button>
+              }
             />
           </motion.div>
         );
