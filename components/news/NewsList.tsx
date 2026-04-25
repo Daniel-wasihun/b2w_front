@@ -19,7 +19,7 @@ export const NewsList = ({ posts, loading, currentLanguage }: NewsListProps) => 
   if (loading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-         {[1, 2, 4, 5].map(i => <div key={i} className="aspect-[16/10] bg-muted animate-pulse rounded-[5px]" />)}
+         {[1, 2, 4, 5].map(i => <div key={i} className="aspect-video bg-muted animate-pulse rounded-[8px]" />)}
       </div>
     );
   }
@@ -44,7 +44,6 @@ export const NewsList = ({ posts, loading, currentLanguage }: NewsListProps) => 
           transition={{ delay: i * 0.1 }}
         >
           <PremiumCard 
-            className="[&_.aspect-\[4\/5\]]:aspect-video"
             title={localize(post.title, currentLanguage)}
             description={
               <div className="space-y-4">

@@ -8,7 +8,7 @@ export const CTA = () => {
   return (
     <section className="py-24 bg-muted/50">
       <div className="container mx-auto px-6">
-        <div className="bg-card rounded-[5px] p-12 md:p-24 text-center border border-border/50 shadow-2xl relative overflow-hidden group">
+        <div className="bg-card rounded-[8px] p-12 md:p-24 text-center border border-border/50 shadow-2xl relative overflow-hidden group">
           <div className="absolute top-0 left-0 w-full h-full premium-gradient opacity-0 group-hover:opacity-[0.02] transition-opacity" />
           <h2 className="text-5xl md:text-6xl font-serif font-bold text-primary mb-8">Ready to Claim Your <span className="italic text-secondary">Victory?</span></h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-12">

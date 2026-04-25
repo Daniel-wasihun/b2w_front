@@ -63,7 +63,7 @@ export const Features = () => {
               transition={{ delay: i * 0.1 }}
               className="group relative"
             >
-              <div className="h-full p-12 bg-card rounded-[5px] border border-border/50 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 flex flex-col relative overflow-hidden">
+              <div className="h-full p-12 bg-card rounded-[8px] border border-border/50 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 flex flex-col relative overflow-hidden">
                 {/* Accent line */}
                 <div className={`absolute top-0 left-0 w-full h-1.5 ${feature.accent} opacity-0 group-hover:opacity-100 transition-opacity`} />
                 

@@ -41,12 +41,12 @@ export const PremiumCard = ({
       transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
       onClick={onClick}
       className={cn(
-        "group relative overflow-hidden rounded-[5px] bg-background border border-border shadow-sm transition-all hover:shadow-2xl hover:border-primary/20 cursor-pointer",
+        "group relative overflow-hidden rounded-[8px] bg-background border border-border shadow-sm transition-all hover:shadow-2xl hover:border-primary/20 cursor-pointer",
         className
       )}
     >
       {/* Image Section */}
-      <div className="relative aspect-[4/5] overflow-hidden bg-slate-900 border-b border-border/50">
+      <div className="relative aspect-video overflow-hidden bg-slate-900 border-b border-border/50">
         {image ? (
           <Image
             src={image}
