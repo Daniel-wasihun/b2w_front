@@ -8,7 +8,7 @@ import { Hero } from "@/components/landing/Hero";
 import { Stats } from "@/components/landing/Stats";
 import { Features } from "@/components/landing/Features";
 import { Testimonial } from "@/components/landing/Testimonial";
-import { CTA } from "@/components/landing/CTA";
+
 import { PremiumCard } from "@/components/ui/premium-card";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -289,7 +289,7 @@ export default function LandingPage() {
 
       <Features />
       <Testimonial />
-      <CTA />
+
     </main>
   );
 }
