@@ -32,8 +32,8 @@ export const Philosophy = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
              {pillars.map((pillar, i) => (
-               <div key={i} className="bg-card p-12 rounded-[2.5rem] text-center space-y-6 hover:shadow-2xl border border-border/50 transition-all group">
-                  <div className="w-16 h-16 rounded-[2.5rem] bg-background border border-border flex items-center justify-center text-primary mx-auto shadow-sm group-hover:scale-110 transition-transform">
+               <div key={i} className="bg-card p-12 rounded-[8px] text-center space-y-6 hover:shadow-2xl border border-primary/10 transition-all group">
+                  <div className="w-16 h-16 rounded-[8px] bg-background border border-primary/20 flex items-center justify-center text-primary mx-auto shadow-sm group-hover:scale-110 transition-transform">
                      <pillar.icon size={32} />
                   </div>
                   <h3 className="text-2xl font-serif font-bold text-primary">{pillar.title}</h3>

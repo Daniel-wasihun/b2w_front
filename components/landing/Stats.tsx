@@ -28,7 +28,7 @@ export const Stats = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="bg-card p-10 rounded-[5px] shadow-sm border border-border/50 text-center flex flex-col items-center hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group"
+              className="bg-card p-10 rounded-[8px] shadow-sm border border-border/50 text-center flex flex-col items-center hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group"
             >
               <div className={`${stat.bg} w-16 h-16 rounded-[5px] flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500`}>
                 <stat.icon className={`w-8 h-8 ${stat.color}`} />

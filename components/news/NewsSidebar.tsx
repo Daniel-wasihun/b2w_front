@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 export const NewsSidebar = () => {
   return (
     <div className="hidden lg:block space-y-10">
-       <div className="bg-card p-8 rounded-[5px] border border-border/50 shadow-sm">
+       <div className="bg-card p-8 rounded-[8px] border border-border/50 shadow-sm">
           <div className="flex items-center space-x-3 mb-6">
              <Search className="w-5 h-5 text-primary" />
              <h3 className="font-bold">Search Articles</h3>
@@ -20,7 +20,7 @@ export const NewsSidebar = () => {
           />
        </div>
 
-       <div className="bg-card p-8 rounded-[5px] border border-border/50 shadow-sm">
+       <div className="bg-card p-8 rounded-[8px] border border-border/50 shadow-sm">
           <div className="flex items-center space-x-3 mb-6">
              <Filter className="w-5 h-5 text-secondary" />
              <h3 className="font-bold">Categories</h3>
