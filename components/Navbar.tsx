@@ -23,7 +23,6 @@ const publicLinks = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Programs", href: "/programs" },
-  { name: "Races", href: "/races" },
   { name: "Events", href: "/events" },
   { name: "News", href: "/news" },
   { name: "Gallery", href: "/gallery" },
@@ -32,7 +31,6 @@ const publicLinks = [
 
 const memberLinks = [
   { name: "Home", href: "/" },
-  { name: "Races", href: "/races" },
   { name: "Events", href: "/events" },
   { name: "Programs", href: "/programs" },
   { name: "Gallery", href: "/gallery" },
@@ -122,7 +120,7 @@ export const Navbar = () => {
                 <motion.div 
                   layoutId="nav-active"
                   className={cn(
-                    "absolute -bottom-1 left-0 w-full h-0.5 rounded-full",
+                    "absolute -bottom-1 left-0 w-full h-0.5 rounded-[5px]",
                     scrolled ? "bg-primary" : "bg-secondary"
                   )}
                 />
@@ -155,7 +153,7 @@ export const Navbar = () => {
             size="icon"
             onClick={() => setIsOpen(!isOpen)}
             className={cn(
-              "rounded-xl",
+              "rounded-[5px]",
               scrolled ? "text-primary" : "text-white hover:bg-white/10"
             )}
           >
