@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Trophy, Clock, Users, ArrowLeft, Send, CheckCircle2, ShieldCheck, AlertCircle } from "lucide-react";
 import { useAuthStore } from "@/lib/authStore";
-import axios from "axios";
+import apiClient from "@/lib/apiClient";
 import { toast } from "sonner";
 
 export default function RaceDetailPage() {
@@ -23,7 +23,7 @@ export default function RaceDetailPage() {
   useEffect(() => {
     const fetchRace = async () => {
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/v1/races/${id}`);
+        const res = await apiClient.get(`/v1/races/${id}`);
         setRace(res.data.data);
       } catch (err) {
         toast.error("Race not found");
@@ -43,11 +43,8 @@ export default function RaceDetailPage() {
     }
     setJoining(true);
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/v1/races/${id}/join`, {}, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      await apiClient.post(`/v1/races/${id}/join`);
       toast.success("Welcome to the race!");
-      // Refresh race data or user state if needed
     } catch (err: any) {
       toast.error(err.response?.data?.message || "Failed to join race");
     } finally {
@@ -69,9 +66,9 @@ export default function RaceDetailPage() {
           <Button 
             variant="ghost" 
             onClick={() => router.back()} 
-            className="mb-8 text-white hover:bg-white/10 rounded-xl"
+            className="mb-8 text-white hover:bg-white/10 rounded-[5px]"
           >
-            <ArrowLeft className="mr-2 w-4 h-4" /> Back to Races
+            <ArrowLeft className="mr-2 w-4 h-4" /> Back to Derbies
           </Button>
           
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
@@ -99,9 +96,9 @@ export default function RaceDetailPage() {
                 size="lg" 
                 onClick={handleJoin}
                 disabled={joining}
-                className="h-16 px-10 rounded-2xl text-lg font-bold shadow-glow-secondary bg-secondary hover:bg-secondary/90 text-primary"
+                className="h-16 px-10 rounded-[5px] text-lg font-bold shadow-glow-secondary bg-secondary hover:bg-secondary/90 text-primary"
                >
-                 {joining ? "Joining..." : "Join this Race Now"}
+                 {joining ? "Joining..." : "Enter the Derby Now"}
                </Button>
             </div>
           </div>
@@ -115,17 +112,17 @@ export default function RaceDetailPage() {
             
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-12">
-               <div className="bg-card p-10 rounded-[2.5rem] border border-border/50 shadow-sm">
+               <div className="bg-card p-10 rounded-[5px] border border-border/50 shadow-sm">
                   <h2 className="text-3xl font-serif font-bold mb-8 flex items-center">
                     < ShieldCheck className="mr-4 text-primary" />
-                    Race Description & Goals
+                    Derby Description & Goals
                   </h2>
                   <div className="prose prose-slate dark:prose-invert max-w-none text-muted-foreground leading-relaxed">
                      {race.description}
                   </div>
                </div>
 
-               <div className="bg-card p-10 rounded-[2.5rem] border border-border/50 shadow-sm">
+               <div className="bg-card p-10 rounded-[5px] border border-border/50 shadow-sm">
                   <h2 className="text-3xl font-serif font-bold mb-8 flex items-center">
                     < Trophy className="mr-4 text-secondary" />
                     Grand Prizes
@@ -136,7 +133,7 @@ export default function RaceDetailPage() {
                        { pos: "2nd Place", prize: "$2,500 + Medal", color: "bg-slate-100 text-slate-700" },
                        { pos: "3rd Place", prize: "$1,000 + Certificate", color: "bg-orange-100 text-orange-700" },
                      ].map((p, i) => (
-                       <div key={i} className={`p-6 rounded-3xl ${p.color} text-center`}>
+                       <div key={i} className={`p-6 rounded-[5px] ${p.color} text-center`}>
                           <p className="font-bold capitalize text-[10px] mb-2">{p.pos}</p>
                           <p className="text-xl font-bold">{p.prize}</p>
                        </div>
@@ -147,7 +144,7 @@ export default function RaceDetailPage() {
 
             {/* Sidebar */}
             <div className="space-y-8">
-               <Card className="rounded-[2rem] border-none shadow-xl overflow-hidden">
+               <Card className="rounded-[5px] border-none shadow-xl overflow-hidden">
                   <CardHeader className="bg-muted p-8">
                     <CardTitle className="text-xl font-serif">Rules of Engagement</CardTitle>
                   </CardHeader>
@@ -158,15 +155,15 @@ export default function RaceDetailPage() {
                       "Submissions after the deadline are void.",
                       "Maintain academic integrity at all times."
                     ].map((rule, i) => (
-                      <div key={i} className="flex items-start space-x-3">
-                         <CheckCircle2 className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
-                         <span className="text-sm font-medium text-muted-foreground">{rule}</span>
-                      </div>
+                       <div key={i} className="flex items-start space-x-3">
+                          <CheckCircle2 className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
+                          <span className="text-sm font-medium text-muted-foreground">{rule}</span>
+                       </div>
                     ))}
                   </CardContent>
                </Card>
 
-               <div className="bg-primary/5 p-8 rounded-[2rem] border border-primary/10">
+               <div className="bg-primary/5 p-8 rounded-[5px] border border-primary/10">
                   <div className="flex items-center space-x-4 mb-6">
                      <AlertCircle className="text-primary" />
                      <h3 className="font-bold text-primary">Need Help?</h3>
@@ -174,7 +171,7 @@ export default function RaceDetailPage() {
                   <p className="text-sm text-muted-foreground mb-6">
                     If you encounter any issues with joining or submitting, contact the race coordinator.
                   </p>
-                  <Button variant="outline" className="w-full rounded-xl border-primary/20 text-primary hover:bg-primary/5">
+                  <Button variant="outline" className="w-full rounded-[5px] border-primary/20 text-primary hover:bg-primary/5">
                     Contact Coordinator
                   </Button>
                </div>

@@ -2,11 +2,10 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Calendar, ArrowRight, Share2, Tag, Bookmark } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Bookmark } from "lucide-react";
+import { PremiumCard } from "@/components/ui/premium-card";
 import { localize } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface NewsListProps {
   posts: any[];
@@ -15,17 +14,19 @@ interface NewsListProps {
 }
 
 export const NewsList = ({ posts, loading, currentLanguage }: NewsListProps) => {
+  const router = useRouter();
+
   if (loading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-         {[1, 2, 4, 5].map(i => <div key={i} className="h-[400px] bg-muted animate-pulse rounded-3xl" />)}
+         {[1, 2, 4, 5].map(i => <div key={i} className="aspect-[16/10] bg-muted animate-pulse rounded-[5px]" />)}
       </div>
     );
   }
 
   if (posts.length === 0) {
     return (
-      <div className="text-center py-20 bg-card rounded-[3rem] border-2 border-dashed">
+      <div className="text-center py-20 bg-card rounded-[5px] border-2 border-dashed border-border/50">
          <Bookmark className="w-16 h-16 text-muted-foreground/30 mx-auto mb-6" />
          <h2 className="text-2xl font-serif font-bold">No articles found</h2>
       </div>
@@ -40,42 +41,31 @@ export const NewsList = ({ posts, loading, currentLanguage }: NewsListProps) => 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ delay: i * 0.1 }}
         >
-          <Card className="h-full border-none shadow-sm hover:shadow-2xl transition-all duration-500 rounded-[2.5rem] bg-card overflow-hidden group">
-            <div className="aspect-[16/10] relative overflow-hidden">
-               <img 
-                src={post.cover_image || "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1000"} 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                alt={localize(post.title, currentLanguage)}
-               />
-               <div className="absolute top-6 left-6 flex gap-2">
-                  <Badge className="bg-white/90 backdrop-blur-md text-primary border-none">Update</Badge>
-               </div>
-            </div>
-            <CardHeader className="p-8">
-              <div className="flex items-center text-xs font-bold capitalize text-secondary mb-4">
-                 <Calendar size={14} className="mr-2" />
-                 {new Date(post.created_at).toLocaleDateString()}
+          <PremiumCard 
+            className="[&_.aspect-\[4\/5\]]:aspect-video"
+            title={localize(post.title, currentLanguage)}
+            description={
+              <div className="space-y-4">
+                <p className="line-clamp-4 text-sm leading-relaxed text-muted-foreground/90">
+                  {localize(post.summary, currentLanguage) || "Explore the deep insights and latest breakthroughs within the Born To Win ecosystem..."}
+                </p>
+                <div className="flex items-center gap-4 text-[11px] font-bold uppercase tracking-widest text-secondary">
+                  <span className="flex items-center">
+                    <span className="w-2 h-2 rounded-full bg-primary mr-2" />
+                    Insight
+                  </span>
+                  <span className="text-muted-foreground/40">|</span>
+                  <span>5 Min Read</span>
+                </div>
               </div>
-              <CardTitle className="text-2xl font-serif font-bold group-hover:text-primary transition-colors leading-tight">
-                {localize(post.title, currentLanguage)}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="px-8 pb-8">
-               <p className="text-muted-foreground line-clamp-3 leading-relaxed">
-                 {localize(post.summary, currentLanguage) || "Explore the deep insights and latest breakthroughs within the Born To Win ecosystem. We analyze the strategies that lead to success..."}
-               </p>
-            </CardContent>
-            <CardFooter className="px-8 pb-10 flex items-center justify-between">
-               <Button variant="ghost" className="p-0 text-primary font-bold hover:bg-transparent group/btn">
-                    Read More <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
-               </Button>
-               <div className="flex items-center space-x-3">
-                  <Share2 size={16} className="text-muted-foreground hover:text-secondary cursor-pointer transition-colors" />
-                  <Tag size={16} className="text-muted-foreground hover:text-secondary cursor-pointer transition-colors" />
-               </div>
-            </CardFooter>
-          </Card>
+            }
+            image={post.cover_image || "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1000"}
+            badge={new Date(post.created_at).toLocaleDateString()}
+            badgeVariant="secondary"
+            onClick={() => router.push(`/news/${post.id}`)}
+          />
         </motion.div>
       ))}
     </div>

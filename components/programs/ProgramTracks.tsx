@@ -2,65 +2,50 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Terminal, Palette, Briefcase, Microscope, Lightbulb, Code, ArrowRight } from "lucide-react";
+import { PremiumCard } from "@/components/ui/premium-card";
 
 const programs = [
   {
-    title: "Elite Tech Accelerator",
-    category: "Technology",
-    icon: Terminal,
-    desc: "Intensive coding challenges and hackathons designed to push the boundaries of software development. Master full-stack architectures and emerging tech.",
-    color: "text-blue-600",
-    bg: "bg-blue-600/10",
-    features: ["System Design", "Cloud Computing", "AI Integration"]
+    title: "Strategic Internships",
+    badge: "Careers",
+    desc: "Gain hands-on experience in top environments. Our stipend-based internships value your dedication while building your professional path.",
+    image: "https://images.unsplash.com/photo-1521737706042-5341cd287042?q=80&w=800",
+    badgeVariant: "success" as const,
   },
   {
-    title: "Creative Design Studio",
-    category: "Design",
-    icon: Palette,
-    desc: "A sanctuary for artists and UI/UX designers to redefine digital aesthetics. Focus on human-centered design and emotional interaction.",
-    color: "text-purple-600",
-    bg: "bg-purple-600/10",
-    features: ["Visual Theory", "Prototyping", "UX Research"]
+    title: "Hackathons & Challenges",
+    badge: "Competition",
+    desc: "Elite challenges in Web Dev, Machine Learning, and AI. Compete with the best and earn rank-based rewards and recognition.",
+    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=800",
+    badgeVariant: "default" as const,
   },
   {
-    title: "Business Strategy Hub",
-    category: "Business",
-    icon: Briefcase,
-    desc: "Developing the next generation of CEOs through strategic planning. Learn to navigate global markets and lead complex organizations.",
-    color: "text-emerald-600",
-    bg: "bg-emerald-600/10",
-    features: ["Market Analysis", "Lead Ops", "Fiscal Growth"]
+    title: "Mastery Bootcamps",
+    badge: "Training",
+    desc: "Intensive training in Mobile Dev, AI, and Programming. Master world-class tools and real-world impact strategies.",
+    image: "https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?q=80&w=800",
+    badgeVariant: "secondary" as const,
   },
   {
-    title: "Innovation Lab",
-    category: "R&D",
-    icon: Microscope,
-    desc: "Scientific research and development programs focused on solving global challenges through empirical analysis and bold experimentation.",
-    color: "text-amber-600",
-    bg: "bg-amber-600/10",
-    features: ["Ethical Research", "Data Sci", "Lab Protocol"]
+    title: "Leadership & Management",
+    badge: "Soft Skills",
+    desc: "Cultivate the next generation of global leaders. Focus on project management, team synergy, and strategic vision.",
+    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800",
+    badgeVariant: "warning" as const,
   },
   {
-    title: "Entrepreneurship Wing",
-    category: "Startup",
-    icon: Lightbulb,
-    desc: "From idea to impact. We provide the mentorship and network needed to launch successful ventures that disrupt established industries.",
-    color: "text-rose-600",
-    bg: "bg-rose-600/10",
-    features: ["Pitch Deck", "Angel Funding", "Scale-up"]
+    title: "Law & Social Impact",
+    badge: "Specialized",
+    desc: "A program focused on legal frameworks and social innovation for real-world impact and civic engagement.",
+    image: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=800",
+    badgeVariant: "default" as const,
   },
   {
-    title: "Cyber Security Wing",
-    category: "Security",
-    icon: Code,
-    desc: "Advanced training in offensive and defensive security strategies. Protect the digital frontier and master the art of ethical hacking.",
-    color: "text-indigo-600",
-    bg: "bg-indigo-600/10",
-    features: ["Pentesting", "Cryptography", "SOC Ops"]
+    title: "Webinars & Skill-based Workshops",
+    badge: "Community",
+    desc: "Weekly sessions with experts covering the latest digital trends, from Cloud Computing to Financial Intelligence.",
+    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800",
+    badgeVariant: "secondary" as const,
   }
 ];
 
@@ -77,36 +62,14 @@ export const ProgramTracks = () => {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
             >
-              <Card className="group border-none shadow-sm hover:shadow-2xl transition-all duration-500 rounded-[2.5rem] bg-card overflow-hidden flex flex-col h-full">
-                <CardHeader className="p-10">
-                  <div className={`${program.bg} w-20 h-20 rounded-2xl flex items-center justify-center mb-8 transition-transform group-hover:rotate-6`}>
-                    <program.icon className={`w-10 h-10 ${program.color}`} />
-                  </div>
-                  <Badge variant="outline" className="mb-4 capitalize text-[10px] font-bold border-primary/20 text-primary">
-                     {program.category}
-                  </Badge>
-                  <CardTitle className="text-3xl font-serif font-bold group-hover:text-primary transition-colors leading-tight">
-                    {program.title}
-                  </CardTitle>
-                  <CardDescription className="text-muted-foreground mt-6 text-base leading-relaxed">
-                    {program.desc}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="px-10 pb-4">
-                   <div className="flex flex-wrap gap-2">
-                      {program.features.map(f => (
-                         <span key={f} className="text-[10px] font-bold capitalize bg-muted px-3 py-1.5 rounded-lg text-muted-foreground">
-                            {f}
-                         </span>
-                      ))}
-                   </div>
-                </CardContent>
-                <CardFooter className="p-10 pt-6 mt-auto border-t border-border/50">
-                  <Button variant="ghost" className="p-0 text-primary font-bold hover:bg-transparent group/btn text-lg">
-                     Enroll in Track <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover/btn:translate-x-1" />
-                  </Button>
-                </CardFooter>
-              </Card>
+              <PremiumCard
+                title={program.title}
+                description={program.desc}
+                image={program.image}
+                badge={program.badge}
+                badgeVariant={program.badgeVariant}
+                onClick={() => console.log(`Enrolling in ${program.title}`)}
+              />
             </motion.div>
           ))}
         </div>

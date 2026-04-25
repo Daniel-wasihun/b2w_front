@@ -61,7 +61,7 @@ export const MobileMenu = ({
                 key={t}
                 onClick={() => { setTheme(t); setIsOpen(false); }}
                 className={cn(
-                  "py-3 rounded-2xl text-[10px] font-bold uppercase transition-all",
+                  "py-3 rounded-[5px] text-[10px] font-bold uppercase transition-all",
                   theme === t ? "bg-primary text-white shadow-lg shadow-primary/20" : "bg-muted text-muted-foreground hover:bg-primary/5"
                 )}
               >
@@ -85,10 +85,10 @@ export const MobileMenu = ({
         ) : (
           <div className="grid grid-cols-1 gap-4 pt-6 border-t border-border/50">
             <Link href="/login" className="w-full" onClick={() => setIsOpen(false)}>
-              <Button variant="outline" className="w-full rounded-2xl font-bold h-14 text-lg">Login</Button>
+              <Button variant="outline" className="w-full rounded-[5px] font-bold h-14 text-lg">Login</Button>
             </Link>
             <Link href="/register" className="w-full" onClick={() => setIsOpen(false)}>
-              <Button className="w-full rounded-2xl font-bold h-14 text-lg shadow-xl shadow-primary/20">Register</Button>
+              <Button className="w-full rounded-[5px] font-bold h-14 text-lg shadow-xl shadow-primary/20">Register</Button>
             </Link>
           </div>
         )}

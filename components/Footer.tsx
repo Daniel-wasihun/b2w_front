@@ -14,6 +14,7 @@ const footerLinks = [
       { name: "Home", href: "/" },
       { name: "About Us", href: "/about" },
       { name: "Programs", href: "/programs" },
+      { name: "Support & Donate", href: "/donate" },
       { name: "Competitions", href: "/races" },
       { name: "Gallery", href: "/gallery" },
     ],
@@ -54,7 +55,7 @@ export const Footer = () => {
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center space-x-3 group">
-              <div className="p-2 premium-gradient rounded-xl shadow-lg shadow-primary/20">
+              <div className="p-2 premium-gradient rounded-[5px] shadow-lg shadow-primary/20">
                 <Trophy className="text-white w-5 h-5" />
               </div>
               <span className="text-xl font-bold tracking-tight text-primary">
@@ -75,7 +76,7 @@ export const Footer = () => {
                 <a 
                   key={i} 
                   href={social.href} 
-                  className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-white transition-all shadow-sm"
+                  className="w-8 h-8 rounded-[5px] bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-white transition-all shadow-sm"
                 >
                   <social.icon size={14} />
                 </a>
@@ -107,7 +108,7 @@ export const Footer = () => {
         {/* Newsletter & Contact Row */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 py-8 border-y border-border/50 mb-8">
            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+              <div className="w-10 h-10 rounded-[5px] bg-secondary/10 flex items-center justify-center text-secondary">
                  <Mail size={20} />
               </div>
               <div>
@@ -116,7 +117,7 @@ export const Footer = () => {
               </div>
            </div>
            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+              <div className="w-10 h-10 rounded-[5px] bg-secondary/10 flex items-center justify-center text-secondary">
                  <Phone size={20} />
               </div>
               <div>
@@ -128,9 +129,9 @@ export const Footer = () => {
               <input 
                 type="email" 
                 placeholder="Subscribe" 
-                className="w-full h-12 bg-muted rounded-xl px-5 pr-14 text-xs outline-none focus:ring-2 focus:ring-primary/20 border border-border"
+                className="w-full h-12 bg-muted rounded-[5px] px-5 pr-14 text-xs outline-none focus:ring-2 focus:ring-primary/20 border border-border"
               />
-              <button className="absolute right-1.5 top-1.5 w-9 h-9 bg-primary text-white rounded-lg flex items-center justify-center hover:bg-primary/90 transition-all">
+              <button className="absolute right-1.5 top-1.5 w-9 h-9 bg-primary text-white rounded-[5px] flex items-center justify-center hover:bg-primary/90 transition-all">
                 <Send size={14} />
               </button>
            </div>

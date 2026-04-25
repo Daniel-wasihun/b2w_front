@@ -28,9 +28,9 @@ export const Stats = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="bg-card p-10 rounded-[3rem] shadow-sm border border-border/50 text-center flex flex-col items-center hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group"
+              className="bg-card p-10 rounded-[5px] shadow-sm border border-border/50 text-center flex flex-col items-center hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group"
             >
-              <div className={`${stat.bg} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500`}>
+              <div className={`${stat.bg} w-16 h-16 rounded-[5px] flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500`}>
                 <stat.icon className={`w-8 h-8 ${stat.color}`} />
               </div>
               <h3 className="text-5xl font-serif font-bold text-primary group-hover:text-secondary transition-colors duration-500">
@@ -39,7 +39,7 @@ export const Stats = () => {
               <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mt-4">{stat.label}</p>
               
               {/* Subtle underline decoration */}
-              <div className="w-10 h-1 bg-secondary/20 rounded-full mt-6 group-hover:w-20 group-hover:bg-secondary transition-all duration-500" />
+              <div className="w-10 h-1 bg-secondary/20 rounded-[5px] mt-6 group-hover:w-20 group-hover:bg-secondary transition-all duration-500" />
             </motion.div>
           ))}
         </div>

@@ -14,8 +14,8 @@ const infoItems = [
 export const ContactInfo = () => {
   return (
     <div className="space-y-8">
-       <div className="bg-primary p-12 rounded-[3rem] text-white space-y-10 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/20 blur-[60px] rounded-full" />
+       <div className="bg-primary p-12 rounded-[5px] text-white space-y-10 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/20 blur-[60px] rounded-[5px]" />
           <div className="space-y-4">
              <h3 className="text-3xl font-serif font-bold">Contact Info</h3>
              <p className="text-white/60 text-sm">Reach out through any of these channels for immediate assistance.</p>
@@ -24,7 +24,7 @@ export const ContactInfo = () => {
           <div className="space-y-8">
              {infoItems.map((item, i) => (
                <div key={i} className="flex items-center space-x-6">
-                  <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                  <div className="w-12 h-12 rounded-[5px] bg-white/10 flex items-center justify-center shrink-0">
                      <item.icon size={20} className="text-secondary" />
                   </div>
                   <div>
@@ -37,20 +37,20 @@ export const ContactInfo = () => {
 
           <div className="pt-10 border-t border-white/10 flex space-x-4">
              {[Share2, MessageCircle, Heart].map((Icon, i) => (
-               <div key={i} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-secondary hover:text-primary transition-all cursor-pointer">
+               <div key={i} className="w-10 h-10 rounded-[5px] bg-white/10 flex items-center justify-center hover:bg-secondary hover:text-primary transition-all cursor-pointer">
                   <Icon size={18} />
                </div>
              ))}
           </div>
        </div>
 
-       <div className="bg-card p-10 rounded-[3rem] border border-border/50 shadow-sm text-center space-y-6">
-          <div className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary mx-auto">
+       <div className="bg-card p-10 rounded-[5px] border border-border/50 shadow-sm text-center space-y-6">
+          <div className="w-16 h-16 rounded-[5px] bg-secondary/10 flex items-center justify-center text-secondary mx-auto">
              <Globe size={32} />
           </div>
           <h4 className="text-xl font-serif font-bold text-primary">Global Presence</h4>
           <p className="text-muted-foreground text-sm">We are expanding our mentorship network across all major universities.</p>
-          <Button variant="outline" className="w-full rounded-xl border-secondary/20 text-secondary hover:bg-secondary/5">View Network</Button>
+          <Button variant="outline" className="w-full rounded-[5px] border-secondary/20 text-secondary hover:bg-secondary/5">View Network</Button>
        </div>
     </div>
   );
