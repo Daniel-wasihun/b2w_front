@@ -105,7 +105,7 @@ export default function RegisterPage() {
               {/* Mobile Only Branding */}
               <div className="lg:hidden flex items-center justify-between mb-8 pb-6 border-b border-border/50 relative z-10">
                 <Link href="/" className="flex items-center space-x-2">
-                  <div className="p-2 premium-gradient rounded-lg">
+                  <div className="p-2 premium-gradient rounded-[5px]">
                     <Trophy className="text-white w-4 h-4" />
                   </div>
                   <span className="font-bold text-sm tracking-tight text-foreground">Born To Win</span>
@@ -129,7 +129,7 @@ export default function RegisterPage() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="pl-11"
+                    className="pl-11 rounded-[5px]"
                     error={fieldErrors.name?.[0]}
                   />
                   <User className="absolute left-4 top-[42px] w-4 h-4 text-muted-foreground/50" />
@@ -143,7 +143,7 @@ export default function RegisterPage() {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="pl-11"
+                    className="pl-11 rounded-[5px]"
                     error={fieldErrors.email?.[0]}
                   />
                   <Mail className="absolute left-4 top-[42px] w-4 h-4 text-muted-foreground/50" />
@@ -157,7 +157,7 @@ export default function RegisterPage() {
                     required
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    className="pl-11"
+                    className="pl-11 rounded-[5px]"
                     error={fieldErrors.password?.[0]}
                   />
                   <Lock className="absolute left-4 top-[42px] w-4 h-4 text-muted-foreground/50" />
@@ -171,7 +171,7 @@ export default function RegisterPage() {
                     required
                     value={formData.password_confirmation}
                     onChange={(e) => setFormData({ ...formData, password_confirmation: e.target.value })}
-                    className="pl-11"
+                    className="pl-11 rounded-[5px]"
                     error={fieldErrors.password_confirmation?.[0]}
                   />
                   <Lock className="absolute left-4 top-[42px] w-4 h-4 text-muted-foreground/50" />
@@ -184,7 +184,7 @@ export default function RegisterPage() {
                   <div className="relative group/select">
                     <select
                       className={cn(
-                        "flex h-11 w-full rounded-xl border border-border bg-background/50 px-11 py-2 text-sm ring-offset-background appearance-none focus:outline-none focus:ring-4 focus:ring-primary/5 focus:border-primary/30 transition-all duration-300 hover:border-primary/20 cursor-pointer",
+                        "flex h-11 w-full rounded-[5px] border border-border bg-background/50 px-11 py-2 text-sm ring-offset-background appearance-none focus:outline-none focus:ring-4 focus:ring-primary/5 focus:border-primary/30 transition-all duration-300 hover:border-primary/20 cursor-pointer",
                         fieldErrors.department_id && "border-destructive focus:ring-destructive/10 focus:border-destructive/40"
                       )}
                       value={formData.department_id}
@@ -215,7 +215,7 @@ export default function RegisterPage() {
                 <div className="md:col-span-2 pt-2">
                   <Button 
                     type="submit" 
-                    className="w-full h-14 shadow-xl shadow-primary/10 capitalize text-lg font-bold" 
+                    className="w-full h-14 rounded-[5px] shadow-xl shadow-primary/10 capitalize text-lg font-bold" 
                     variant="premium"
                     isLoading={loading}
                     rightIcon={<Trophy className="w-5 h-5 ml-2" />}
@@ -244,7 +244,7 @@ export default function RegisterPage() {
             className="hidden lg:flex flex-col items-center lg:items-start text-center lg:text-left order-1 lg:order-2"
           >
             <Link href="/" className="flex items-center space-x-3 mb-8 group cursor-pointer">
-              <div className="p-3 premium-gradient rounded-2xl shadow-xl shadow-primary/20 group-hover:scale-105 transition-transform">
+              <div className="p-3 premium-gradient rounded-[5px] shadow-xl shadow-primary/20 group-hover:scale-105 transition-transform">
                 <Trophy className="text-white w-8 h-8" />
               </div>
               <h1 className="text-4xl font-bold tracking-tighter text-foreground group-hover:text-primary transition-colors">
@@ -265,7 +265,7 @@ export default function RegisterPage() {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-lg">
               {features.map((f, i) => (
                 <div key={i} className="flex flex-col items-center lg:items-start space-y-3 group">
-                  <div className="w-20 h-20 bg-card border border-border rounded-2xl flex items-center justify-center shadow-lg shadow-primary/5 group-hover:border-primary/30 group-hover:shadow-primary/10 transition-all duration-300 transform group-hover:-translate-y-1">
+                  <div className="w-20 h-20 bg-card border border-border rounded-[5px] flex items-center justify-center shadow-lg shadow-primary/5 group-hover:border-primary/30 group-hover:shadow-primary/10 transition-all duration-300 transform group-hover:-translate-y-1">
                     <f.icon className="w-8 h-8 text-primary" />
                   </div>
                   <span className="text-[10px] font-bold text-muted-foreground tracking-widest uppercase">{f.label}</span>

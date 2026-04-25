@@ -41,7 +41,7 @@ export const Features = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-24 space-y-6">
-          <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-secondary/10 border border-secondary/20">
+          <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-[5px] bg-secondary/10 border border-secondary/20">
              <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
              <span className="text-[10px] font-bold uppercase tracking-widest text-secondary">Why Choose Us</span>
           </div>
@@ -63,11 +63,11 @@ export const Features = () => {
               transition={{ delay: i * 0.1 }}
               className="group relative"
             >
-              <div className="h-full p-12 bg-card rounded-[3rem] border border-border/50 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 flex flex-col relative overflow-hidden">
+              <div className="h-full p-12 bg-card rounded-[5px] border border-border/50 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 flex flex-col relative overflow-hidden">
                 {/* Accent line */}
                 <div className={`absolute top-0 left-0 w-full h-1.5 ${feature.accent} opacity-0 group-hover:opacity-100 transition-opacity`} />
                 
-                <div className={`${feature.bg} w-20 h-20 rounded-2xl flex items-center justify-center mb-10 group-hover:rotate-6 transition-transform duration-500`}>
+                <div className={`${feature.bg} w-20 h-20 rounded-[5px] flex items-center justify-center mb-10 group-hover:rotate-6 transition-transform duration-500`}>
                   <feature.icon className={`w-10 h-10 ${feature.color}`} />
                 </div>
                 

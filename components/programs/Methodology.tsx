@@ -68,7 +68,7 @@ export const Methodology = () => {
               transition={{ delay: i * 0.2 }}
               className="group relative"
             >
-              <div className={`relative h-full bg-card rounded-[3rem] p-12 border border-border/50 transition-all duration-500 group-hover:-translate-y-4 group-hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] group-hover:border-primary/20 overflow-hidden`}>
+              <div className={`relative h-full bg-card rounded-[5px] p-12 border border-border/50 transition-all duration-500 group-hover:-translate-y-4 group-hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] group-hover:border-primary/20 overflow-hidden`}>
                 {/* Number Overlay */}
                 <span className="absolute -top-4 -right-4 text-9xl font-serif font-bold text-primary/[0.03] group-hover:text-primary/[0.06] transition-colors">
                   {m.id}
@@ -76,7 +76,7 @@ export const Methodology = () => {
 
                 {/* Content */}
                 <div className="relative z-10 flex flex-col h-full">
-                  <div className={`w-20 h-20 rounded-2xl bg-linear-to-br ${m.color} flex items-center justify-center mb-10 group-hover:scale-110 transition-transform duration-500`}>
+                  <div className={`w-20 h-20 rounded-[5px] bg-linear-to-br ${m.color} flex items-center justify-center mb-10 group-hover:scale-110 transition-transform duration-500`}>
                     <m.icon className={`w-10 h-10 ${m.iconColor}`} />
                   </div>
 
@@ -90,7 +90,7 @@ export const Methodology = () => {
 
                   <div className="mt-12 pt-8 border-t border-border/50 flex items-center justify-between group/link cursor-pointer">
                     <span className="text-sm font-bold text-primary/60 group-hover/link:text-primary transition-colors">Explore Step {m.id}</span>
-                    <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center group-hover/link:bg-primary group-hover/link:text-white transition-all">
+                    <div className="w-10 h-10 rounded-[5px] bg-muted flex items-center justify-center group-hover/link:bg-primary group-hover/link:text-white transition-all">
                       <ArrowRight size={18} />
                     </div>
                   </div>
