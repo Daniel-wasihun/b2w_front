@@ -22,7 +22,9 @@ export const useAuthStore = create<AuthState>((set) => ({
   login: async (credentials) => {
     set({ isLoading: true });
     try {
-      const { data } = await apiClient.post<ApiResponse>('/auth/login', credentials);
+      const response = await apiClient.post<ApiResponse>('/auth/login', credentials);
+      // Handle potential 'data' wrapping from backend Response helper
+      const data = response.data.data || response.data;
       
       if (data.access_token) {
         Cookies.set('auth_token', data.access_token, { expires: 7 });
@@ -33,7 +35,6 @@ export const useAuthStore = create<AuthState>((set) => ({
       const message = error.response?.data?.message || 'Invalid credentials';
       toast.error(message);
       
-      // Handle specific validation errors
       if (error.response?.data?.errors) {
         Object.values(error.response.data.errors).forEach((err: any) => {
           if (Array.isArray(err)) err.forEach(msg => toast.error(msg));
@@ -49,14 +50,14 @@ export const useAuthStore = create<AuthState>((set) => ({
   register: async (formData) => {
     set({ isLoading: true });
     try {
-      const { data } = await apiClient.post<ApiResponse>('/auth/register', formData);
+      const response = await apiClient.post<ApiResponse>('/auth/register', formData);
+      const data = response.data.data || response.data;
       toast.success(data.message || 'Registration successful! Welcome champion.');
       return data;
     } catch (error: any) {
       const message = error.response?.data?.message || 'Registration failed';
       toast.error(message);
 
-      // Handle specific validation errors
       if (error.response?.data?.errors) {
         Object.values(error.response.data.errors).forEach((err: any) => {
           if (Array.isArray(err)) err.forEach(msg => toast.error(msg));
@@ -75,7 +76,6 @@ export const useAuthStore = create<AuthState>((set) => ({
     } finally {
       Cookies.remove('auth_token');
       set({ user: null, isAuthenticated: false });
-      toast.info('Logged out safely');
     }
   },
 
@@ -83,7 +83,8 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (!Cookies.get('auth_token')) return;
     set({ isLoading: true });
     try {
-      const { data } = await apiClient.get<ApiResponse>('/auth/me');
+      const response = await apiClient.get<ApiResponse>('/auth/me');
+      const data = response.data.data || response.data;
       set({ user: data.user || null, isAuthenticated: true });
     } catch (error) {
       Cookies.remove('auth_token');
