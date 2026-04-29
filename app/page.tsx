@@ -1,31 +1,54 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar } from "@/components/Navbar";
-
-// Landing Page Components
 import { Hero } from "@/components/landing/Hero";
 import { Stats } from "@/components/landing/Stats";
 import { Features } from "@/components/landing/Features";
 import { Testimonial } from "@/components/landing/Testimonial";
-
 import { PremiumCard } from "@/components/ui/premium-card";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useLanguageStore } from "@/lib/languageStore";
 import { localize } from "@/lib/utils";
+import apiClient from "@/lib/apiClient";
 
 export default function LandingPage() {
   const router = useRouter();
   const currentLanguage = useLanguageStore((state) => state.currentLanguage);
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLandingData = async () => {
+      try {
+        const res = await apiClient.get("/v1/landing");
+        setData(res.data.data);
+      } catch (err) {
+        console.error("Failed to fetch landing data");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchLandingData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-10 h-10 text-primary animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <main className="min-h-screen bg-background selection:bg-primary/10 selection:text-primary">
       <Navbar />
-      <Hero />
-      <Stats />
+      <Hero data={data?.hero} />
+      <Stats data={data?.stats} />
       
       {/* Programs Section */}
       <section className="py-24 bg-muted/10 relative overflow-hidden">
@@ -56,29 +79,17 @@ export default function LandingPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <PremiumCard 
-              title="Elite Tech Accelerator"
-              description="Master full-stack architectures and emerging tech through intensive challenges."
-              image="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800"
-              badge="High Performance"
-              onClick={() => router.push('/programs')}
-            />
-            <PremiumCard 
-              title="Business Strategy Hub"
-              description="Developing the next generation of CEOs through strategic planning and market analysis."
-              image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800"
-              badge="Leadership"
-              badgeVariant="secondary"
-              onClick={() => router.push('/programs')}
-            />
-            <PremiumCard 
-              title="Innovation Lab"
-              description="Scientific research programs focused on solving global challenges through experimentation."
-              image="https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800"
-              badge="Innovation"
-              badgeVariant="default"
-              onClick={() => router.push('/programs')}
-            />
+            {data?.programs?.map((program: any) => (
+              <PremiumCard 
+                key={program.id}
+                title={localize(program.title, currentLanguage)}
+                description={localize(program.description, currentLanguage)}
+                image={program.image}
+                badge={localize(program.badge, currentLanguage)}
+                badgeVariant={program.badge_variant}
+                onClick={() => router.push('/programs')}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -112,37 +123,16 @@ export default function LandingPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <PremiumCard 
-              title="Global Tech Summit"
-              description="Annual gathering of industry leaders and innovators."
-              image="https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?q=80&w=800"
-              badge="Conference"
-              onClick={() => router.push('/events')}
-            />
-            <PremiumCard 
-              title="B2W Hackathon"
-              description="48 hours of intense coding and problem solving."
-              image="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=800"
-              badge="Competition"
-              badgeVariant="warning"
-              onClick={() => router.push('/events')}
-            />
-            <PremiumCard 
-              title="Leadership Seminar"
-              description="Interactive workshop with top-tier corporate CEOs."
-              image="https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=80&w=800"
-              badge="Workshop"
-              badgeVariant="secondary"
-              onClick={() => router.push('/events')}
-            />
-            <PremiumCard 
-              title="Innovation Award"
-              description="Celebrating the most groundbreaking student projects."
-              image="https://images.unsplash.com/photo-1523580494863-6f30312246d5?q=80&w=800"
-              badge="Ceremony"
-              badgeVariant="success"
-              onClick={() => router.push('/events')}
-            />
+            {data?.events?.map((event: any) => (
+              <PremiumCard 
+                key={event.id}
+                title={localize(event.title, currentLanguage)}
+                description={localize(event.description, currentLanguage)}
+                image={event.image || "https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?q=80&w=800"}
+                badge={event.type || "Event"}
+                onClick={() => router.push(`/events/${event.id}`)}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -176,29 +166,16 @@ export default function LandingPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <PremiumCard 
-              title="AI Innovation Cup"
-              description="Master machine learning and build predictive models for sustainable energy solutions."
-              image="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800"
-              badge="Tech Challenge"
-              onClick={() => router.push('/races')}
-            />
-            <PremiumCard 
-              title="Strategy Sprint"
-              description="Solve real-world business cases and pitch to top-tier enterprise consultants."
-              image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800"
-              badge="Business Derby"
-              badgeVariant="secondary"
-              onClick={() => router.push('/races')}
-            />
-            <PremiumCard 
-              title="Impact Challenge"
-              description="Redefine civic engagement through human-centered design and social innovation."
-              image="https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=800"
-              badge="Design Mission"
-              badgeVariant="default"
-              onClick={() => router.push('/races')}
-            />
+            {data?.challenges?.map((race: any) => (
+              <PremiumCard 
+                key={race.id}
+                title={localize(race.title, currentLanguage)}
+                description={localize(race.description, currentLanguage)}
+                image={race.image || "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800"}
+                badge="Open Challenge"
+                onClick={() => router.push(`/races/${race.id}`)}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -232,64 +209,29 @@ export default function LandingPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <PremiumCard 
-              className="[&_.aspect-\[4\/5\]]:aspect-video"
-              title={localize({ en: "B2W Partnership with Silicon Valley Hubs", am: "B2W ከሲሊኮን ቫሊ ማዕከላት ጋር ስትራቴጂካዊ አጋርነት ፈጠረ" }, currentLanguage)}
-              description={
-                <div className="space-y-4">
-                  <p className="line-clamp-3 text-sm leading-relaxed text-muted-foreground/90">
-                    {localize({ 
-                      en: "We are excited to announce a strategic partnership that will provide our students with direct internships at leading tech firms.",
-                      am: "ተማሪዎቻችን በታዋቂ የቴክኖሎጂ ኩባንያዎች ውስጥ ቀጥተኛ የልምምድ ዕድል የሚያገኙበት ስትራቴጂካዊ አጋርነት መፈጠሩን ስናበስር በታላቅ ደስታ ነው።"
-                    }, currentLanguage)}
-                  </p>
-                  <div className="flex items-center gap-4 text-[11px] font-bold uppercase tracking-widest text-secondary">
-                    <span className="flex items-center">
-                      <span className="w-2 h-2 rounded-full bg-primary mr-2" />
-                      Insight
-                    </span>
-                    <span className="text-muted-foreground/40">|</span>
-                    <span>5 Min Read</span>
+            {data?.news?.map((post: any) => (
+              <PremiumCard 
+                key={post.id}
+                className="[&_.aspect-\[4\/5\]]:aspect-video"
+                title={localize(post.title, currentLanguage)}
+                description={
+                  <div className="space-y-4">
+                    <p className="line-clamp-3 text-sm leading-relaxed text-muted-foreground/90">
+                      {localize(post.content, currentLanguage)}
+                    </p>
                   </div>
-                </div>
-              }
-              image="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800"
-              badge="Press Release"
-              onClick={() => router.push('/news')}
-            />
-            <PremiumCard 
-              className="[&_.aspect-\[4\/5\]]:aspect-video"
-              title={localize({ en: "Student Innovation Reaches New Heights", am: "የተማሪዎች ፈጠራ አዲስ ምዕራፍ ላይ ደረሰ" }, currentLanguage)}
-              description={
-                <div className="space-y-4">
-                  <p className="line-clamp-3 text-sm leading-relaxed text-muted-foreground/90">
-                    {localize({
-                      en: "Last month's innovation lab results showed a 40% increase in patent-ready student projects.",
-                      am: "ባለፈው ወር የተካሄደው የፈጠራ ዑደት ለፓተንት ዝግጁ በሆኑ የተማሪዎች ፕሮጀክቶች ላይ የ 40% ጭማሪ የታየበት ነው።"
-                    }, currentLanguage)}
-                  </p>
-                  <div className="flex items-center gap-4 text-[11px] font-bold uppercase tracking-widest text-secondary">
-                    <span className="flex items-center">
-                      <span className="w-2 h-2 rounded-full bg-primary mr-2" />
-                      Achievement
-                    </span>
-                    <span className="text-muted-foreground/40">|</span>
-                    <span>4 Min Read</span>
-                  </div>
-                </div>
-              }
-              image="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800"
-              badge="Achievement"
-              badgeVariant="success"
-              onClick={() => router.push('/news')}
-            />
+                }
+                image={post.cover_image || "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800"}
+                badge="Update"
+                onClick={() => router.push('/news')}
+              />
+            ))}
           </div>
         </div>
       </section>
 
-      <Features />
-      <Testimonial />
-
+      <Features data={data?.features} />
+      <Testimonial data={data?.testimonials} />
     </main>
   );
 }
