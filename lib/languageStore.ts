@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import Cookies from 'js-cookie';
-import apiClient from './apiClient';
 
 interface LanguageOption {
   key: string;
@@ -19,10 +18,9 @@ interface LanguageState {
 }
 
 export const useLanguageStore = create<LanguageState>((set, get) => ({
-  currentLanguage: Cookies.get('lang') || 'en',
+  currentLanguage: 'en',
   availableLanguages: [
-    { key: 'en', name: 'English', icon: '🇺🇸' },
-    { key: 'am', name: 'Amharic', icon: '🇪🇹' }
+    { key: 'en', name: 'English', icon: '🇺🇸' }
   ],
   translations: {
     hero: { title: "Unlock Your Potential", subtitle: "Join the elite arena of champions." },
@@ -31,25 +29,13 @@ export const useLanguageStore = create<LanguageState>((set, get) => ({
   isLoading: false,
 
   setLanguage: async (lang: string) => {
-    Cookies.set('lang', lang, { expires: 365 });
-    set({ currentLanguage: lang });
-    await get().fetchTranslations();
+    // Force to English
+    Cookies.set('lang', 'en', { expires: 365 });
+    set({ currentLanguage: 'en' });
   },
 
   fetchTranslations: async () => {
-    set({ isLoading: true });
-    try {
-      const { data } = await apiClient.get('/front-language');
-      set({
-        availableLanguages: data.available_languages,
-        translations: data.translations,
-        currentLanguage: data.current_language,
-      });
-    } catch (error) {
-      console.error('Failed to fetch translations', error);
-    } finally {
-      set({ isLoading: false });
-    }
+    // No-op for now as we use static English
   },
 
   t: (key: string, params?: Record<string, any>) => {
