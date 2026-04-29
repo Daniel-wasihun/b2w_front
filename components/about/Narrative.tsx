@@ -2,34 +2,38 @@
 
 import React from "react";
 import { Badge } from "@/components/ui/badge";
-import { ShieldCheck, Zap, Star, Target } from "lucide-react";
+import { ShieldCheck, Zap, Star, Target, LucideIcon } from "lucide-react";
+import * as LucideIcons from "lucide-react";
 
-const values = [
-  { icon: ShieldCheck, title: "Integrity", desc: "Every win is verified and earned with honor." },
-  { icon: Zap, title: "Speed", desc: "Rapid innovation and real-time competition results." },
-  { icon: Star, title: "Recognition", desc: "Top performers get global visibility and rewards." },
-  { icon: Target, title: "Precision", desc: "Focused programs designed for specific talent tracks." },
-];
+interface NarrativeProps {
+  narratives: any[];
+}
 
-export const Narrative = () => {
+export const Narrative = ({ narratives }: NarrativeProps) => {
+  if (!narratives || narratives.length === 0) return null;
+  
+  const main = narratives[0]; // For now taking the first one as primary narrative
+
   return (
     <section className="py-24">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="space-y-10">
             <div className="space-y-4">
-              <Badge className="bg-secondary/10 text-secondary border-none px-4 py-1 font-bold">The Vision</Badge>
-              <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary">Cultivating a Culture of <span className="italic text-secondary">Winning</span></h2>
-              <p className="text-muted-foreground text-lg leading-relaxed">
-                Born To Win was established in 2026 at Woldia University with a radical idea: that competition is the most powerful catalyst for academic and personal growth. We didn't just want a platform; we wanted a league of excellence where every student could find their voice and prove their worth.
-              </p>
-              <p className="text-muted-foreground text-lg leading-relaxed">
-                Today, we bridge the gap between academic theory and practical brilliance. Our community is a melting pot of innovators, strategists, and creators, all united by a single drive: the pursuit of victory.
-              </p>
+              <Badge className="bg-secondary/10 text-secondary border-none px-4 py-1 font-bold">{main.badge || "The Vision"}</Badge>
+              <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary">{main.title}</h2>
+              <div className="text-muted-foreground text-lg leading-relaxed whitespace-pre-wrap">
+                {main.content}
+              </div>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-               {values.map((item, i) => (
+               {[
+                 { icon: ShieldCheck, title: "Integrity", desc: "Every win is verified and earned with honor." },
+                 { icon: Zap, title: "Speed", desc: "Rapid innovation and real-time competition results." },
+                 { icon: Star, title: "Recognition", desc: "Top performers get global visibility and rewards." },
+                 { icon: Target, title: "Precision", desc: "Focused programs designed for specific talent tracks." },
+               ].map((item, i) => (
                  <div key={i} className="flex items-start space-x-4">
                     <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
                        <item.icon size={20} />
@@ -46,7 +50,7 @@ export const Narrative = () => {
           <div className="relative">
             <div className="aspect-square rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-card">
                <img 
-                  src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1000" 
+                  src={main.image || "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1000"} 
                   className="w-full h-full object-cover"
                   alt="Team collaboration"
                />
