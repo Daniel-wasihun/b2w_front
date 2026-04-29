@@ -2,104 +2,159 @@
 
 import React from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { 
-  Trophy, 
-  LogOut,
+import { usePathname } from "next/navigation";
+import {
   LayoutDashboard,
-  Calendar,
-  FileText,
-  Award,
   Users,
-  Settings
+  Trophy,
+  FileCheck,
+  LogOut,
+  Sparkles,
+  ShieldCheck,
+  Calendar,
+  Flag,
+  Newspaper,
+  Star,
+  BarChart3,
+  Palette,
+  Shield,
+  Key,
+  Building2,
+  Award,
+  BookOpen,
+  CheckCircle2,
+  MessageSquare,
+  MessagesSquare,
+  Users2,
+  Target,
+  FileText,
+  Tags,
+  Layers,
+  Handshake,
+  Megaphone,
+  Mail,
+  MailQuestion
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-
-const sidebarLinks = [
-  { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
-  { name: "My Competitions", href: "/dashboard/races", icon: Trophy },
-  { name: "Events", href: "/dashboard/events", icon: Calendar },
-  { name: "Submissions", href: "/dashboard/submissions", icon: FileText },
-  { name: "Certificates", href: "/dashboard/certificates", icon: Award },
-  { name: "Users", href: "/admin/users", icon: Users, adminOnly: true },
-  { name: "Settings", href: "/dashboard/settings", icon: Settings },
-];
 
 interface SidebarProps {
-  isSidebarOpen: boolean;
-  pathname: string;
-  isAdmin: boolean;
-  logout: () => void;
+  user: any;
 }
 
-export const Sidebar = ({ isSidebarOpen, pathname, isAdmin, logout }: SidebarProps) => {
+export const Sidebar = ({ user }: SidebarProps) => {
+  const pathname = usePathname();
+
+  const menuItems = [
+    { label: "Overview", icon: LayoutDashboard, href: "/admin" },
+
+    // Core Ops
+    { label: "Identity Nodes", icon: Users, href: "/admin/users" },
+    { label: "Role Definitions", icon: Shield, href: "/admin/roles" },
+    { label: "Permission Matrix", icon: Key, href: "/admin/permissions" },
+    { label: "Department Units", icon: Building2, href: "/admin/departments" },
+
+    // Competitions
+    { label: "Review Queue", icon: FileCheck, href: "/admin/submissions" },
+    { label: "Race Challenges", icon: Trophy, href: "/admin/races" },
+    { label: "Merit Certificates", icon: Award, href: "/admin/certificates" },
+
+    // Taxonomy & Structure
+    { label: "Global Categories", icon: Layers, href: "/admin/categories" },
+    { label: "Metadata Tags", icon: Tags, href: "/admin/tags" },
+    { label: "Static Content", icon: FileText, href: "/admin/pages" },
+
+    // Educational
+    { label: "Program Tracks", icon: BookOpen, href: "/admin/landing/programs" },
+    { label: "Track Benefits", icon: CheckCircle2, href: "/admin/landing/benefits" },
+    { label: "Methodology", icon: Target, href: "/admin/landing/methodology" },
+
+    // Communication & Public
+    { label: "Press & News", icon: Newspaper, href: "/admin/news" },
+    { label: "Elite Events", icon: Calendar, href: "/admin/events" },
+    { label: "Announcements", icon: Megaphone, href: "/admin/announcements" },
+    { label: "Newsletter Sync", icon: Mail, href: "/admin/newsletter" },
+    { label: "Contact Inbound", icon: MailQuestion, href: "/admin/contacts" },
+
+
+    // Branding
+    { label: "Hero Header", icon: Sparkles, href: "/admin/landing/hero" },
+    { label: "Core Features", icon: ShieldCheck, href: "/admin/landing/features" },
+    { label: "Success Stories", icon: Star, href: "/admin/landing/testimonials" },
+    { label: "Visual Vault", icon: Palette, href: "/admin/gallery" },
+    { label: "Partner Network", icon: Handshake, href: "/admin/partners" },
+    { label: "Live Metrics", icon: BarChart3, href: "/admin/landing/stats" },
+
+    // Organizational
+    { label: "About Narrative", icon: FileText, href: "/admin/about" },
+    { label: "Leadership Team", icon: Users2, href: "/admin/leadership" },
+    { label: "Philosophy Nodes", icon: Flag, href: "/admin/philosophy" },
+  ];
+
   return (
-    <motion.aside
-      initial={false}
-      animate={{ width: isSidebarOpen ? 280 : 80 }}
-      className="bg-card border-r border-border flex flex-col z-40 relative shadow-xl shadow-primary/5"
-    >
-      <div className="p-6 flex items-center justify-between">
-        <Link href="/" className="flex items-center space-x-3 overflow-hidden">
-          <div className="p-2 premium-gradient rounded-xl shrink-0">
-            <Trophy className="text-white w-6 h-6" />
+    <div className="w-72 h-screen bg-card border-r border-border flex flex-col fixed left-0 top-0 z-50 transition-colors duration-300 shadow-2xl shadow-black/5">
+      {/* Branding */}
+      <div className="p-8 border-b border-border shrink-0">
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white font-black text-xl shadow-lg shadow-primary/30">
+            B
           </div>
-          {isSidebarOpen && (
-            <span className="text-xl font-bold tracking-tight whitespace-nowrap">
-              Born To <span className="text-primary">Win</span>
-            </span>
-          )}
-        </Link>
+          <div className="flex flex-col">
+            <span className="text-foreground font-black tracking-tight text-lg">B2W Admin</span>
+            <span className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em]">Management v6.0</span>
+          </div>
+        </div>
       </div>
 
-      <nav className="flex-grow px-4 space-y-2 py-4 overflow-y-auto overflow-x-hidden">
-        {sidebarLinks.map((link) => {
-          if (link.adminOnly && !isAdmin) return null;
-          const isActive = pathname === link.href;
-          
-          return (
-            <Link key={link.href} href={link.href}>
-              <div
+      {/* Flattened Scrollable Menu */}
+      <nav className="grow p-4 space-y-1 overflow-y-auto no-scrollbar custom-scrollbar">
+        <p className="px-4 py-3 text-[10px] font-black text-muted-foreground/60 uppercase tracking-[0.2em]">Master Control Stream</p>
+        {menuItems.map((item) => {
+           const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
+           return (
+              <Link
+                key={item.href}
+                href={item.href}
                 className={cn(
-                  "flex items-center group transition-all duration-200 rounded-xl px-4 py-3 mb-1 cursor-pointer relative",
-                  isActive 
-                    ? "bg-primary/10 text-primary" 
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  "flex items-center gap-3 px-4 py-3 rounded-xl text-[13px] font-bold transition-all duration-200 group",
+                  isActive
+                    ? "bg-primary text-primary-foreground shadow-xl shadow-primary/20"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 )}
               >
-                <link.icon className={cn("w-5 h-5 shrink-0", isActive ? "text-primary" : "group-hover:text-primary")} />
-                {isSidebarOpen && (
-                  <motion.span
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="ml-4 font-bold text-sm whitespace-nowrap"
-                  >
-                    {link.name}
-                  </motion.span>
-                )}
-                {isActive && (
-                  <motion.div
-                    layoutId="sidebar-active"
-                    className="absolute left-0 w-1 h-6 bg-primary rounded-r-full"
-                  />
-                )}
-              </div>
-            </Link>
-          );
+                <item.icon className={cn("w-4 h-4 transition-colors", isActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-primary")} />
+                <span className="truncate">{item.label}</span>
+              </Link>
+           )
         })}
       </nav>
 
-      <div className="p-4 border-t border-border">
-        <Button
-          variant="ghost"
-          onClick={logout}
-          className="w-full justify-start text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl h-12 px-4"
-        >
-          <LogOut className="w-5 h-5 shrink-0" />
-          {isSidebarOpen && <span className="ml-4 font-bold">Logout</span>}
-        </Button>
+      {/* User Session */}
+      <div className="p-6 border-t border-border shrink-0 bg-muted/30">
+        <div className="flex items-center gap-3 p-1">
+          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black text-xs border border-primary/20 uppercase">
+            {user?.name?.[0] || "A"}
+          </div>
+          <div className="flex flex-col min-w-0">
+            <span className="text-sm font-black text-foreground truncate">{user?.name || "Admin User"}</span>
+            <span className="text-[10px] text-muted-foreground font-bold truncate uppercase tracking-tighter">{user?.email}</span>
+          </div>
+        </div>
       </div>
-    </motion.aside>
+
+      <style jsx global>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: var(--border);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: var(--muted-foreground);
+        }
+      `}</style>
+    </div>
   );
 };
