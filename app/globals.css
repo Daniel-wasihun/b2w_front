@@ -2,23 +2,26 @@
 
 @theme {
   /* Elite Initiative Brand Palette */
-  --color-primary: #1e58a1; /* Unified Corporate Blue */
+  --color-primary: #1e58a1;
+  /* Unified Corporate Blue */
   --color-primary-foreground: #ffffff;
-  
-  --color-secondary: #fba81c; /* Elite Amber */
+
+  --color-secondary: #fba81c;
+  /* Elite Amber */
   --color-secondary-foreground: #1e58a1;
-  
-  --color-accent: #1e58a1; /* Unified Corporate Blue */
+
+  --color-accent: #1e58a1;
+  /* Unified Corporate Blue */
   --color-accent-foreground: #ffffff;
-  
+
   --color-background: var(--bg-main);
   --color-foreground: var(--text-main);
-  
+
   --color-muted: var(--card-hover);
   --color-muted-foreground: #64748b;
-  
+
   --color-border: var(--card-border);
-  
+
   --radius-xl: 1rem;
   --radius-2xl: 1.5rem;
   --radius-3xl: 2rem;
@@ -29,16 +32,39 @@
   --animate-pulse-subtle: pulse-subtle 2s infinite ease-in-out;
 
   @keyframes floatSlow {
-      0%, 100% { transform: translate(0, 0) rotate(12deg); }
-      50% { transform: translate(0, -15px) rotate(12deg); }
+
+    0%,
+    100% {
+      transform: translate(0, 0) rotate(12deg);
+    }
+
+    50% {
+      transform: translate(0, -15px) rotate(12deg);
+    }
   }
+
   @keyframes floatReverse {
-      0%, 100% { transform: translate(0, 0) rotate(-12deg); }
-      50% { transform: translate(0, 15px) rotate(-12deg); }
+
+    0%,
+    100% {
+      transform: translate(0, 0) rotate(-12deg);
+    }
+
+    50% {
+      transform: translate(0, 15px) rotate(-12deg);
+    }
   }
+
   @keyframes pulse-subtle {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.7;
+    }
   }
 }
 
@@ -73,32 +99,42 @@
 }
 
 @layer components {
+
   /* Enforce responsive padding on container elements, overriding inline px-* classes */
   .container {
-    padding-left: 1rem !important; /* 16px for Mobile */
+    padding-left: 1rem !important;
+    /* 16px for Mobile */
     padding-right: 1rem !important;
   }
+
   @media (min-width: 640px) {
     .container {
-      padding-left: 1.5rem !important; /* 24px for Tablet */
+      padding-left: 1.5rem !important;
+      /* 24px for Tablet */
       padding-right: 1.5rem !important;
     }
   }
+
   @media (min-width: 1024px) {
     .container {
-      padding-left: 2rem !important; /* 32px for Desktop */
+      padding-left: 2rem !important;
+      /* 32px for Desktop */
       padding-right: 2rem !important;
     }
   }
+
   @media (min-width: 1280px) {
     .container {
-      padding-left: 4rem !important; /* 64px for Large Desktop */
+      padding-left: 4rem !important;
+      /* 64px for Large Desktop */
       padding-right: 4rem !important;
     }
   }
+
   @media (min-width: 1536px) {
     .container {
-      padding-left: 7.5rem !important; /* 120px for X-Large Desktop */
+      padding-left: 7.5rem !important;
+      /* 120px for X-Large Desktop */
       padding-right: 7.5rem !important;
     }
   }
@@ -132,10 +168,11 @@
 ::-webkit-scrollbar {
   width: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   @apply bg-muted-foreground/20 rounded-full hover:bg-muted-foreground/40 transition-colors;
 }
-
