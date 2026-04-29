@@ -12,42 +12,9 @@ import { FeaturedEvent } from "@/components/events/FeaturedEvent";
 import { EventList } from "@/components/events/EventList";
 import { EventNewsletter } from "@/components/events/EventNewsletter";
 
-const staticEvents = [
-  {
-    id: 'static-1',
-    title: { en: "Elite Tech Mentorship", am: "የሊቆች የቴክኖሎጂ አማካሪነት" },
-    summary: { en: "Connect with industry leaders in Web Dev and AI for personalized guidance and career-mapping sessions.", am: "ለግል ብጁ መመሪያ እና የሥራ ካርታ ክፍለ ጊዜዎች በዌብ ልማት እና በ AI የኢንዱስትሪ መሪዎች ጋር ይገናኙ።" },
-    location: "B2W Virtual Center",
-    cover_image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=80&w=1200",
-    start_date: "2026-06-15",
-    end_date: "2026-06-17",
-    time: "02:00 PM"
-  },
-  {
-    id: 'static-2',
-    title: { en: "Artificial Intelligence Workshop", am: "አርቲፊሻል ኢንተለጀንስ ወርክሾፕ" },
-    summary: { en: "Hands-on implementation of neural networks and machine learning models in real-world business scenarios.", am: "በእውነተኛ የንግድ ሁኔታዎች ውስጥ የነርቭ አውታረ መረቦች እና የማሽን መማሪያ ሞዴሎችን ተግባራዊ ማድረግ።" },
-    location: "Global Tech Hub",
-    cover_image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1200",
-    start_date: "2026-07-20",
-    end_date: "2026-07-20",
-    time: "10:00 AM"
-  },
-  {
-    id: 'static-3',
-    title: { en: "Global Networking Summit", am: "ዓለም አቀፍ የግንኙነት ጉባኤ" },
-    summary: { en: "Expansive networking opportunities with students and professionals from across 50+ countries.", am: "ከ 50 በላይ አገሮች ከተውጣጡ ተማሪዎች እና ባለሙያዎች ጋር ሰፊ የግንኙነት ዕድሎች።" },
-    location: "Grand Convention Plaza",
-    cover_image: "https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?q=80&w=1200",
-    start_date: "2026-05-10",
-    end_date: "2026-05-12",
-    time: "09:00 AM"
-  }
-];
-
 export default function EventsPage() {
   const currentLanguage = useLanguageStore((state) => state.currentLanguage);
-  const [events, setEvents] = useState<any[]>(staticEvents);
+  const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<"upcoming" | "ongoing" | "past" | "all">("all");
 
@@ -55,11 +22,9 @@ export default function EventsPage() {
     const fetchEvents = async () => {
       try {
         const res = await apiClient.get('/v1/events');
-        const apiEvents = res.data.data || [];
-        setEvents([...staticEvents, ...apiEvents]);
+        setEvents(res.data.data || []);
       } catch (err) {
-        console.error("Failed to fetch events");
-        setEvents(staticEvents);
+        console.error("Failed to fetch events", err);
       } finally {
         setLoading(false);
       }
@@ -96,7 +61,6 @@ export default function EventsPage() {
         subtitle="Connect, collaborate, and compete in our world-class workshops and networking summits."
       />
 
-      <FeaturedEvent />
 
       <section className="py-24">
         <div className="container mx-auto px-6">
