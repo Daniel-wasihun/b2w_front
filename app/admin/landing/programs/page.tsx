@@ -106,14 +106,6 @@ export default function AdminLandingProgramsPage() {
             <h1 className="text-2xl font-bold text-foreground">Track Architecture</h1>
             <p className="text-sm text-muted-foreground">Configure core learning tracks and educational pathways.</p>
           </div>
-          <Button onClick={() => {
-            setEditingProgram(null);
-            setFormData({ title: "", description: "", badge: "", image: "", order: "0", is_active: true });
-            setIsModalOpen(true);
-          }} className="font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-primary/20">
-            <Plus className="w-4 h-4 mr-2" />
-            Launch Track
-          </Button>
         </div>
 
         <LandingDataTable 

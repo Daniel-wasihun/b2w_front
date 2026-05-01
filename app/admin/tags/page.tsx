@@ -2,36 +2,53 @@
 
 import React, { useEffect, useState } from "react";
 import { DashboardLayout } from "@/components/DashboardLayout";
-import { Tags, Plus, Edit2, Trash2, Search, Save } from "lucide-react";
+import { Tags } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AdminTable } from "@/components/admin/AdminTable";
+import { AdminModal } from "@/components/admin/AdminModal";
+import { AdminSearchBar } from "@/components/admin/AdminSearchBar";
 import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import apiClient from "@/lib/apiClient";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Modal } from "@/components/ui/modal";
 import { cn, localize } from "@/lib/utils";
+import { useAdminApi } from "@/lib/hooks/useAdminApi";
+
+interface Tag {
+  id: number;
+  name: string;
+  slug: string;
+  posts_count: number;
+}
+
+interface TagFormData {
+  name: string;
+  slug: string;
+}
 
 export default function AdminTagsPage() {
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingTag, setEditingTag] = useState<any>(null);
+  const [editingTag, setEditingTag] = useState<Tag | null>(null);
   const [isSaving, setIsSaving] = useState(false);
-
-  const [formData, setFormData] = useState({
+  
+  const [formData, setFormData] = useState<TagFormData>({
     name: "",
     slug: "",
   });
+  
+  const { execute, loading: apiLoading, error } = useAdminApi();
 
+  // Fetch tags using the standardized hook
   const fetchTags = async () => {
     setLoading(true);
     try {
-      const res = await apiClient.get("/v1/admin/tags");
-      setTags(res.data.data || []);
+      const result = await apiClient.get("/v1/admin/tags");
+      setTags(result.data.data || []);
     } catch (err) {
       toast.error("Failed to fetch metadata tags");
     } finally {
@@ -54,6 +71,8 @@ export default function AdminTagsPage() {
         toast.success("New metadata node initialized");
       }
       setIsModalOpen(false);
+      // Reset form
+      setFormData({ name: "", slug: "" });
       fetchTags();
     } catch (err) {
       toast.error("Operation failed");
@@ -63,7 +82,7 @@ export default function AdminTagsPage() {
   };
 
   const deleteTag = async (id: number) => {
-    if (!confirm("Permanently purge this tag?")) return;
+    if (!window.confirm("Permanently purge this tag?")) return;
     try {
       await apiClient.delete(`/v1/admin/tags/${id}`);
       toast.success("Tag purged");
@@ -73,10 +92,10 @@ export default function AdminTagsPage() {
     }
   };
 
-  const filteredTags = tags.filter((t: any) => {
-    const nameString = typeof t.name === 'string' ? t.name : (t.name ? JSON.stringify(t.name) : "");
-    return nameString.toLowerCase().includes(searchTerm.toLowerCase());
-  });
+  const filteredTags = tags.filter((tag) => 
+    tag.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    tag.slug.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <DashboardLayout>
@@ -86,118 +105,128 @@ export default function AdminTagsPage() {
             <h1 className="text-2xl font-bold text-foreground">Metadata Tags</h1>
             <p className="text-sm text-muted-foreground">Manage granular metadata nodes for classification and discovery.</p>
           </div>
-          <Button onClick={() => {
-            setEditingTag(null);
-            setFormData({ name: "", slug: "" });
-            setIsModalOpen(true);
-          }} className="font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-primary/20">
-            <Plus className="w-4 h-4 mr-2" />
+          <Button 
+            onClick={() => {
+              setEditingTag(null);
+              setFormData({ name: "", slug: "" });
+              setIsModalOpen(true);
+            }}
+            className="font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-primary/20"
+          >
+            <Tags className="w-4 h-4 mr-2" />
             New Tag
           </Button>
         </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="relative max-w-sm w-full group">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-            <input
-              type="text"
-              placeholder="Search metadata..."
-              className="h-10 w-full rounded-md border border-input bg-background pl-10 pr-4 text-sm outline-none focus:border-primary transition-all placeholder:text-muted-foreground text-foreground"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
+          <AdminSearchBar
+            value={searchTerm}
+            onChange={setSearchTerm}
+            placeholder="Search metadata..."
+          />
         </div>
 
         <div className="rounded-xl border border-border bg-card overflow-hidden shadow-sm transition-colors duration-300">
-          <Table>
-            <TableHeader className="bg-muted/50">
-              <TableRow className="border-border hover:bg-transparent">
-                <TableHead className="pl-6 text-[10px] font-black uppercase tracking-widest text-muted-foreground h-12">Tag Identity</TableHead>
-                <TableHead className="text-[10px] font-black uppercase tracking-widest text-muted-foreground h-12">System Slug</TableHead>
-                <TableHead className="text-[10px] font-black uppercase tracking-widest text-muted-foreground h-12">Pop. Density</TableHead>
-                <TableHead className="pr-6 text-right text-[10px] font-black uppercase tracking-widest text-muted-foreground h-12">Control</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {loading ? (
-                Array(5).fill(0).map((_, i) => (
-                  <TableRow key={i} className="border-border/50">
-                    <TableCell colSpan={4} className="px-6 py-4"><Skeleton className="h-10 w-full rounded-md" /></TableCell>
-                  </TableRow>
-                ))
-              ) : filteredTags.length > 0 ? (
-                filteredTags.map((tag: any) => (
-                  <TableRow key={tag.id} className="border-border/50 hover:bg-muted/30 transition-colors">
-                    <TableCell className="pl-6 py-4">
-                       <div className="flex items-center gap-2">
-                          <Tags className="w-3.5 h-3.5 text-muted-foreground" />
-                          <span className="font-bold text-sm text-foreground">{localize(tag.name)}</span>
-                       </div>
-                    </TableCell>
-                    <TableCell>
-                       <code className="text-[11px] font-bold text-muted-foreground bg-muted px-1.5 py-0.5 rounded border border-border">#{tag.slug}</code>
-                    </TableCell>
-                    <TableCell>
-                       <span className="text-[12px] font-bold text-foreground/70">{tag.posts_count || 0} Nodes</span>
-                    </TableCell>
-                    <TableCell className="pr-6 text-right">
-                      <div className="flex items-center justify-end gap-1">
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all" onClick={() => {
-                          setEditingTag(tag);
-                          setFormData({ name: localize(tag.name), slug: tag.slug });
-                          setIsModalOpen(true);
-                        }}>
-                          <Edit2 className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all" onClick={() => deleteTag(tag.id)}>
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={4} className="h-48 text-center text-muted-foreground text-[10px] font-black uppercase tracking-widest">
-                    No metadata tags indexed.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+          <AdminTable<Tag>
+            columns={[
+              {
+                header: "Tag Identity",
+                accessor: (row) => (
+                  <div className="flex items-center gap-2">
+                    <Tags className="w-3.5 h-3.5 text-muted-foreground" />
+                    <span className="font-bold text-sm text-foreground">{localize(row.name)}</span>
+                  </div>
+                ),
+              },
+              {
+                header: "System Slug",
+                accessor: (row) => (
+                  <code className="text-[11px] font-bold text-muted-foreground bg-muted px-1.5 py-0.5 rounded border border-border">
+                    #{row.slug}
+                  </code>
+                ),
+              },
+              {
+                header: "Pop. Density",
+                accessor: (row) => (
+                  <span className="text-[12px] font-bold text-foreground/70">
+                    {row.posts_count || 0} Nodes
+                  </span>
+                ),
+              },
+              {
+                header: "Control",
+                accessor: () => "", // Placeholder for actions
+                renderActions: (tag) => (
+                  <div className="flex items-center justify-end gap-1">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all"
+                      onClick={() => {
+                        setEditingTag(tag);
+                        setFormData({ 
+                          name: localize(tag.name), 
+                          slug: tag.slug 
+                        });
+                        setIsModalOpen(true);
+                      }}
+                    >
+                      <span className="sr-only">Edit</span>
+                      {/* Using Lucide icon for Edit2 */}
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                      </svg>
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all"
+                      onClick={() => deleteTag(tag.id)}
+                    >
+                      <span className="sr-only">Delete</span>
+                      {/* Using Lucide icon for Trash2 */}
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10H4a1 1 0 00-1 1v2a1 1 0 001 1h3a1 1 0 001-1V7a1 1 0 00-1-1H4a1 1 0 00-1 1v2a1 1 0 001 1h3a1 1 0 001-1V7a1 1 0 001-1h3z" />
+                      </svg>
+                    </Button>
+                  </div>
+                ),
+              },
+            ]}
+            data={filteredTags}
+            loading={loading}
+            emptyMessage="No metadata tags indexed."
+          />
         </div>
-      </div>
 
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title={editingTag ? "Sync Metadata Node" : "Initialize New Tag"}
-        footer={
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={() => setIsModalOpen(false)} className="font-bold text-[10px] uppercase tracking-widest">Discard</Button>
-            <Button onClick={handleSave} isLoading={isSaving} className="font-bold text-[10px] uppercase tracking-widest">
-              <Save className="w-4 h-4 mr-2" />
-              {editingTag ? "Commit Sync" : "Deploy Tag"}
-            </Button>
+        <AdminModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setFormData({ name: "", slug: "" });
+            setEditingTag(null);
+          }}
+          title={editingTag ? "Sync Metadata Node" : "Initialize New Tag"}
+          submitLabel={editingTag ? "Commit Sync" : "Deploy Tag"}
+          isSubmitting={isSaving}
+        >
+          <div className="space-y-6 py-2">
+            <Input 
+              label="Tag Label"
+              value={formData.name} 
+              onChange={(e) => setFormData({...formData, name: e.target.value})} 
+              placeholder="e.g. Innovation" 
+            />
+            <Input 
+              label="System Slug"
+              value={formData.slug} 
+              onChange={(e) => setFormData({...formData, slug: e.target.value})} 
+              placeholder="e.g. innovation" 
+            />
           </div>
-        }
-      >
-        <div className="space-y-6 py-2">
-          <Input 
-            label="Tag Label"
-            value={formData.name} 
-            onChange={(e) => setFormData({...formData, name: e.target.value})} 
-            placeholder="e.g. Innovation" 
-          />
-          <Input 
-            label="System Slug"
-            value={formData.slug} 
-            onChange={(e) => setFormData({...formData, slug: e.target.value})} 
-            placeholder="e.g. innovation" 
-          />
-        </div>
-      </Modal>
+        </AdminModal>
+      </div>
     </DashboardLayout>
   );
 }

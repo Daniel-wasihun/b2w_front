@@ -39,9 +39,10 @@ import { cn } from "@/lib/utils";
 
 interface SidebarProps {
   user: any;
+  isSidebarOpen: boolean;
 }
 
-export const Sidebar = ({ user }: SidebarProps) => {
+export const Sidebar = ({ user, isSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
 
   const menuItems = [
@@ -91,7 +92,10 @@ export const Sidebar = ({ user }: SidebarProps) => {
   ];
 
   return (
-    <div className="w-72 h-screen bg-card border-r border-border flex flex-col fixed left-0 top-0 z-50 transition-colors duration-300 shadow-2xl shadow-black/5">
+    <div className={cn(
+      "w-72 h-screen bg-card border-r border-border flex flex-col fixed left-0 top-0 z-50 transition-transform duration-300 shadow-2xl shadow-black/5",
+      !isSidebarOpen && "-translate-x-full"
+    )}>
       {/* Branding */}
       <div className="p-8 border-b border-border shrink-0">
         <div className="flex items-center gap-4">
@@ -111,21 +115,21 @@ export const Sidebar = ({ user }: SidebarProps) => {
         {menuItems.map((item) => {
            const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-xl text-[13px] font-bold transition-all duration-200 group",
-                  isActive
-                    ? "bg-primary text-primary-foreground shadow-xl shadow-primary/20"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                )}
-              >
-                <item.icon className={cn("w-4 h-4 transition-colors", isActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-primary")} />
-                <span className="truncate">{item.label}</span>
-              </Link>
+             <Link
+               key={item.href}
+               href={item.href}
+               className={cn(
+                 "flex items-center gap-3 px-4 py-3 rounded-xl text-[13px] font-bold transition-all duration-200 group",
+                 isActive
+                   ? "bg-primary text-primary-foreground shadow-xl shadow-primary/20"
+                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
+               )}
+             >
+               <item.icon className={cn("w-4 h-4 transition-colors", isActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-primary")} />
+               <span className="truncate">{item.label}</span>
+             </Link>
            )
-        })}
+         })}
       </nav>
 
       {/* User Session */}

@@ -1,4 +1,5 @@
-import { type ClassValue, clsx } from "clsx";
+import * as React from "react";
+import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 /**
@@ -22,4 +23,19 @@ export function localize(value: any, locale: string = 'en'): string {
   }
   
   return String(value);
+}
+
+/**
+ * Search utility for fuzzy matching
+ */
+export function fuzzySearch<T>(
+  items: T[], 
+  searchTerm: string, 
+  accessor: (item: T) => string
+): T[] {
+  if (!searchTerm.trim()) return items;
+  const term = searchTerm.toLowerCase().trim();
+  return items.filter(item => 
+    accessor(item).toLowerCase().includes(term)
+  );
 }

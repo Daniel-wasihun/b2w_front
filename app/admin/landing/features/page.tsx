@@ -114,14 +114,6 @@ export default function AdminFeaturesPage() {
             <h1 className="text-2xl font-bold text-foreground">Core Feature Architecture</h1>
             <p className="text-sm text-muted-foreground">Manage the core value propositions shown to global visitors.</p>
           </div>
-          <Button onClick={() => {
-            setEditingFeature(null);
-            setFormData({ title: "", description: "", icon: "ShieldCheck", order: "0", is_active: true });
-            setIsModalOpen(true);
-          }} className="font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-primary/20">
-            <Plus className="w-4 h-4 mr-2" />
-            Add Capability
-          </Button>
         </div>
 
         <LandingDataTable 

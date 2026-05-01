@@ -124,14 +124,6 @@ export default function AdminTestimonialsPage() {
             <h1 className="text-2xl font-bold text-foreground">Student Success Stories</h1>
             <p className="text-sm text-muted-foreground">Manage customer feedback and narrative success stories.</p>
           </div>
-          <Button onClick={() => {
-            setEditingTestimonial(null);
-            setFormData({ name: "", content: "", role: "", avatar: "", is_featured: true });
-            setIsModalOpen(true);
-          }} className="font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-primary/20">
-            <Plus className="w-4 h-4 mr-2" />
-            New Story
-          </Button>
         </div>
 
         <LandingDataTable 

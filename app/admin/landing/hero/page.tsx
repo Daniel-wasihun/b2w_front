@@ -109,14 +109,6 @@ export default function AdminHeroPage() {
             <h1 className="text-2xl font-bold text-foreground">Hero Header Architecture</h1>
             <p className="text-sm text-muted-foreground">Coordinate the global first impression and narrative gateway.</p>
           </div>
-          <Button onClick={() => {
-            setEditingHero(null);
-            setFormData({ title: "", subtitle: "", image: "", cta_text: "", cta_link: "#", is_active: true });
-            setIsModalOpen(true);
-          }} className="font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-primary/20">
-            <PlusIcon className="w-4 h-4 mr-2" />
-            Initialize Hero
-          </Button>
         </div>
 
         <LandingDataTable 

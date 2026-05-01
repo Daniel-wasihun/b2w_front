@@ -21,7 +21,7 @@ export default function AdminProgramMethodologyPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingMethod, setEditingMethod] = useState<any>(null);
   const [isSaving, setIsSaving] = useState(false);
-
+  
   const [formData, setFormData] = useState({
     program_id: "",
     title: "",
@@ -89,14 +89,6 @@ export default function AdminProgramMethodologyPage() {
             <h1 className="text-2xl font-bold text-foreground">Learning Methodology</h1>
             <p className="text-sm text-muted-foreground">Define the step-by-step educational protocols for your tracks.</p>
           </div>
-          <Button onClick={() => {
-            setEditingMethod(null);
-            setFormData({ program_id: "", title: "", description: "", step_number: "1" });
-            setIsModalOpen(true);
-          }} className="font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-primary/20">
-            <Plus className="w-4 h-4 mr-2" />
-            Define Step
-          </Button>
         </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -134,13 +126,13 @@ export default function AdminProgramMethodologyPage() {
                   <TableRow key={method.id} className="border-border/50 hover:bg-muted/30 transition-colors">
                     <TableCell className="pl-6 py-4">
                       <div className="flex items-center gap-4">
-                         <div className="w-10 h-10 rounded-lg bg-primary/5 flex items-center justify-center border border-primary/10 shadow-sm">
-                            <Target className="w-5 h-5 text-primary/60" />
-                         </div>
-                         <div className="flex flex-col">
-                            <span className="font-bold text-sm text-foreground">{localize(method.title)}</span>
-                            <span className="text-[10px] text-muted-foreground font-black uppercase tracking-widest line-clamp-1 max-w-[250px]">{localize(method.description)}</span>
-                         </div>
+                        <div className="w-10 h-10 rounded-lg bg-primary/5 flex items-center justify-center border border-primary/10 shadow-sm">
+                          <Target className="w-5 h-5 text-primary/60" />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-bold text-sm text-foreground">{localize(method.title)}</span>
+                          <span className="text-[10px] text-muted-foreground font-black uppercase tracking-widest line-clamp-1 max-w-[250px]">{localize(method.description)}</span>
+                        </div>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -149,12 +141,12 @@ export default function AdminProgramMethodologyPage() {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                       <div className="flex items-center gap-2">
-                          <span className="w-7 h-7 rounded-lg bg-foreground text-background flex items-center justify-center text-[11px] font-black shadow-lg shadow-foreground/20">
-                            {method.step_number}
-                          </span>
-                          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">PHASE_NODE</span>
-                       </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-7 h-7 rounded-lg bg-foreground text-background flex items-center justify-center text-[11px] font-black shadow-lg shadow-foreground/20">
+                          {method.step_number}
+                        </span>
+                        <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">PHASE_NODE</span>
+                      </div>
                     </TableCell>
                     <TableCell className="pr-6 text-right">
                       <div className="flex items-center justify-end gap-1">
@@ -168,73 +160,73 @@ export default function AdminProgramMethodologyPage() {
                           });
                           setIsModalOpen(true);
                         }}>
-                          <Edit2 className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all" onClick={() => deleteMethod(method.id)}>
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={4} className="h-48 text-center text-muted-foreground text-[10px] font-black uppercase tracking-widest">
-                    No educational protocols found in the archive.
+                        <Edit2 className="w-4 h-4" />
+                      </Button>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all" onClick={() => deleteMethod(method.id)}>
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
-              )}
-            </TableBody>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={4} className="h-48 text-center text-muted-foreground text-[10px] font-black uppercase tracking-widest">
+                  No educational protocols found in the archive.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
           </Table>
         </div>
-      </div>
 
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title={editingMethod ? "Sync Protocol Intelligence" : "Initialize New Phase"}
-        footer={
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={() => setIsModalOpen(false)} className="font-bold text-[10px] uppercase tracking-widest">Discard</Button>
-            <Button onClick={handleSave} isLoading={isSaving} className="font-bold text-[10px] uppercase tracking-widest">
-              <Save className="w-4 h-4 mr-2" />
-              {editingMethod ? "Commit Sync" : "Deploy Phase"}
-            </Button>
-          </div>
-        }
-      >
-        <div className="space-y-6 py-2">
-          <div className="grid grid-cols-2 gap-6">
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title={editingMethod ? "Sync Protocol Intelligence" : "Initialize New Phase"}
+          footer={
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={() => setIsModalOpen(false)} className="font-bold text-[10px] uppercase tracking-widest">Discard</Button>
+              <Button onClick={handleSave} isLoading={isSaving} className="font-bold text-[10px] uppercase tracking-widest">
+                <Save className="w-4 h-4 mr-2" />
+                {editingMethod ? "Commit Sync" : "Deploy Phase"}
+              </Button>
+            </div>
+          }
+        >
+          <div className="space-y-6 py-2">
+            <div className="grid grid-cols-2 gap-6">
+              <Input 
+                label="Track Node Association (ID)"
+                value={formData.program_id} 
+                onChange={(e) => setFormData({...formData, program_id: e.target.value})} 
+                placeholder="e.g. 1" 
+              />
+              <Input 
+                label="Phase Sequence Index"
+                type="number"
+                value={formData.step_number} 
+                onChange={(e) => setFormData({...formData, step_number: e.target.value})} 
+              />
+            </div>
             <Input 
-              label="Track Node Association (ID)"
-              value={formData.program_id} 
-              onChange={(e) => setFormData({...formData, program_id: e.target.value})} 
-              placeholder="e.g. 1" 
+              label="Phase Operational Label"
+              value={formData.title} 
+              onChange={(e) => setFormData({...formData, title: e.target.value})} 
+              placeholder="e.g. Fundamental Immersion" 
             />
-            <Input 
-              label="Phase Sequence Index"
-              type="number"
-              value={formData.step_number} 
-              onChange={(e) => setFormData({...formData, step_number: e.target.value})} 
-            />
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest px-1">Protocol Narrative</label>
+              <textarea 
+                className="w-full min-h-[120px] rounded-xl border border-input bg-background px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium placeholder:text-muted-foreground"
+                value={formData.description}
+                onChange={(e) => setFormData({...formData, description: e.target.value})}
+                placeholder="What happens in this phase of the methodology?"
+              />
+            </div>
           </div>
-          <Input 
-            label="Phase Operational Label"
-            value={formData.title} 
-            onChange={(e) => setFormData({...formData, title: e.target.value})} 
-            placeholder="e.g. Fundamental Immersion" 
-          />
-          <div className="space-y-2">
-            <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest px-1">Protocol Narrative</label>
-            <textarea 
-              className="w-full min-h-[120px] rounded-xl border border-input bg-background px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium placeholder:text-muted-foreground"
-              value={formData.description}
-              onChange={(e) => setFormData({...formData, description: e.target.value})}
-              placeholder="What happens in this phase of the methodology?"
-            />
-          </div>
-        </div>
-      </Modal>
+        </Modal>
+      </div>
     </DashboardLayout>
   );
 }

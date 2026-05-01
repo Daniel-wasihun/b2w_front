@@ -3,34 +3,19 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
 import { 
-  Trophy, 
   Mail, 
   Lock, 
   Eye, 
   EyeOff, 
   ArrowLeft,
-  Award,
-  Zap,
-  Users,
-  Heart,
-  Star,
-  Shield
+  Trophy,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuthStore } from "@/lib/authStore";
 import { toast } from "sonner";
-
-const features = [
-  { icon: Award, label: "EXCELLENCE" },
-  { icon: Trophy, label: "COMPETITION" },
-  { icon: Zap, label: "CREATIVITY" },
-  { icon: Users, label: "LEADERSHIP" },
-  { icon: Heart, label: "COMMUNITY" },
-  { icon: Star, label: "VICTORY" },
-];
+import { cn } from "@/lib/utils";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -47,7 +32,7 @@ export default function LoginPage() {
     try {
       await login(formData);
       toast.success("Welcome back champion!");
-      router.push("/dashboard");
+      router.push("/admin");
     } catch (error: any) {
       if (error.response?.data?.errors) {
         setFieldErrors(error.response.data.errors);
@@ -61,12 +46,10 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen w-full bg-background flex items-center justify-center relative overflow-hidden font-sans transition-colors duration-500">
-      {/* Decorative Background Elements (Elite Style) */}
+      {/* Decorative Background Elements */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/5 blur-[140px] rounded-full animate-pulse-subtle" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-secondary/5 blur-[140px] rounded-full animate-pulse-subtle" />
-        
-        {/* Subtle Grid Pattern */}
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03] pointer-events-none" />
       </div>
 
@@ -74,12 +57,7 @@ export default function LoginPage() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
           
           {/* Left Side: Club Branding & Features Grid */}
-          <motion.div 
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="hidden lg:flex flex-col items-center lg:items-start text-center lg:text-left"
-          >
+          <div className="hidden lg:flex flex-col items-center lg:items-start text-center lg:text-start">
             <Link href="/" className="flex items-center space-x-3 mb-8 group cursor-pointer">
               <div className="p-3 premium-gradient rounded-2xl shadow-xl shadow-primary/20 group-hover:scale-105 transition-transform">
                 <Trophy className="text-white w-8 h-8" />
@@ -100,24 +78,29 @@ export default function LoginPage() {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-lg">
-              {features.map((f, i) => (
-                <div key={i} className="flex flex-col items-center space-y-3 group">
-                  <div className="w-20 h-20 bg-card border border-border rounded-2xl flex items-center justify-center shadow-lg shadow-primary/5 group-hover:border-primary/30 group-hover:shadow-primary/10 transition-all duration-300 transform group-hover:-translate-y-1">
-                    <f.icon className="w-8 h-8 text-primary" />
-                  </div>
-                  <span className="text-[10px] font-bold text-muted-foreground tracking-widest text-center uppercase">{f.label}</span>
+              <div key="1" className="flex flex-col items-center space-y-3 group">
+                <div className="w-20 h-20 bg-card border border-border rounded-2xl flex items-center justify-center shadow-lg shadow-primary/5 group-hover:border-primary/30 group-hover:shadow-primary/10 transition-all duration-300 transform group-hover:-translate-y-1">
+                  <Trophy className="w-8 h-8 text-primary" />
                 </div>
-              ))}
+                <span className="text-[10px] font-bold text-muted-foreground tracking-widest text-center uppercase">EXCELLENCE</span>
+              </div>
+              <div key="2" className="flex flex-col items-center space-y-3 group">
+                <div className="w-20 h-20 bg-card border border-border rounded-2xl flex items-center justify-center shadow-lg shadow-primary/5 group-hover:border-primary/30 group-hover:shadow-primary/10 transition-all duration-300 transform group-hover:-translate-y-1">
+                  <Mail className="w-8 h-8 text-primary" />
+                </div>
+                <span className="text-[10px] font-bold text-muted-foreground tracking-widest text-center uppercase">COMMUNICATION</span>
+              </div>
+              <div key="3" className="flex flex-col items-center space-y-3 group">
+                <div className="w-20 h-20 bg-card border border-border rounded-2xl flex items-center justify-center shadow-lg shadow-primary/5 group-hover:border-primary/30 group-hover:shadow-primary/10 transition-all duration-300 transform group-hover:-translate-y-1">
+                  <Lock className="w-8 h-8 text-primary" />
+                </div>
+                <span className="text-[10px] font-bold text-muted-foreground tracking-widest text-center uppercase">SECURITY</span>
+              </div>
             </div>
-          </motion.div>
+          </div>
 
-          {/* Right Side: Login Form (Elite Style) */}
-          <motion.div 
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="flex justify-center lg:justify-end"
-          >
+          {/* Right Side: Login Form */}
+          <div className="flex justify-center lg:justify-end">
             <div className="premium-card p-10 lg:p-12 w-full max-w-xl relative group overflow-hidden min-h-[500px] flex flex-col justify-center">
               <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/5 blur-3xl pointer-events-none group-hover:bg-primary/10 transition-colors duration-1000" />
               
@@ -198,7 +181,6 @@ export default function LoginPage() {
                     className="w-full h-14 shadow-xl shadow-primary/10 capitalize text-lg font-bold" 
                     variant="premium"
                     isLoading={loading}
-                    rightIcon={<Trophy className="w-5 h-5 ml-2" />}
                   >
                     Sign In to Portal
                   </Button>
@@ -214,8 +196,7 @@ export default function LoginPage() {
                 </p>
               </div>
             </div>
-          </motion.div>
-
+          </div>
         </div>
       </div>
     </div>
