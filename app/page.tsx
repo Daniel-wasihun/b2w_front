@@ -6,6 +6,7 @@ import { Hero } from "@/components/landing/Hero";
 import { Stats } from "@/components/landing/Stats";
 import { Features } from "@/components/landing/Features";
 import { Testimonial } from "@/components/landing/Testimonial";
+import { Partners } from "@/components/landing/Partners";
 import { PremiumCard } from "@/components/ui/premium-card";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -231,6 +232,7 @@ export default function LandingPage() {
       </section>
 
       <Features data={data?.features} />
+      <Partners data={data?.partners} />
       <Testimonial data={data?.testimonials} />
     </main>
   );

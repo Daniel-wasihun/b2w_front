@@ -31,6 +31,7 @@ const publicLinks = [
 
 const memberLinks = [
   { name: "Home", href: "/" },
+  { name: "About", href: "/about" },
   { name: "Events", href: "/events" },
   { name: "Programs", href: "/programs" },
   { name: "Gallery", href: "/gallery" },

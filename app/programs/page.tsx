@@ -15,17 +15,8 @@ export default function ProgramsPage() {
   useEffect(() => {
     const fetchProgramsData = async () => {
       try {
-        const [pageRes, landingRes] = await Promise.all([
-          apiClient.get("/v1/programs-page"),
-          apiClient.get("/v1/landing")
-        ]);
-        
-        setData({
-          hero: pageRes.data.data.hero,
-          methodology: pageRes.data.data.methodology,
-          benefits: pageRes.data.data.benefits,
-          programs: landingRes.data.data.programs // Reusing landing programs for tracks
-        });
+        const res = await apiClient.get("/v1/programs-page");
+        setData(res.data.data);
       } catch (err) {
         console.error("Failed to fetch programs data", err);
       } finally {

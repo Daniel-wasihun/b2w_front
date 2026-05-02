@@ -6,6 +6,7 @@ import { HeroHeader } from "@/components/HeroHeader";
 import { Narrative } from "@/components/about/Narrative";
 import { Philosophy } from "@/components/about/Philosophy";
 import { Leadership } from "@/components/about/Leadership";
+import { Partners } from "@/components/landing/Partners";
 import apiClient from "@/lib/apiClient";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -50,6 +51,11 @@ export default function AboutPage() {
       <Narrative narratives={data?.narrative || []} />
       <Leadership leaders={data?.leadership || []} />
       <Philosophy philosophies={data?.philosophy || []} />
+      <Partners 
+        data={data?.partners || []} 
+        title={<>Our Strategic <span className="italic text-secondary">Alliances</span></>}
+        subtitle="We collaborate with world-class organizations to ensure our community has access to the best opportunities and resources."
+      />
     </main>
   );
 }
