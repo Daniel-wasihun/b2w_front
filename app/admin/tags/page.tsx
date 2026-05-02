@@ -154,46 +154,42 @@ export default function AdminTagsPage() {
                   </span>
                 ),
               },
-              {
-                header: "Control",
-                accessor: () => "", // Placeholder for actions
-                renderActions: (tag) => (
-                  <div className="flex items-center justify-end gap-1">
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all"
-                      onClick={() => {
-                        setEditingTag(tag);
-                        setFormData({ 
-                          name: localize(tag.name), 
-                          slug: tag.slug 
-                        });
-                        setIsModalOpen(true);
-                      }}
-                    >
-                      <span className="sr-only">Edit</span>
-                      {/* Using Lucide icon for Edit2 */}
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                      </svg>
-                    </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all"
-                      onClick={() => deleteTag(tag.id)}
-                    >
-                      <span className="sr-only">Delete</span>
-                      {/* Using Lucide icon for Trash2 */}
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10H4a1 1 0 00-1 1v2a1 1 0 001 1h3a1 1 0 001-1V7a1 1 0 00-1-1H4a1 1 0 00-1 1v2a1 1 0 001 1h3a1 1 0 001-1V7a1 1 0 001-1h3z" />
-                      </svg>
-                    </Button>
-                  </div>
-                ),
-              },
             ]}
+            renderActions={(tag) => (
+              <div className="flex items-center justify-end gap-1">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all"
+                  onClick={() => {
+                    setEditingTag(tag);
+                    setFormData({ 
+                      name: localize(tag.name), 
+                      slug: tag.slug 
+                    });
+                    setIsModalOpen(true);
+                  }}
+                >
+                  <span className="sr-only">Edit</span>
+                  {/* Using Lucide icon for Edit2 */}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                  </svg>
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all"
+                  onClick={() => deleteTag(tag.id)}
+                >
+                  <span className="sr-only">Delete</span>
+                  {/* Using Lucide icon for Trash2 */}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10H4a1 1 0 00-1 1v2a1 1 0 001 1h3a1 1 0 001-1V7a1 1 0 00-1-1H4a1 1 0 00-1 1v2a1 1 0 001 1h3a1 1 0 001-1V7a1 1 0 001-1h3z" />
+                  </svg>
+                </Button>
+              </div>
+            )}
             data={filteredTags}
             loading={loading}
             emptyMessage="No metadata tags indexed."
@@ -209,6 +205,7 @@ export default function AdminTagsPage() {
           }}
           title={editingTag ? "Sync Metadata Node" : "Initialize New Tag"}
           submitLabel={editingTag ? "Commit Sync" : "Deploy Tag"}
+          onSubmit={handleSave}
           isSubmitting={isSaving}
         >
           <div className="space-y-6 py-2">

@@ -13,7 +13,7 @@ interface AdminKpiCardProps {
 export function AdminKpiCard({
   label,
   value,
-  icon,
+  icon: Icon,
   color,
   bg,
   trend,
@@ -22,7 +22,7 @@ export function AdminKpiCard({
     <div className="bg-card p-6 rounded-xl border border-border shadow-sm relative overflow-hidden group hover:border-primary/50 transition-all">
       <div className="flex items-center justify-between relative z-10">
         <div className={`p-2.5 rounded-md ${bg}`}>
-          <icon className={`w-5 h-5 ${color}`} />
+          <Icon className={`w-5 h-5 ${color}`} />
         </div>
         {trend && (
           <div className="text-[10px] font-black text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded flex items-center gap-1">
@@ -39,7 +39,7 @@ export function AdminKpiCard({
       </div>
       {/* Subtle background decoration */}
       <div className="absolute -right-4 -bottom-4 text-muted/20 opacity-50 group-hover:text-primary/5 transition-colors">
-        <icon className="w-24 h-24 rotate-12" />
+        <Icon className="w-24 h-24 rotate-12" />
       </div>
     </div>
   );

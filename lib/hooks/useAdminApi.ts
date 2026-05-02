@@ -9,7 +9,7 @@ export function useAdminApi() {
     setLoading(true);
     setError(null);
     try {
-      const result = await promise;
+      const result = await promise as any;
       // Assuming the API response structure: { data: { data: T[], message?: string }, ... }
       const data = result.data?.data || result.data;
       if (result.data?.message) {

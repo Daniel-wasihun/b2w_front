@@ -205,24 +205,20 @@ export default function AdminNewsPage() {
                   </span>
                 ),
               },
-              {
-                header: "Control",
-                accessor: () => "",
-                renderActions: (post: NewsPost) => (
-                  <div className="flex items-center justify-end gap-1">
-                    <AdminButton variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all">
-                      <Eye className="w-4 h-4" />
-                    </AdminButton>
-                    <AdminButton variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all" onClick={() => openEditModal(post)}>
-                      <Edit2 className="w-4 h-4" />
-                    </AdminButton>
-                    <AdminButton variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all" onClick={() => deletePost(post.id)}>
-                      <Trash2 className="w-4 h-4" />
-                    </AdminButton>
-                  </div>
-                ),
-              }
             ]}
+            renderActions={(post: NewsPost) => (
+              <div className="flex items-center justify-end gap-1">
+                <AdminButton variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all">
+                  <Eye className="w-4 h-4" />
+                </AdminButton>
+                <AdminButton variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all" onClick={() => openEditModal(post)}>
+                  <Edit2 className="w-4 h-4" />
+                </AdminButton>
+                <AdminButton variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all" onClick={() => deletePost(post.id)}>
+                  <Trash2 className="w-4 h-4" />
+                </AdminButton>
+              </div>
+            )}
             data={filteredPosts}
             loading={loading}
             emptyMessage="No articles found in the publication stream."
@@ -243,6 +239,7 @@ export default function AdminNewsPage() {
           }}
           title={editingPost ? "Sync Publication" : "Initialize New Archive"}
           submitLabel={editingPost ? "Commit Sync" : "Deploy Publication"}
+          onSubmit={handleSave}
           isSubmitting={isSaving}
         >
           <div className="space-y-6 py-2">

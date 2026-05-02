@@ -8,12 +8,13 @@ interface AdminModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
-  submitLabel: string;
-  onSubmit: () => Promise<void> | void;
+  submitLabel?: string;
+  onSubmit?: () => Promise<void> | void;
   isSubmitting?: boolean;
   cancelLabel?: string;
   danger?: boolean;
   width?: string;
+  footer?: React.ReactNode;
 }
 
 export function AdminModal({
@@ -27,6 +28,7 @@ export function AdminModal({
   cancelLabel = "Cancel",
   danger = false,
   width = "sm",
+  footer,
 }: AdminModalProps) {
   return (
     <div className={cn("fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm", { hidden: !isOpen })}>
@@ -54,28 +56,32 @@ export function AdminModal({
           <div className="space-y-6">{children}</div>
 
           {/* Footer */}
-          <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:gap-3 pt-5 border-t border-border">
-            <Button
-              variant="outline"
-              onClick={onClose}
-              className={cn("w-full sm:w-auto text-[10px] font-bold uppercase tracking-widest", danger && "text-rose-500 border-rose-500/50 hover:bg-rose-500/10")}
-            >
-              {cancelLabel}
-            </Button>
-            <Button
-              onClick={async () => {
-                await onSubmit();
-              }}
-              isLoading={isSubmitting}
-              className={cn(
-                "w-full sm:w-auto text-[10px] font-bold uppercase tracking-widest",
-                danger && "bg-rose-600 text-white hover:bg-rose-700",
-                !danger && "bg-primary text-white hover:bg-primary/90"
-              )}
-            >
-              {submitLabel}
-            </Button>
-          </div>
+          {footer ? (
+            <div className="pt-5 border-t border-border">{footer}</div>
+          ) : (
+            <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:gap-3 pt-5 border-t border-border">
+              <Button
+                variant="outline"
+                onClick={onClose}
+                className={cn("w-full sm:w-auto text-[10px] font-bold uppercase tracking-widest", danger && "text-rose-500 border-rose-500/50 hover:bg-rose-500/10")}
+              >
+                {cancelLabel}
+              </Button>
+              <Button
+                onClick={async () => {
+                  if (onSubmit) await onSubmit();
+                }}
+                isLoading={isSubmitting}
+                className={cn(
+                  "w-full sm:w-auto text-[10px] font-bold uppercase tracking-widest",
+                  danger && "bg-rose-600 text-white hover:bg-rose-700",
+                  !danger && "bg-primary text-white hover:bg-primary/90"
+                )}
+              >
+                {submitLabel}
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>

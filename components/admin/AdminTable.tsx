@@ -37,12 +37,14 @@ export function AdminTable<T>({
       onRowClick(row);
     }
     if (enableSelection) {
-      const key = row[selectionKey];
-      if (selectedRows.has(key)) {
-        onSelectionChange?.(new Set(selectedRows).delete(key));
+      const key = row[selectionKey] as any;
+      const newSelectedRows = new Set(selectedRows);
+      if (newSelectedRows.has(key)) {
+        newSelectedRows.delete(key);
       } else {
-        onSelectionChange?.(new Set(selectedRows).add(key));
+        newSelectedRows.add(key);
       }
+      onSelectionChange?.(newSelectedRows);
     }
   };
 
@@ -92,7 +94,7 @@ export function AdminTable<T>({
       </TableHeader>
       <TableBody>
         {data.map((row, rowIndex) => {
-          const isSelected = enableSelection && selectedRows.has(row[selectionKey]);
+          const isSelected = enableSelection && selectedRows.has(row[selectionKey] as any);
           return (
             <TableRow
               key={rowIndex}
@@ -106,7 +108,7 @@ export function AdminTable<T>({
                 const cellValue =
                   typeof col.accessor === "function"
                     ? col.accessor(row)
-                    : row[col.accessor];
+                    : (row[col.accessor] as any);
                 return (
                   <TableCell
                     key={colIndex}
@@ -122,12 +124,15 @@ export function AdminTable<T>({
                           type="checkbox"
                           checked={isSelected}
                           onChange={(e) => {
-                            const key = row[selectionKey];
+                            e.stopPropagation();
+                            const key = row[selectionKey] as any;
+                            const newSelectedRows = new Set(selectedRows);
                             if (e.target.checked) {
-                              onSelectionChange?.(new Set(selectedRows).add(key));
+                              newSelectedRows.add(key);
                             } else {
-                              onSelectionChange?.(new Set(selectedRows).delete(key));
+                              newSelectedRows.delete(key);
                             }
+                            onSelectionChange?.(newSelectedRows);
                           }}
                           className="h-4 w-4 accent-primary rounded"
                         />

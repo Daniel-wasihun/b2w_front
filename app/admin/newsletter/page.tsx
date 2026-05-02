@@ -11,8 +11,15 @@ import apiClient from "@/lib/apiClient";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
+interface Subscription {
+  id: number;
+  email: string;
+  is_active: boolean;
+  created_at: string;
+}
+
 export default function AdminNewsletterSyncPage() {
-  const [subscriptions, setSubscriptions] = useState([]);
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 

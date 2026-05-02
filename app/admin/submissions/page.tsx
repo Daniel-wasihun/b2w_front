@@ -195,22 +195,18 @@ export default function AdminSubmissionsPage() {
                   </div>
                 ),
               },
-              {
-                header: "Protocol",
-                accessor: () => "",
-                renderActions: (sub: Submission) => (
-                  <AdminButton 
-                    variant="outline" 
-                    size="sm" 
-                    className="h-8 text-[10px] font-black uppercase tracking-widest px-3 hover:bg-primary hover:text-white transition-all border-border shadow-sm group"
-                    onClick={() => openJudgingModal(sub)}
-                  >
-                    Audit
-                    <ChevronRight className="w-3.5 h-3.5 ml-1.5 group-hover:translate-x-0.5 transition-transform" />
-                  </AdminButton>
-                ),
-              }
             ]}
+            renderActions={(sub: Submission) => (
+              <AdminButton 
+                variant="outline" 
+                size="sm" 
+                className="h-8 text-[10px] font-black uppercase tracking-widest px-3 hover:bg-primary hover:text-white transition-all border-border shadow-sm group"
+                onClick={() => openJudgingModal(sub)}
+              >
+                Audit
+                <ChevronRight className="w-3.5 h-3.5 ml-1.5 group-hover:translate-x-0.5 transition-transform" />
+              </AdminButton>
+            )}
             data={filteredSubmissions}
             loading={loading}
             emptyMessage="Review queue is currently empty."
