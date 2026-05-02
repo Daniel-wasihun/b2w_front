@@ -32,7 +32,16 @@ export default function LoginPage() {
     try {
       await login(formData);
       toast.success("Welcome back champion!");
-      router.push("/admin");
+      
+      // Role-based redirection logic
+      const user = useAuthStore.getState().user;
+      const userRole = user?.roles?.[0]?.slug;
+      
+      if (['admin', 'super_admin', 'executive'].includes(userRole as string)) {
+        router.push("/admin");
+      } else {
+        router.push("/");
+      }
     } catch (error: any) {
       if (error.response?.data?.errors) {
         setFieldErrors(error.response.data.errors);

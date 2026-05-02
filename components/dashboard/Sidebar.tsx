@@ -51,7 +51,6 @@ export const Sidebar = ({ user, isSidebarOpen }: SidebarProps) => {
     // Core Ops
     { label: "Identity Nodes", icon: Users, href: "/admin/users" },
     { label: "Role Definitions", icon: Shield, href: "/admin/roles" },
-    { label: "Permission Matrix", icon: Key, href: "/admin/permissions" },
     { label: "Department Units", icon: Building2, href: "/admin/departments" },
 
     // Competitions
@@ -113,6 +112,13 @@ export const Sidebar = ({ user, isSidebarOpen }: SidebarProps) => {
       <nav className="grow p-4 space-y-1 overflow-y-auto no-scrollbar custom-scrollbar">
         <p className="px-4 py-3 text-[10px] font-black text-muted-foreground/60 uppercase tracking-[0.2em]">Master Control Stream</p>
         {menuItems.map((item) => {
+           // Role-based logic
+           const userRole = user?.roles?.[0]?.slug;
+           const isIdentityNode = ["/admin/users", "/admin/roles", "/admin/departments"].includes(item.href);
+           const isAdmin = ["admin", "super_admin"].includes(userRole);
+           
+           if (isIdentityNode && !isAdmin) return null;
+
            const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
            return (
              <Link

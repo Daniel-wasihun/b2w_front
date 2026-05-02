@@ -19,10 +19,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, []);
 
   useEffect(() => {
-    if (mounted && !isAuthenticated) {
-      router.push("/login");
+    if (mounted) {
+      if (!isAuthenticated) {
+        router.push("/login");
+      } else if (user) {
+        const userRole = user?.roles?.[0]?.slug;
+        if (!userRole || !['admin', 'super_admin', 'executive'].includes(userRole)) {
+          router.push("/");
+        }
+      }
     }
-  }, [isAuthenticated, router, mounted]);
+  }, [isAuthenticated, user, router, mounted]);
 
   // If authenticated but no user data yet, fetch it (handle initial load)
   useEffect(() => {

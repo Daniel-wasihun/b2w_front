@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useMemo } from "react";
 import { DashboardLayout } from "@/components/DashboardLayout";
-import { Shield, Plus, Edit2, Trash2, Search, Save, Key, Check, ShieldAlert } from "lucide-react";
+import { Shield, Plus, Edit2, Trash2, Search, Save, ShieldAlert, AlignLeft, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -15,7 +15,6 @@ import { cn, localize } from "@/lib/utils";
 
 export default function AdminRolesPage() {
   const [roles, setRoles] = useState([]);
-  const [permissions, setPermissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   
@@ -26,20 +25,17 @@ export default function AdminRolesPage() {
   const [formData, setFormData] = useState({
     name: "",
     slug: "",
-    permission_ids: [] as number[],
+    description: "",
+    hierarchy_level: 10,
   });
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [rolesRes, permRes] = await Promise.all([
-        apiClient.get("/v1/admin/roles"),
-        apiClient.get("/v1/admin/permissions")
-      ]);
-      setRoles(rolesRes.data.data || []);
-      setPermissions(permRes.data.data || []);
+      const res = await apiClient.get("/v1/admin/roles");
+      setRoles(res.data.data || []);
     } catch (err) {
-      toast.error("Failed to synchronize security layer");
+      toast.error("Failed to synchronize authority tiers");
     } finally {
       setLoading(false);
     }
@@ -54,38 +50,29 @@ export default function AdminRolesPage() {
     try {
       if (editingRole) {
         await apiClient.put(`/v1/admin/roles/${editingRole.id}`, formData);
-        toast.success("Role permissions updated");
+        toast.success("Role hierarchy updated");
       } else {
         await apiClient.post("/v1/admin/roles", formData);
-        toast.success("New role initialized");
+        toast.success("New role tier initialized");
       }
       setIsModalOpen(false);
       fetchData();
     } catch (err) {
-      toast.error("Operation failed");
+      toast.error("Security sync failed");
     } finally {
       setIsSaving(false);
     }
   };
 
   const deleteRole = async (id: number) => {
-    if (!confirm("Permanently purge this role? This may impact active user sessions.")) return;
+    if (!confirm("Permanently purge this role? System roles are protected and cannot be removed.")) return;
     try {
       await apiClient.delete(`/v1/admin/roles/${id}`);
       toast.success("Role purged");
       fetchData();
-    } catch (err) {
-      toast.error("Purge failed");
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "Purge failed");
     }
-  };
-
-  const togglePermission = (id: number) => {
-    setFormData(prev => ({
-      ...prev,
-      permission_ids: prev.permission_ids.includes(id)
-        ? prev.permission_ids.filter(pid => pid !== id)
-        : [...prev.permission_ids, id]
-    }));
   };
 
   const filteredRoles = useMemo(() => {
@@ -102,16 +89,16 @@ export default function AdminRolesPage() {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-6">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Role Definitions</h1>
-            <p className="text-sm text-muted-foreground">Define access tiers and associate granular permissions.</p>
+            <h1 className="text-2xl font-bold text-foreground">Role Hierarchy</h1>
+            <p className="text-sm text-muted-foreground">Manage organizational authority tiers and access levels.</p>
           </div>
           <Button onClick={() => {
             setEditingRole(null);
-            setFormData({ name: "", slug: "", permission_ids: [] });
+            setFormData({ name: "", slug: "", description: "", hierarchy_level: 10 });
             setIsModalOpen(true);
           }} className="font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-primary/20">
             <Plus className="w-4 h-4 mr-2" />
-            Initialize Role
+            Initialize Tier
           </Button>
         </div>
 
@@ -120,7 +107,7 @@ export default function AdminRolesPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
             <input
               type="text"
-              placeholder="Search roles by name or slug..."
+              placeholder="Search tiers by name or slug..."
               className="h-10 w-full rounded-md border border-input bg-background pl-10 pr-4 text-sm outline-none focus:border-primary transition-all placeholder:text-muted-foreground text-foreground"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -132,9 +119,9 @@ export default function AdminRolesPage() {
           <Table>
             <TableHeader className="bg-muted/50">
               <TableRow className="border-border hover:bg-transparent">
-                <TableHead className="pl-6 text-[10px] font-black uppercase tracking-widest text-muted-foreground h-12">Role Identity</TableHead>
-                <TableHead className="text-[10px] font-black uppercase tracking-widest text-muted-foreground h-12">System Slug</TableHead>
-                <TableHead className="text-[10px] font-black uppercase tracking-widest text-muted-foreground h-12">Permissions Attached</TableHead>
+                <TableHead className="pl-6 text-[10px] font-black uppercase tracking-widest text-muted-foreground h-12">Tier Identity</TableHead>
+                <TableHead className="text-[10px] font-black uppercase tracking-widest text-muted-foreground h-12">Hierarchy Level</TableHead>
+                <TableHead className="text-[10px] font-black uppercase tracking-widest text-muted-foreground h-12">Description</TableHead>
                 <TableHead className="pr-6 text-right text-[10px] font-black uppercase tracking-widest text-muted-foreground h-12">Control</TableHead>
               </TableRow>
             </TableHeader>
@@ -153,20 +140,19 @@ export default function AdminRolesPage() {
                           <div className="w-9 h-9 rounded-lg bg-primary/5 flex items-center justify-center border border-primary/10 shadow-sm">
                              <Shield className="w-4 h-4 text-primary/60" />
                           </div>
-                          <span className="font-bold text-sm text-foreground">{localize(role.name)}</span>
+                          <div className="flex flex-col">
+                             <span className="font-bold text-sm text-foreground">{localize(role.name)}</span>
+                             <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest">{role.slug}</span>
+                          </div>
                        </div>
                     </TableCell>
                     <TableCell>
-                      <Badge variant="secondary" className="rounded font-mono text-[10px] px-2 py-0.5 border-none bg-blue-500/10 text-blue-500 tracking-widest uppercase">
-                        {role.slug}
+                      <Badge variant="secondary" className="rounded font-mono text-[10px] px-2 py-0.5 border-none bg-primary/10 text-primary tracking-widest uppercase">
+                        LEVEL {role.hierarchy_level}
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Badge variant="outline" className="h-6 rounded-md px-2 text-[11px] font-bold border-border bg-muted/50 text-muted-foreground">
-                           {role.permissions?.length || 0} PERMISSION NODES
-                        </Badge>
-                      </div>
+                      <p className="text-[11px] text-muted-foreground max-w-md line-clamp-1">{role.description || "No narrative defined for this tier."}</p>
                     </TableCell>
                     <TableCell className="pr-6 text-right">
                       <div className="flex items-center justify-end gap-1">
@@ -175,15 +161,18 @@ export default function AdminRolesPage() {
                           setFormData({ 
                             name: localize(role.name), 
                             slug: role.slug, 
-                            permission_ids: role.permissions?.map((p: any) => p.id) || [] 
+                            description: role.description || "",
+                            hierarchy_level: role.hierarchy_level || 10
                           });
                           setIsModalOpen(true);
                         }}>
                           <Edit2 className="w-4 h-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all" onClick={() => deleteRole(role.id)}>
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                        {!role.is_system_level && (
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all" onClick={() => deleteRole(role.id)}>
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>
@@ -191,7 +180,7 @@ export default function AdminRolesPage() {
               ) : (
                 <TableRow>
                   <TableCell colSpan={4} className="h-48 text-center text-muted-foreground text-[10px] font-black uppercase tracking-widest">
-                    No roles defined in the matrix.
+                    No authority tiers detected.
                   </TableCell>
                 </TableRow>
               )}
@@ -203,13 +192,13 @@ export default function AdminRolesPage() {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editingRole ? "Sync Role Capabilities" : "Initialize New Authority Tier"}
+        title={editingRole ? "Synchronize Tier Parameters" : "Initialize New Authority Tier"}
         footer={
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => setIsModalOpen(false)} className="font-bold text-[10px] uppercase tracking-widest">Discard</Button>
             <Button onClick={handleSave} isLoading={isSaving} className="font-bold text-[10px] uppercase tracking-widest shadow-xl shadow-primary/20">
               <Save className="w-4 h-4 mr-2" />
-              {editingRole ? "Commit Sync" : "Deploy Role"}
+              {editingRole ? "Commit Sync" : "Deploy Tier"}
             </Button>
           </div>
         }
@@ -217,42 +206,43 @@ export default function AdminRolesPage() {
         <div className="space-y-6 py-2">
           <div className="grid grid-cols-2 gap-6">
             <Input 
-              label="Role Narrative Label"
+              label="Tier Identity Name"
               value={formData.name} 
               onChange={(e) => setFormData({...formData, name: e.target.value})} 
-              placeholder="e.g. Content Manager" 
+              placeholder="e.g. Executive" 
             />
             <Input 
               label="System Intelligence Slug"
               value={formData.slug} 
               onChange={(e) => setFormData({...formData, slug: e.target.value})} 
-              placeholder="e.g. content_manager" 
+              placeholder="e.g. executive" 
             />
           </div>
 
-          <div className="space-y-3">
-             <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2 px-1">
-                <Key className="w-3 h-3 text-primary" />
-                Permission Matrix Allocation
-             </label>
-             <div className="grid grid-cols-2 gap-3 max-h-[350px] overflow-y-auto p-5 bg-muted/20 rounded-2xl border border-border custom-scrollbar">
-                {permissions.map((perm: any) => (
-                  <button
-                    key={perm.id}
-                    type="button"
-                    onClick={() => togglePermission(perm.id)}
-                    className={cn(
-                      "flex items-center justify-between px-4 py-3 rounded-xl text-[11px] font-black border transition-all text-left uppercase tracking-tighter",
-                      formData.permission_ids.includes(perm.id)
-                        ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20"
-                        : "bg-background text-muted-foreground border-border hover:border-primary/40"
-                    )}
-                  >
-                    <span className="truncate mr-2">{localize(perm.name)}</span>
-                    {formData.permission_ids.includes(perm.id) && <Check className="w-3.5 h-3.5 shrink-0" />}
-                  </button>
-                ))}
-             </div>
+          <div className="grid grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2 px-1">
+                <Layers className="w-3 h-3 text-primary" />
+                Hierarchy Weight
+              </label>
+              <Input 
+                type="number"
+                value={formData.hierarchy_level} 
+                onChange={(e) => setFormData({...formData, hierarchy_level: parseInt(e.target.value)})} 
+                placeholder="10 - 100" 
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2 px-1">
+                <AlignLeft className="w-3 h-3 text-primary" />
+                Tier Description
+              </label>
+              <Input 
+                value={formData.description} 
+                onChange={(e) => setFormData({...formData, description: e.target.value})} 
+                placeholder="Operational scope..." 
+              />
+            </div>
           </div>
 
           <div className="p-5 bg-rose-500/5 rounded-2xl border border-rose-500/10 flex gap-4">

@@ -144,9 +144,10 @@ export default function AdminUsersPage() {
                           onChange={(e) => updateRole(user.id, e.target.value)}
                           value={user.roles?.[0]?.slug || ''}
                         >
-                          <option value="user">MEMBER</option>
+                          <option value="member">MEMBER</option>
+                          <option value="executive">EXECUTIVE</option>
                           <option value="admin">ADMIN</option>
-                          <option value="super_admin">S. ADMIN</option>
+                          <option value="super_admin">SUPER ADMIN</option>
                         </select>
                         <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:bg-muted transition-all">
                             <MoreVertical className="w-4 h-4" />
