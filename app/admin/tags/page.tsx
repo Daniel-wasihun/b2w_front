@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { AdminTable } from "@/components/admin/AdminTable";
 import { AdminModal } from "@/components/admin/AdminModal";
 import { AdminSearchBar } from "@/components/admin/AdminSearchBar";
+import { ConfirmModal } from "@/components/ui/confirm-modal";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
@@ -35,6 +36,11 @@ export default function AdminTagsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTag, setEditingTag] = useState<Tag | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+
+  // Delete Confirmation State
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<number | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   
   const [formData, setFormData] = useState<TagFormData>({
     name: "",
@@ -64,16 +70,18 @@ export default function AdminTagsPage() {
     setIsSaving(true);
     try {
       if (editingTag) {
-        await apiClient.put(`/v1/admin/tags/${editingTag.id}`, formData);
+        const res = await apiClient.put(`/v1/admin/tags/${editingTag.id}`, formData);
+        const updatedItem = res.data.data;
+        setTags(prev => prev.map(item => item.id === editingTag.id ? updatedItem : item));
         toast.success("Metadata node updated");
       } else {
-        await apiClient.post("/v1/admin/tags", formData);
+        const res = await apiClient.post("/v1/admin/tags", formData);
+        setTags(prev => [res.data.data, ...prev]);
         toast.success("New metadata node initialized");
       }
       setIsModalOpen(false);
       // Reset form
       setFormData({ name: "", slug: "" });
-      fetchTags();
     } catch (err) {
       toast.error("Operation failed");
     } finally {
@@ -81,14 +89,24 @@ export default function AdminTagsPage() {
     }
   };
 
-  const deleteTag = async (id: number) => {
-    if (!window.confirm("Permanently purge this tag?")) return;
+  const handleDeleteClick = (id: number) => {
+    setItemToDelete(id);
+    setIsConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!itemToDelete) return;
+    setIsDeleting(true);
     try {
-      await apiClient.delete(`/v1/admin/tags/${id}`);
+      await apiClient.delete(`/v1/admin/tags/${itemToDelete}`);
+      setTags(prev => prev.filter(item => item.id !== itemToDelete));
       toast.success("Tag purged");
-      fetchTags();
+      setIsConfirmOpen(false);
     } catch (err) {
       toast.error("Purge failed");
+    } finally {
+      setIsDeleting(false);
+      setItemToDelete(null);
     }
   };
 
@@ -180,7 +198,7 @@ export default function AdminTagsPage() {
                   variant="ghost" 
                   size="icon" 
                   className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all"
-                  onClick={() => deleteTag(tag.id)}
+                  onClick={() => handleDeleteClick(tag.id)}
                 >
                   <span className="sr-only">Delete</span>
                   {/* Using Lucide icon for Trash2 */}
@@ -223,6 +241,16 @@ export default function AdminTagsPage() {
             />
           </div>
         </AdminModal>
+
+        <ConfirmModal
+          isOpen={isConfirmOpen}
+          onClose={() => setIsConfirmOpen(false)}
+          onConfirm={confirmDelete}
+          loading={isDeleting}
+          title="Purge Metadata Tag?"
+          description="This action is irreversible. The tag and all associated classification intelligence will be permanently purged from the system."
+          confirmLabel="Purge Tag"
+        />
       </div>
     </DashboardLayout>
   );

@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Modal } from "@/components/ui/modal";
+import { ConfirmModal } from "@/components/ui/confirm-modal";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import apiClient from "@/lib/apiClient";
 import { toast } from "sonner";
@@ -24,11 +25,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function AdminGalleryVault() {
   const [loading, setLoading] = useState(true);
-  const [albums, setAlbums] = useState([]);
+  const [albums, setAlbums] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingAlbum, setEditingAlbum] = useState<any>(null);
   const [isSaving, setIsSaving] = useState(false);
+
+  // Delete Confirmation State
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<number | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -57,14 +63,16 @@ export default function AdminGalleryVault() {
     setIsSaving(true);
     try {
       if (editingAlbum) {
-        await apiClient.put(`/v1/admin/gallery-albums/${editingAlbum.id}`, formData);
+        const res = await apiClient.put(`/v1/admin/gallery-albums/${editingAlbum.id}`, formData);
+        const updatedItem = res.data.data;
+        setAlbums(prev => prev.map(item => item.id === editingAlbum.id ? updatedItem : item));
         toast.success("Collection configuration updated");
       } else {
-        await apiClient.post("/v1/admin/gallery-albums", formData);
+        const res = await apiClient.post("/v1/admin/gallery-albums", formData);
+        setAlbums(prev => [res.data.data, ...prev]);
         toast.success("New visual collection initialized");
       }
       setIsModalOpen(false);
-      fetchAlbums();
     } catch (err) {
       toast.error("Failed to synchronize vault");
     } finally {
@@ -72,14 +80,24 @@ export default function AdminGalleryVault() {
     }
   };
 
-  const deleteAlbum = async (id: number) => {
-    if (!confirm("Permanently purge this collection?")) return;
+  const handleDeleteClick = (id: number) => {
+    setItemToDelete(id);
+    setIsConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!itemToDelete) return;
+    setIsDeleting(true);
     try {
-      await apiClient.delete(`/v1/admin/gallery-albums/${id}`);
+      await apiClient.delete(`/v1/admin/gallery-albums/${itemToDelete}`);
+      setAlbums(prev => prev.filter(item => item.id !== itemToDelete));
       toast.success("Collection purged");
-      fetchAlbums();
+      setIsConfirmOpen(false);
     } catch (err) {
       toast.error("Purge operation failed");
+    } finally {
+      setIsDeleting(false);
+      setItemToDelete(null);
     }
   };
 
@@ -182,7 +200,7 @@ export default function AdminGalleryVault() {
                         }}>
                           <Edit2 className="w-4 h-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all" onClick={() => deleteAlbum(album.id)}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all" onClick={() => handleDeleteClick(album.id)}>
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
@@ -255,6 +273,16 @@ export default function AdminGalleryVault() {
           </div>
         </div>
       </Modal>
+
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={confirmDelete}
+        loading={isDeleting}
+        title="Purge Visual Collection?"
+        description="This action is irreversible. The collection and all associated media intelligence will be permanently purged from the vault."
+        confirmLabel="Purge Collection"
+      />
     </DashboardLayout>
   );
 }

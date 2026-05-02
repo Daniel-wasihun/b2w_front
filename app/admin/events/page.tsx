@@ -11,10 +11,11 @@ import { toast } from "sonner";
 import apiClient from "@/lib/apiClient";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Modal } from "@/components/ui/modal";
+import { ConfirmModal } from "@/components/ui/confirm-modal";
 import { cn, isValidAssetUrl } from "@/lib/utils";
 
 export default function AdminEventsPage() {
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   
@@ -22,6 +23,11 @@ export default function AdminEventsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<any>(null);
   const [isSaving, setIsSaving] = useState(false);
+
+  // Delete Confirmation State
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<number | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -82,15 +88,17 @@ export default function AdminEventsPage() {
     setIsSaving(true);
     try {
       if (editingEvent) {
-        await apiClient.put(`/v1/admin/events/${editingEvent.id}`, formData);
+        const res = await apiClient.put(`/v1/admin/events/${editingEvent.id}`, formData);
+        const updatedItem = res.data.data;
+        setEvents(prev => prev.map(item => item.id === editingEvent.id ? updatedItem : item));
         toast.success("Event intelligence updated");
       } else {
-        await apiClient.post("/v1/admin/events", formData);
+        const res = await apiClient.post("/v1/admin/events", formData);
+        setEvents(prev => [res.data.data, ...prev]);
         toast.success("New event deployed");
       }
       
       setIsModalOpen(false);
-      fetchEvents();
     } catch (err) {
       toast.error("Failed to synchronize event");
     } finally {
@@ -98,14 +106,24 @@ export default function AdminEventsPage() {
     }
   };
 
-  const deleteEvent = async (id: number) => {
-    if (!confirm("Permanently purge this event?")) return;
+  const handleDeleteClick = (id: number) => {
+    setItemToDelete(id);
+    setIsConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!itemToDelete) return;
+    setIsDeleting(true);
     try {
-      await apiClient.delete(`/v1/admin/events/${id}`);
+      await apiClient.delete(`/v1/admin/events/${itemToDelete}`);
+      setEvents(prev => prev.filter(item => item.id !== itemToDelete));
       toast.success("Event purged");
-      fetchEvents();
+      setIsConfirmOpen(false);
     } catch (err) {
       toast.error("Purge operation failed");
+    } finally {
+      setIsDeleting(false);
+      setItemToDelete(null);
     }
   };
 
@@ -201,7 +219,7 @@ export default function AdminEventsPage() {
                         <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all" onClick={() => openEditModal(ev)}>
                             <Edit2 className="w-4 h-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all" onClick={() => deleteEvent(ev.id)}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all" onClick={() => handleDeleteClick(ev.id)}>
                             <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
@@ -296,6 +314,16 @@ export default function AdminEventsPage() {
           </div>
         </div>
       </Modal>
+
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={confirmDelete}
+        loading={isDeleting}
+        title="Purge Event Cluster?"
+        description="This action is irreversible. The event and all associated intelligence will be permanently purged from the calendar."
+        confirmLabel="Purge Event"
+      />
     </DashboardLayout>
   );
 }

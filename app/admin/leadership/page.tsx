@@ -11,16 +11,22 @@ import { toast } from "sonner";
 import apiClient from "@/lib/apiClient";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Modal } from "@/components/ui/modal";
+import { ConfirmModal } from "@/components/ui/confirm-modal";
 import { cn, localize, isValidAssetUrl } from "@/lib/utils";
 
 export default function AdminLeadershipPage() {
-  const [members, setMembers] = useState([]);
+  const [members, setMembers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingMember, setEditingMember] = useState<any>(null);
   const [isSaving, setIsSaving] = useState(false);
+
+  // Delete Confirmation State
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<number | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -50,14 +56,16 @@ export default function AdminLeadershipPage() {
     setIsSaving(true);
     try {
       if (editingMember) {
-        await apiClient.put(`/v1/admin/leadership-members/${editingMember.id}`, formData);
+        const res = await apiClient.put(`/v1/admin/leadership-members/${editingMember.id}`, formData);
+        const updatedItem = res.data.data;
+        setMembers(prev => prev.map(item => item.id === editingMember.id ? updatedItem : item));
         toast.success("Leadership profile updated");
       } else {
-        await apiClient.post("/v1/admin/leadership-members", formData);
+        const res = await apiClient.post("/v1/admin/leadership-members", formData);
+        setMembers(prev => [res.data.data, ...prev]);
         toast.success("New leadership node initialized");
       }
       setIsModalOpen(false);
-      fetchMembers();
     } catch (err) {
       toast.error("Operation failed");
     } finally {
@@ -65,14 +73,24 @@ export default function AdminLeadershipPage() {
     }
   };
 
-  const deleteMember = async (id: number) => {
-    if (!confirm("Permanently purge this leadership profile?")) return;
+  const handleDeleteClick = (id: number) => {
+    setItemToDelete(id);
+    setIsConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!itemToDelete) return;
+    setIsDeleting(true);
     try {
-      await apiClient.delete(`/v1/admin/leadership-members/${id}`);
+      await apiClient.delete(`/v1/admin/leadership-members/${itemToDelete}`);
+      setMembers(prev => prev.filter(item => item.id !== itemToDelete));
       toast.success("Profile purged");
-      fetchMembers();
+      setIsConfirmOpen(false);
     } catch (err) {
       toast.error("Purge failed");
+    } finally {
+      setIsDeleting(false);
+      setItemToDelete(null);
     }
   };
 
@@ -170,7 +188,7 @@ export default function AdminLeadershipPage() {
                         }}>
                           <Edit2 className="w-4 h-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all" onClick={() => deleteMember(member.id)}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all" onClick={() => handleDeleteClick(member.id)}>
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
@@ -248,6 +266,16 @@ export default function AdminLeadershipPage() {
           </div>
         </div>
       </Modal>
+
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={confirmDelete}
+        loading={isDeleting}
+        title="Purge Leadership Profile?"
+        description="This action is irreversible. The leadership profile and all associated organizational intelligence will be permanently purged from the directory."
+        confirmLabel="Purge Profile"
+      />
     </DashboardLayout>
   );
 }

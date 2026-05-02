@@ -10,14 +10,20 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import apiClient from "@/lib/apiClient";
 import { Modal } from "@/components/ui/modal";
+import { ConfirmModal } from "@/components/ui/confirm-modal";
 import { cn, localize } from "@/lib/utils";
 
 export default function AdminTestimonialsPage() {
-  const [testimonials, setTestimonials] = useState([]);
+  const [testimonials, setTestimonials] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTestimonial, setEditingTestimonial] = useState<any>(null);
   const [isSaving, setIsSaving] = useState(false);
+  
+  // Delete Confirmation State
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<number | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -47,14 +53,16 @@ export default function AdminTestimonialsPage() {
     setIsSaving(true);
     try {
       if (editingTestimonial) {
-        await apiClient.put(`/v1/admin/testimonials/${editingTestimonial.id}`, formData);
+        const res = await apiClient.put(`/v1/admin/testimonials/${editingTestimonial.id}`, formData);
+        const updatedItem = res.data.data;
+        setTestimonials(prev => prev.map(item => item.id === editingTestimonial.id ? updatedItem : item));
         toast.success("Success story updated");
       } else {
-        await apiClient.post("/v1/admin/testimonials", formData);
+        const res = await apiClient.post("/v1/admin/testimonials", formData);
+        setTestimonials(prev => [res.data.data, ...prev]);
         toast.success("New success story archived");
       }
       setIsModalOpen(false);
-      fetchTestimonials();
     } catch (err) {
       toast.error("Operation failed");
     } finally {
@@ -62,14 +70,24 @@ export default function AdminTestimonialsPage() {
     }
   };
 
-  const deleteTestimonial = async (id: number) => {
-    if (!confirm("Permanently purge this success story?")) return;
+  const handleDeleteClick = (id: number) => {
+    setItemToDelete(id);
+    setIsConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!itemToDelete) return;
+    setIsDeleting(true);
     try {
-      await apiClient.delete(`/v1/admin/testimonials/${id}`);
+      await apiClient.delete(`/v1/admin/testimonials/${itemToDelete}`);
+      setTestimonials(prev => prev.filter(item => item.id !== itemToDelete));
       toast.success("Entry purged");
-      fetchTestimonials();
+      setIsConfirmOpen(false);
     } catch (err) {
       toast.error("Purge failed");
+    } finally {
+      setIsDeleting(false);
+      setItemToDelete(null);
     }
   };
 
@@ -151,7 +169,7 @@ export default function AdminTestimonialsPage() {
             });
             setIsModalOpen(true);
           }}
-          onDelete={deleteTestimonial}
+          onDelete={handleDeleteClick}
         />
       </div>
 
@@ -217,6 +235,16 @@ export default function AdminTestimonialsPage() {
           </div>
         </div>
       </Modal>
+
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={confirmDelete}
+        loading={isDeleting}
+        title="Purge Success Narrative?"
+        description="This action is irreversible. The student narrative will be permanently purged from the global archives."
+        confirmLabel="Purge Archive"
+      />
     </DashboardLayout>
   );
 }

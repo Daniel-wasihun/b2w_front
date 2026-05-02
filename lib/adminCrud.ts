@@ -31,59 +31,66 @@ export function useAdminCrud<T = any>(endpoint: string) {
     }
   };
 
-  const createItem = async (data: any) => {
-    setLoading(true);
+  const createItem = async (data: any, silent = false) => {
+    if (!silent) setLoading(true);
     try {
       const response = await apiClient.post(endpoint, data);
+      const newItem = response.data.data;
+      setItems(prev => [newItem, ...prev]);
       toast.success(response.data.message || 'Created successfully');
-      return response.data.data;
+      return newItem;
     } catch (err: any) {
       toast.error(err.response?.data?.message || 'Failed to create');
       throw err;
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
-  const updateItem = async (id: string | number, data: any) => {
-    setLoading(true);
+  const updateItem = async (id: string | number, data: any, silent = false) => {
+    if (!silent) setLoading(true);
     try {
       const response = await apiClient.put(`${endpoint}/${id}`, data);
+      const updatedItem = response.data.data;
+      setItems(prev => prev.map((item: any) => item.id === id ? updatedItem : item));
       toast.success(response.data.message || 'Updated successfully');
-      return response.data.data;
+      return updatedItem;
     } catch (err: any) {
       toast.error(err.response?.data?.message || 'Failed to update');
       throw err;
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
-  const deleteItem = async (id: string | number) => {
-    setLoading(true);
+  const deleteItem = async (id: string | number, silent = false) => {
+    if (!silent) setLoading(true);
     try {
       const response = await apiClient.delete(`${endpoint}/${id}`);
+      setItems(prev => prev.filter((item: any) => item.id !== id));
       toast.success(response.data.message || 'Deleted successfully');
       return true;
     } catch (err: any) {
       toast.error(err.response?.data?.message || 'Failed to delete');
       return false;
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
-  const toggleField = async (id: string | number, field: string) => {
-    setLoading(true);
+  const toggleField = async (id: string | number, field: string, silent = false) => {
+    if (!silent) setLoading(true);
     try {
       const response = await apiClient.patch(`${endpoint}/${id}/toggle-${field}`);
+      const updatedItem = response.data.data;
+      setItems(prev => prev.map((item: any) => item.id === id ? updatedItem : item));
       toast.success(response.data.message || 'Toggled successfully');
-      return response.data.data;
+      return updatedItem;
     } catch (err: any) {
       toast.error(err.response?.data?.message || 'Failed to toggle');
       throw err;
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 

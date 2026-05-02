@@ -11,16 +11,22 @@ import { toast } from "sonner";
 import apiClient from "@/lib/apiClient";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Modal } from "@/components/ui/modal";
+import { ConfirmModal } from "@/components/ui/confirm-modal";
 import { cn, localize, isValidAssetUrl } from "@/lib/utils";
 
 export default function AdminPartnerNetworkPage() {
-  const [partners, setPartners] = useState([]);
+  const [partners, setPartners] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPartner, setEditingPartner] = useState<any>(null);
   const [isSaving, setIsSaving] = useState(false);
+
+  // Delete Confirmation State
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<number | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -49,14 +55,16 @@ export default function AdminPartnerNetworkPage() {
     setIsSaving(true);
     try {
       if (editingPartner) {
-        await apiClient.put(`/v1/admin/partners/${editingPartner.id}`, formData);
+        const res = await apiClient.put(`/v1/admin/partners/${editingPartner.id}`, formData);
+        const updatedItem = res.data.data;
+        setPartners(prev => prev.map(item => item.id === editingPartner.id ? updatedItem : item));
         toast.success("Partner intelligence updated");
       } else {
-        await apiClient.post("/v1/admin/partners", formData);
+        const res = await apiClient.post("/v1/admin/partners", formData);
+        setPartners(prev => [res.data.data, ...prev]);
         toast.success("New partner node initialized");
       }
       setIsModalOpen(false);
-      fetchPartners();
     } catch (err) {
       toast.error("Operation failed");
     } finally {
@@ -64,14 +72,24 @@ export default function AdminPartnerNetworkPage() {
     }
   };
 
-  const deletePartner = async (id: number) => {
-    if (!confirm("Permanently purge this partner profile?")) return;
+  const handleDeleteClick = (id: number) => {
+    setItemToDelete(id);
+    setIsConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!itemToDelete) return;
+    setIsDeleting(true);
     try {
-      await apiClient.delete(`/v1/admin/partners/${id}`);
+      await apiClient.delete(`/v1/admin/partners/${itemToDelete}`);
+      setPartners(prev => prev.filter(item => item.id !== itemToDelete));
       toast.success("Partner purged");
-      fetchPartners();
+      setIsConfirmOpen(false);
     } catch (err) {
       toast.error("Purge failed");
+    } finally {
+      setIsDeleting(false);
+      setItemToDelete(null);
     }
   };
 
@@ -161,7 +179,7 @@ export default function AdminPartnerNetworkPage() {
                         }}>
                           <Edit2 className="w-4 h-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all" onClick={() => deletePartner(partner.id)}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all" onClick={() => handleDeleteClick(partner.id)}>
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
@@ -230,6 +248,16 @@ export default function AdminPartnerNetworkPage() {
           />
         </div>
       </Modal>
+
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={confirmDelete}
+        loading={isDeleting}
+        title="Purge Partner Profile?"
+        description="This action is irreversible. The partner profile and all associated alliance intelligence will be permanently purged from the network."
+        confirmLabel="Purge Partner"
+      />
     </DashboardLayout>
   );
 }

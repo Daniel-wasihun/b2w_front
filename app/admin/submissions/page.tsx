@@ -84,7 +84,9 @@ export default function AdminSubmissionsPage() {
   const handleJudge = async () => {
     setIsSaving(true);
     try {
-      await apiClient.post(`/v1/admin/submissions/${editingSubmission?.id}/judge`, judgingData);
+      const res = await apiClient.post(`/v1/admin/submissions/${editingSubmission?.id}/judge`, judgingData);
+      const updatedItem = res.data.data;
+      setSubmissions(prev => prev.map(item => item.id === editingSubmission?.id ? updatedItem : item));
       toast.success("Merit assessment committed successfully");
       setIsModalOpen(false);
       // Reset judging data
@@ -93,7 +95,6 @@ export default function AdminSubmissionsPage() {
         status: "graded",
         feedback: "",
       });
-      fetchSubmissions();
     } catch (err) {
       toast.error("Failed to commit assessment");
     } finally {

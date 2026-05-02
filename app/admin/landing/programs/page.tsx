@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { useAdminCrud } from "@/lib/adminCrud";
 import { Modal } from "@/components/ui/modal";
+import { ConfirmModal } from "@/components/ui/confirm-modal";
 import { cn, localize, isValidAssetUrl } from "@/lib/utils";
 
 export default function AdminLandingProgramsPage() {
@@ -17,6 +18,11 @@ export default function AdminLandingProgramsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProgram, setEditingProgram] = useState<any>(null);
   const [isSaving, setIsSaving] = useState(false);
+
+  // Delete Confirmation State
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<number | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -36,14 +42,13 @@ export default function AdminLandingProgramsPage() {
     try {
       const payload = { ...formData, order: parseInt(formData.order) };
       if (editingProgram) {
-        await updateItem(editingProgram.id, payload);
+        await updateItem(editingProgram.id, payload, true);
         toast.success("Track intelligence updated");
       } else {
-        await createItem(payload);
+        await createItem(payload, true);
         toast.success("New educational pathway initialized");
       }
       setIsModalOpen(false);
-      fetchItems();
     } catch (err) {
       // Error handled by hook
     } finally {
@@ -51,13 +56,21 @@ export default function AdminLandingProgramsPage() {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("Permanently decommission this educational track?")) return;
-    const success = await deleteItem(id);
+  const handleDeleteClick = (id: number) => {
+    setItemToDelete(id);
+    setIsConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!itemToDelete) return;
+    setIsDeleting(true);
+    const success = await deleteItem(itemToDelete, true);
     if (success) {
       toast.success("Track node purged");
-      fetchItems();
+      setIsConfirmOpen(false);
     }
+    setIsDeleting(false);
+    setItemToDelete(null);
   };
 
   const columns = [
@@ -131,7 +144,7 @@ export default function AdminLandingProgramsPage() {
             });
             setIsModalOpen(true);
           }}
-          onDelete={handleDelete}
+          onDelete={handleDeleteClick}
         />
       </div>
 
@@ -204,6 +217,16 @@ export default function AdminLandingProgramsPage() {
           </div>
         </div>
       </Modal>
+
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={confirmDelete}
+        loading={isDeleting}
+        title="Decommission Educational Track?"
+        description="This action is irreversible. The educational track and all associated pathway intelligence will be permanently purged from the platform."
+        confirmLabel="Purge Track"
+      />
     </DashboardLayout>
   );
 }

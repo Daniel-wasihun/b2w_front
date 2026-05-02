@@ -7,6 +7,7 @@ import { AdminButton } from "@/components/admin/AdminButton";
 import { AdminTable } from "@/components/admin/AdminTable";
 import { AdminModal } from "@/components/admin/AdminModal";
 import { AdminSearchBar } from "@/components/admin/AdminSearchBar";
+import { ConfirmModal } from "@/components/ui/confirm-modal";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
@@ -42,6 +43,11 @@ export default function AdminNewsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPost, setEditingPost] = useState<NewsPost | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+
+  // Delete Confirmation State
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<number | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   
   const [formData, setFormData] = useState<NewsFormData>({
     title: "",
@@ -102,10 +108,13 @@ export default function AdminNewsPage() {
       };
 
       if (editingPost) {
-        await apiClient.put(`/v1/admin/posts/${editingPost.id}`, payload);
+        const res = await apiClient.put(`/v1/admin/posts/${editingPost.id}`, payload);
+        const updatedItem = res.data.data;
+        setPosts(prev => prev.map(item => item.id === editingPost.id ? updatedItem : item));
         toast.success("Publication intelligence updated");
       } else {
-        await apiClient.post("/v1/admin/posts", payload);
+        const res = await apiClient.post("/v1/admin/posts", payload);
+        setPosts(prev => [res.data.data, ...prev]);
         toast.success("New publication deployed");
       }
       
@@ -117,7 +126,6 @@ export default function AdminNewsPage() {
         cover_image: "",
         is_published: true,
       });
-      fetchPosts();
     } catch (err) {
       toast.error("Failed to synchronize publication");
     } finally {
@@ -125,14 +133,24 @@ export default function AdminNewsPage() {
     }
   };
 
-  const deletePost = async (id: number) => {
-    if (!window.confirm("Permanently purge this publication?")) return;
+  const handleDeleteClick = (id: number) => {
+    setItemToDelete(id);
+    setIsConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!itemToDelete) return;
+    setIsDeleting(true);
     try {
-      await apiClient.delete(`/v1/admin/posts/${id}`);
+      await apiClient.delete(`/v1/admin/posts/${itemToDelete}`);
+      setPosts(prev => prev.filter(item => item.id !== itemToDelete));
       toast.success("Publication purged");
-      fetchPosts();
+      setIsConfirmOpen(false);
     } catch (err) {
       toast.error("Purge operation failed");
+    } finally {
+      setIsDeleting(false);
+      setItemToDelete(null);
     }
   };
 
@@ -214,7 +232,7 @@ export default function AdminNewsPage() {
                 <AdminButton variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all" onClick={() => openEditModal(post)}>
                   <Edit2 className="w-4 h-4" />
                 </AdminButton>
-                <AdminButton variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all" onClick={() => deletePost(post.id)}>
+                <AdminButton variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/5 transition-all" onClick={() => handleDeleteClick(post.id)}>
                   <Trash2 className="w-4 h-4" />
                 </AdminButton>
               </div>
@@ -282,6 +300,16 @@ export default function AdminNewsPage() {
             </div>
           </div>
         </AdminModal>
+
+        <ConfirmModal
+          isOpen={isConfirmOpen}
+          onClose={() => setIsConfirmOpen(false)}
+          onConfirm={confirmDelete}
+          loading={isDeleting}
+          title="Purge Publication?"
+          description="This action is irreversible. The article and all associated narrative clusters will be permanently purged from the archive."
+          confirmLabel="Purge Article"
+        />
       </div>
     </DashboardLayout>
   );
