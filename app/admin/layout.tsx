@@ -8,26 +8,31 @@ import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { useRouter } from "next/navigation";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const [mounted, setMounted] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const { user, isAuthenticated } = useAuthStore();
   const currentLanguage = useLanguageStore((state) => state.currentLanguage);
   const router = useRouter();
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted && !isAuthenticated) {
       router.push("/login");
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, router, mounted]);
 
   // If authenticated but no user data yet, fetch it (handle initial load)
   useEffect(() => {
-    if (isAuthenticated && !user) {
+    if (mounted && isAuthenticated && !user) {
       // fetchUser would be called here if needed
       // For now, we rely on the login flow to set user data
     }
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated, user, mounted]);
 
-  if (!isAuthenticated) {
+  if (!mounted || !isAuthenticated) {
     // Return null or a loading state while redirecting
     return null;
   }
