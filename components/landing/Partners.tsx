@@ -55,33 +55,49 @@ export const Partners = ({ data = [], title, subtitle }: PartnersProps) => {
           )}
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 items-center">
+        <div className="flex gap-6 overflow-x-auto pb-12 no-scrollbar snap-x snap-mandatory -mx-6 px-6">
           {data.map((partner, i) => (
             <motion.a
               key={partner.id}
               href={partner.website || "#"}
               target="_blank"
               rel="noopener noreferrer"
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.05 }}
-              whileHover={{ y: -5 }}
-              className="group flex items-center justify-center p-8 bg-muted/5 rounded-[5px] border border-border/50 hover:border-primary/20 hover:bg-white hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 h-32"
+              className="group flex flex-col items-center justify-center p-8 bg-muted/5 dark:bg-white/5 rounded-[20px] border border-border/50 hover:border-primary/30 dark:hover:border-secondary/30 hover:bg-muted/10 dark:hover:bg-white/10 transition-all duration-300 h-36 min-w-[200px] md:min-w-[240px] snap-center relative"
             >
-              {isValidAssetUrl(partner.logo) ? (
-                <img 
-                  src={partner.logo} 
-                  alt={localize(partner.name, currentLanguage)}
-                  className="max-h-full max-w-full object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-60 group-hover:opacity-100"
-                />
-              ) : (
-                <span className="font-bold text-muted-foreground group-hover:text-primary transition-colors text-center uppercase tracking-widest text-[10px]">
+              <div className="flex flex-col items-center transition-all duration-300 group-hover:-translate-y-2">
+                {isValidAssetUrl(partner.logo) ? (
+                  <img 
+                    src={partner.logo} 
+                    alt={localize(partner.name, currentLanguage)}
+                    className="max-h-16 max-w-[140px] object-contain transition-all duration-300"
+                  />
+                ) : (
+                  <span className="font-black text-muted-foreground group-hover:text-primary dark:group-hover:text-secondary transition-colors text-center uppercase tracking-widest text-[10px]">
+                    {localize(partner.name, currentLanguage)}
+                  </span>
+                )}
+                
+                {/* Name Reveal Below */}
+                <span className="mt-4 opacity-0 group-hover:opacity-100 transition-all duration-300 text-[10px] font-black uppercase tracking-[0.2em] text-primary dark:text-secondary text-center whitespace-nowrap">
                   {localize(partner.name, currentLanguage)}
                 </span>
-              )}
+              </div>
             </motion.a>
           ))}
         </div>
+
+        <style jsx global>{`
+          .no-scrollbar::-webkit-scrollbar {
+            display: none;
+          }
+          .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+        `}</style>
       </div>
     </section>
   );
