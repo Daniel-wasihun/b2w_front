@@ -18,22 +18,18 @@ import {
   BarChart3,
   Palette,
   Shield,
-  Key,
   Building2,
   Award,
   BookOpen,
   CheckCircle2,
-  MessageSquare,
-  MessagesSquare,
+  MailQuestion,
   Users2,
   Target,
   FileText,
   Tags,
   Layers,
   Handshake,
-  Megaphone,
-  Mail,
-  MailQuestion
+  Mail
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -44,50 +40,83 @@ interface SidebarProps {
 
 export const Sidebar = ({ user, isSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
+  const userRole = user?.roles?.[0]?.slug;
+  const isAdmin = ["admin", "super_admin"].includes(userRole);
 
-  const menuItems = [
-    { label: "Overview", icon: LayoutDashboard, href: "/admin" },
-
-    // Core Ops
-    { label: "Identity Nodes", icon: Users, href: "/admin/users" },
-    { label: "Role Definitions", icon: Shield, href: "/admin/roles" },
-    { label: "Department Units", icon: Building2, href: "/admin/departments" },
-
-    // Competitions
-    { label: "Review Queue", icon: FileCheck, href: "/admin/submissions" },
-    { label: "Race Challenges", icon: Trophy, href: "/admin/races" },
-    { label: "Merit Certificates", icon: Award, href: "/admin/certificates" },
-
-    // Taxonomy & Structure
-    { label: "Global Categories", icon: Layers, href: "/admin/categories" },
-    { label: "Metadata Tags", icon: Tags, href: "/admin/tags" },
-    { label: "Static Content", icon: FileText, href: "/admin/pages" },
-
-    // Educational
-    { label: "Program Tracks", icon: BookOpen, href: "/admin/landing/programs" },
-    { label: "Track Benefits", icon: CheckCircle2, href: "/admin/landing/benefits" },
-    { label: "Methodology", icon: Target, href: "/admin/landing/methodology" },
-
-    // Communication & Public
-    { label: "Press & News", icon: Newspaper, href: "/admin/news" },
-    { label: "Elite Events", icon: Calendar, href: "/admin/events" },
-    { label: "Announcements", icon: Megaphone, href: "/admin/announcements" },
-    { label: "Newsletter Sync", icon: Mail, href: "/admin/newsletter" },
-    { label: "Contact Inbound", icon: MailQuestion, href: "/admin/contacts" },
-
-
-    // Branding
-    { label: "Hero Header", icon: Sparkles, href: "/admin/landing/hero" },
-    { label: "Core Features", icon: ShieldCheck, href: "/admin/landing/features" },
-    { label: "Success Stories", icon: Star, href: "/admin/landing/testimonials" },
-    { label: "Visual Vault", icon: Palette, href: "/admin/gallery" },
-    { label: "Partner Network", icon: Handshake, href: "/admin/partners" },
-    { label: "Live Metrics", icon: BarChart3, href: "/admin/landing/stats" },
-
-    // Organizational
-    { label: "About Narrative", icon: FileText, href: "/admin/about" },
-    { label: "Leadership Team", icon: Users2, href: "/admin/leadership" },
-    { label: "Philosophy Nodes", icon: Flag, href: "/admin/philosophy" },
+  const navigationGroups = [
+    {
+      title: "Core Intelligence",
+      roles: ["admin", "super_admin", "executive"],
+      items: [
+        { label: "Overview", icon: LayoutDashboard, href: "/admin" },
+      ]
+    },
+    {
+      title: "Identity & Security",
+      roles: ["admin", "super_admin"],
+      items: [
+        { label: "Identity Nodes", icon: Users, href: "/admin/users" },
+        { label: "Role Definitions", icon: Shield, href: "/admin/roles" },
+        { label: "Department Units", icon: Building2, href: "/admin/departments" },
+      ]
+    },
+    {
+      title: "Landing Page",
+      roles: ["admin", "super_admin", "executive"],
+      items: [
+        { label: "Hero Header", icon: Sparkles, href: "/admin/landing/hero" },
+        { label: "Core Features", icon: ShieldCheck, href: "/admin/landing/features" },
+        { label: "Program Tracks", icon: BookOpen, href: "/admin/landing/programs" },
+        { label: "Success Stories", icon: Star, href: "/admin/landing/testimonials" },
+        { label: "Partner Network", icon: Handshake, href: "/admin/partners" },
+        { label: "Live Metrics", icon: BarChart3, href: "/admin/landing/stats" },
+      ]
+    },
+    {
+      title: "About Page",
+      roles: ["admin", "super_admin", "executive"],
+      items: [
+        { label: "About Narrative", icon: FileText, href: "/admin/about" },
+        { label: "Leadership Team", icon: Users2, href: "/admin/leadership" },
+        { label: "Philosophy Nodes", icon: Flag, href: "/admin/philosophy" },
+      ]
+    },
+    {
+      title: "Program Details",
+      roles: ["admin", "super_admin", "executive"],
+      items: [
+        { label: "Track Benefits", icon: CheckCircle2, href: "/admin/landing/benefits" },
+        { label: "Methodology", icon: Target, href: "/admin/landing/methodology" },
+      ]
+    },
+    {
+      title: "Competitions & Merit",
+      roles: ["admin", "super_admin", "executive"],
+      items: [
+        { label: "Race Challenges", icon: Trophy, href: "/admin/races" },
+        { label: "Review Queue", icon: FileCheck, href: "/admin/submissions" },
+        { label: "Merit Certificates", icon: Award, href: "/admin/certificates" },
+      ]
+    },
+    {
+      title: "Content & Media",
+      roles: ["admin", "super_admin", "executive"],
+      items: [
+        { label: "Press & News", icon: Newspaper, href: "/admin/news" },
+        { label: "Elite Events", icon: Calendar, href: "/admin/events" },
+        { label: "Visual Vault", icon: Palette, href: "/admin/gallery" },
+        { label: "Global Categories", icon: Layers, href: "/admin/categories" },
+        { label: "Metadata Tags", icon: Tags, href: "/admin/tags" },
+      ]
+    },
+    {
+      title: "System Communication",
+      roles: ["admin", "super_admin", "executive"],
+      items: [
+        { label: "Newsletter Sync", icon: Mail, href: "/admin/newsletter" },
+        { label: "Contact Inbound", icon: MailQuestion, href: "/admin/contacts" },
+      ]
+    }
   ];
 
   return (
@@ -108,34 +137,40 @@ export const Sidebar = ({ user, isSidebarOpen }: SidebarProps) => {
         </div>
       </div>
 
-      {/* Flattened Scrollable Menu */}
-      <nav className="grow p-4 space-y-1 overflow-y-auto no-scrollbar custom-scrollbar">
-        <p className="px-4 py-3 text-[10px] font-black text-muted-foreground/60 uppercase tracking-[0.2em]">Master Control Stream</p>
-        {menuItems.map((item) => {
-           // Role-based logic
-           const userRole = user?.roles?.[0]?.slug;
-           const isIdentityNode = ["/admin/users", "/admin/roles", "/admin/departments"].includes(item.href);
-           const isAdmin = ["admin", "super_admin"].includes(userRole);
-           
-           if (isIdentityNode && !isAdmin) return null;
+      {/* Grouped Scrollable Menu */}
+      <nav className="grow p-4 space-y-8 overflow-y-auto no-scrollbar custom-scrollbar">
+        {navigationGroups.map((group, groupIdx) => {
+          // Check if user has permission to see this group
+          if (!group.roles.includes(userRole)) return null;
 
-           const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
-           return (
-             <Link
-               key={item.href}
-               href={item.href}
-               className={cn(
-                 "flex items-center gap-3 px-4 py-3 rounded-xl text-[13px] font-bold transition-all duration-200 group",
-                 isActive
-                   ? "bg-primary text-primary-foreground shadow-xl shadow-primary/20"
-                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
-               )}
-             >
-               <item.icon className={cn("w-4 h-4 transition-colors", isActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-primary")} />
-               <span className="truncate">{item.label}</span>
-             </Link>
-           )
-         })}
+          return (
+            <div key={groupIdx} className="space-y-2">
+              <p className="px-4 text-[10px] font-black text-muted-foreground/60 uppercase tracking-[0.2em]">
+                {group.title}
+              </p>
+              <div className="space-y-1">
+                {group.items.map((item) => {
+                  const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={cn(
+                        "flex items-center gap-3 px-4 py-2.5 rounded-xl text-[12px] font-bold transition-all duration-200 group",
+                        isActive
+                          ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                      )}
+                    >
+                      <item.icon className={cn("w-4 h-4 transition-colors", isActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-primary")} />
+                      <span className="truncate">{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
       </nav>
 
       {/* User Session */}
