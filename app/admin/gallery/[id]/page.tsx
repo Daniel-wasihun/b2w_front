@@ -23,7 +23,7 @@ import { Modal } from "@/components/ui/modal";
 import { LandingDataTable } from "@/components/dashboard/LandingDataTable";
 import apiClient from "@/lib/apiClient";
 import { toast } from "sonner";
-import { cn, localize } from "@/lib/utils";
+import { cn, localize, isValidAssetUrl } from "@/lib/utils";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { PremiumCard } from "@/components/ui/premium-card";
@@ -102,8 +102,14 @@ export default function AdminGalleryAlbumItems() {
       accessor: "url",
       render: (val: string, item: any) => (
         <div className="flex items-center gap-4">
-          <div className="w-20 h-12 rounded-xl bg-muted overflow-hidden border border-border/40 shadow-sm group-hover:border-primary/40 transition-all">
-            <img src={val} className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" alt="" />
+          <div className="relative aspect-square w-20 h-12 rounded-xl overflow-hidden bg-muted group shadow-lg border border-border">
+            {isValidAssetUrl(val) ? (
+              <img src={val} className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" alt="" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-primary/5">
+                <ImageIcon className="w-8 h-8 text-primary/20" />
+              </div>
+            )}
           </div>
           <div className="flex flex-col">
             <span className="font-black text-sm tracking-tight">{localize(item.title) || 'Untitled Archive'}</span>

@@ -18,7 +18,7 @@ import { Modal } from "@/components/ui/modal";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import apiClient from "@/lib/apiClient";
 import { toast } from "sonner";
-import { cn, localize } from "@/lib/utils";
+import { cn, localize, isValidAssetUrl } from "@/lib/utils";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -144,7 +144,7 @@ export default function AdminGalleryVault() {
                     <TableCell className="pl-6 py-4">
                       <div className="flex items-center gap-4">
                         <div className="w-14 h-14 rounded-lg bg-muted overflow-hidden border border-border group-hover:border-primary/20 transition-all shadow-sm">
-                          {album.cover_image ? (
+                          {isValidAssetUrl(album.cover_image) ? (
                             <img src={album.cover_image} alt="" className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center bg-primary/5">

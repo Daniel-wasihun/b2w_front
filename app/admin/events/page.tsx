@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import apiClient from "@/lib/apiClient";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Modal } from "@/components/ui/modal";
-import { cn } from "@/lib/utils";
+import { cn, isValidAssetUrl } from "@/lib/utils";
 
 export default function AdminEventsPage() {
   const [events, setEvents] = useState([]);
@@ -166,13 +166,13 @@ export default function AdminEventsPage() {
                     <TableCell className="pl-6 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg bg-muted overflow-hidden border border-border group-hover:border-primary/20 transition-all">
-                          {ev.image ? (
-                            <img src={ev.image} alt="" className="w-full h-full object-cover" />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-primary/5">
-                                <Calendar className="w-4 h-4 text-primary/40" />
-                            </div>
-                          )}
+                      {isValidAssetUrl(ev.image) ? (
+                        <img src={ev.image} alt="" className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-primary/5">
+                            <Calendar className="w-4 h-4 text-primary/40" />
+                        </div>
+                      )}
                         </div>
                         <div className="flex flex-col">
                           <span className="font-bold text-sm text-foreground">{ev.title}</span>

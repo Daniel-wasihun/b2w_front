@@ -39,3 +39,12 @@ export function fuzzySearch<T>(
     accessor(item).toLowerCase().includes(term)
   );
 }
+
+/**
+ * Validates if a string is a proper absolute URL or root-relative path.
+ * Used to prevent 404s when rendering images with potentially broken data.
+ */
+export function isValidAssetUrl(url: any): boolean {
+  if (!url || typeof url !== 'string') return false;
+  return url.startsWith('http') || url.startsWith('/') || url.startsWith('data:');
+}

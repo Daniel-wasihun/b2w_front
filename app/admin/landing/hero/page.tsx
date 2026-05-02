@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { useAdminCrud } from "@/lib/adminCrud";
 import { Modal } from "@/components/ui/modal";
-import { cn, localize } from "@/lib/utils";
+import { cn, localize, isValidAssetUrl } from "@/lib/utils";
 
 export default function AdminHeroPage() {
   const { items, loading, fetchItems, createItem, updateItem, deleteItem } = useAdminCrud("/v1/admin/hero");
@@ -66,7 +66,7 @@ export default function AdminHeroPage() {
       render: (val: string, item: any) => (
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-lg bg-muted overflow-hidden border border-border shadow-sm group-hover:border-primary/20 transition-all">
-            {item.image ? (
+            {isValidAssetUrl(item.image) ? (
               <img src={item.image} className="w-full h-full object-cover" alt="" />
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-primary/5">

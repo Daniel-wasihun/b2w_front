@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import apiClient from "@/lib/apiClient";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Modal } from "@/components/ui/modal";
-import { cn, localize } from "@/lib/utils";
+import { cn, localize, isValidAssetUrl } from "@/lib/utils";
 
 export default function AdminPartnerNetworkPage() {
   const [partners, setPartners] = useState([]);
@@ -134,9 +134,9 @@ export default function AdminPartnerNetworkPage() {
                   <TableRow key={partner.id} className="border-border/50 hover:bg-muted/30 transition-colors">
                     <TableCell className="pl-6 py-4">
                       <div className="flex items-center gap-3">
-                         <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center border border-border overflow-hidden p-1.5 shadow-sm group-hover:border-primary/20 transition-all">
-                            {partner.logo ? <img src={partner.logo} className="w-full h-full object-contain" /> : <ImageIcon className="w-5 h-5 text-muted-foreground/40" />}
-                         </div>
+                         <div className="w-16 h-10 rounded-lg bg-muted p-2 flex items-center justify-center border border-border group-hover:border-primary/20 transition-all shadow-sm">
+                            {isValidAssetUrl(partner.logo) ? <img src={partner.logo} className="w-full h-full object-contain" alt="" /> : <ImageIcon className="w-5 h-5 text-muted-foreground/40" />}
+                        </div>
                          <span className="font-bold text-sm text-foreground">{localize(partner.name)}</span>
                       </div>
                     </TableCell>

@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import apiClient from "@/lib/apiClient";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn, localize, fuzzySearch } from "@/lib/utils";
+import { cn, localize, fuzzySearch, isValidAssetUrl } from "@/lib/utils";
 import { useAdminApi } from "@/lib/hooks/useAdminApi";
 
 interface NewsPost {
@@ -174,7 +174,7 @@ export default function AdminNewsPage() {
                 accessor: (post: NewsPost) => (
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-muted overflow-hidden border border-border group-hover:border-primary/20 transition-all shadow-sm">
-                      {post.cover_image ? (
+                      {isValidAssetUrl(post.cover_image) ? (
                         <img src={post.cover_image} alt="" className="w-full h-full object-cover" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-primary/5">

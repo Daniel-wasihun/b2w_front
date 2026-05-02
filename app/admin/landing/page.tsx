@@ -24,7 +24,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
+import { cn, isValidAssetUrl } from "@/lib/utils";
 
 export default function LandingMasterDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -179,7 +179,7 @@ function OverviewGrid({ data, loading, onNavigate }: any) {
     { id: "events", title: "Events", count: data?.events?.length || 0, icon: Calendar },
     { id: "challenges", title: "Challenges", count: data?.challenges?.length || 0, icon: Flag },
     { id: "news", title: "News", count: data?.news?.length || 0, icon: Newspaper },
-    { id: "testimonials", title: "Testimonials", count: data?.testimonials?.length || 0, icon: Star },
+    { id: "testimonials", title: "Success Stories", count: data?.testimonials?.length || 0, icon: Star },
   ];
 
   if (loading) {
@@ -239,7 +239,13 @@ function HeroTable({ data, loading }: any) {
               <TableRow key={hero.id} className="border-border/50 hover:bg-muted/30 transition-colors">
                 <TableCell className="pl-6 py-4">
                   <div className="flex items-center gap-3">
-                    <img src={hero.image} className="w-10 h-10 rounded-lg object-cover border border-border bg-muted" alt="" />
+                    {isValidAssetUrl(hero.image) ? (
+                      <img src={hero.image} className="w-10 h-10 rounded-lg object-cover border border-border bg-muted" alt="" />
+                    ) : (
+                      <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center border border-border">
+                        <Sparkles className="w-4 h-4 text-muted-foreground/40" />
+                      </div>
+                    )}
                     <span className="font-bold text-sm text-foreground">{hero.title}</span>
                   </div>
                 </TableCell>

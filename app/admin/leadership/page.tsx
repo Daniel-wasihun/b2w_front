@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import apiClient from "@/lib/apiClient";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Modal } from "@/components/ui/modal";
-import { cn, localize } from "@/lib/utils";
+import { cn, localize, isValidAssetUrl } from "@/lib/utils";
 
 export default function AdminLeadershipPage() {
   const [members, setMembers] = useState([]);
@@ -136,8 +136,8 @@ export default function AdminLeadershipPage() {
                   <TableRow key={member.id} className="border-border/50 hover:bg-muted/30 transition-colors">
                     <TableCell className="pl-6 py-4">
                       <div className="flex items-center gap-3">
-                         <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center border border-border overflow-hidden">
-                            {member.image ? <img src={member.image} className="w-full h-full object-cover" /> : <User className="w-5 h-5 text-muted-foreground" />}
+                         <div className="w-12 h-12 rounded-full bg-muted overflow-hidden border border-border shadow-sm group-hover:border-primary/20 transition-all flex items-center justify-center">
+                            {isValidAssetUrl(member.image) ? <img src={member.image} className="w-full h-full object-cover" alt="" /> : <User className="w-5 h-5 text-muted-foreground" />}
                          </div>
                          <div className="flex flex-col">
                             <span className="font-bold text-sm text-foreground">{localize(member.name)}</span>
