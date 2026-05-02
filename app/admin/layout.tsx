@@ -6,6 +6,7 @@ import { useLanguageStore } from "@/lib/languageStore";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
@@ -50,7 +51,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <Sidebar user={user} isSidebarOpen={isSidebarOpen} />
 
       {/* Main Content Area */}
-      <div className="grow flex flex-col h-screen overflow-hidden ml-72 bg-muted/30">
+      <div className={cn(
+        "grow flex flex-col h-screen overflow-hidden transition-all duration-300 bg-muted/30",
+        isSidebarOpen ? "ml-72" : "ml-20"
+      )}>
         <DashboardHeader
           user={user}
           isSidebarOpen={isSidebarOpen}

@@ -8,7 +8,6 @@ import {
   Users,
   Trophy,
   FileCheck,
-  LogOut,
   Sparkles,
   ShieldCheck,
   Calendar,
@@ -41,7 +40,6 @@ interface SidebarProps {
 export const Sidebar = ({ user, isSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
   const userRole = user?.roles?.[0]?.slug;
-  const isAdmin = ["admin", "super_admin"].includes(userRole);
 
   const navigationGroups = [
     {
@@ -121,33 +119,36 @@ export const Sidebar = ({ user, isSidebarOpen }: SidebarProps) => {
 
   return (
     <div className={cn(
-      "w-72 h-screen bg-card border-r border-border flex flex-col fixed left-0 top-0 z-50 transition-transform duration-300 shadow-2xl shadow-black/5",
-      !isSidebarOpen && "-translate-x-full"
+      "h-screen bg-card border-r border-border flex flex-col fixed left-0 top-0 z-50 transition-all duration-300 shadow-2xl shadow-black/5 overflow-hidden",
+      isSidebarOpen ? "w-72" : "w-20"
     )}>
       {/* Branding */}
-      <div className="p-8 border-b border-border shrink-0">
-        <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white font-black text-xl shadow-lg shadow-primary/30">
-            B
-          </div>
-          <div className="flex flex-col">
+      <div className={cn("p-8 border-b border-border shrink-0 flex items-center", isSidebarOpen ? "gap-4" : "justify-center")}>
+        <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white font-black text-xl shadow-lg shadow-primary/30 shrink-0">
+          B
+        </div>
+        {isSidebarOpen && (
+          <div className="flex flex-col whitespace-nowrap overflow-hidden animate-in fade-in slide-in-from-left-2 duration-300">
             <span className="text-foreground font-black tracking-tight text-lg">B2W Admin</span>
             <span className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em]">Management v6.0</span>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Grouped Scrollable Menu */}
-      <nav className="grow p-4 space-y-8 overflow-y-auto no-scrollbar custom-scrollbar">
+      <nav className="grow p-4 space-y-8 overflow-y-auto no-scrollbar custom-scrollbar overflow-x-hidden">
         {navigationGroups.map((group, groupIdx) => {
-          // Check if user has permission to see this group
           if (!group.roles.includes(userRole)) return null;
 
           return (
             <div key={groupIdx} className="space-y-2">
-              <p className="px-4 text-[10px] font-black text-muted-foreground/60 uppercase tracking-[0.2em]">
-                {group.title}
-              </p>
+              {isSidebarOpen ? (
+                <p className="px-4 text-[10px] font-black text-muted-foreground/60 uppercase tracking-[0.2em] whitespace-nowrap">
+                  {group.title}
+                </p>
+              ) : (
+                <div className="h-px bg-border/50 mx-2" />
+              )}
               <div className="space-y-1">
                 {group.items.map((item) => {
                   const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
@@ -155,15 +156,24 @@ export const Sidebar = ({ user, isSidebarOpen }: SidebarProps) => {
                     <Link
                       key={item.href}
                       href={item.href}
+                      title={!isSidebarOpen ? item.label : undefined}
                       className={cn(
-                        "flex items-center gap-3 px-4 py-2.5 rounded-xl text-[12px] font-bold transition-all duration-200 group",
+                        "flex items-center rounded-xl text-[12px] font-bold transition-all duration-200 group relative",
+                        isSidebarOpen ? "px-4 py-2.5 gap-3" : "p-3 justify-center",
                         isActive
                           ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
                           : "text-muted-foreground hover:text-foreground hover:bg-muted"
                       )}
                     >
-                      <item.icon className={cn("w-4 h-4 transition-colors", isActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-primary")} />
-                      <span className="truncate">{item.label}</span>
+                      <item.icon className={cn("w-4 h-4 transition-colors shrink-0", isActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-primary")} />
+                      {isSidebarOpen && (
+                        <span className="truncate whitespace-nowrap animate-in fade-in slide-in-from-left-2 duration-300">
+                          {item.label}
+                        </span>
+                      )}
+                      {!isSidebarOpen && isActive && (
+                        <div className="absolute left-0 w-1 h-6 bg-primary-foreground rounded-r-full" />
+                      )}
                     </Link>
                   );
                 })}
@@ -174,21 +184,21 @@ export const Sidebar = ({ user, isSidebarOpen }: SidebarProps) => {
       </nav>
 
       {/* User Session */}
-      <div className="p-6 border-t border-border shrink-0 bg-muted/30">
-        <div className="flex items-center gap-3 p-1">
-          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black text-xs border border-primary/20 uppercase">
-            {user?.name?.[0] || "A"}
-          </div>
-          <div className="flex flex-col min-w-0">
+      <div className={cn("p-6 border-t border-border shrink-0 bg-muted/30 flex items-center", isSidebarOpen ? "gap-3" : "justify-center")}>
+        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black text-xs border border-primary/20 uppercase shrink-0">
+          {user?.name?.[0] || "A"}
+        </div>
+        {isSidebarOpen && (
+          <div className="flex flex-col min-w-0 overflow-hidden animate-in fade-in slide-in-from-left-2 duration-300">
             <span className="text-sm font-black text-foreground truncate">{user?.name || "Admin User"}</span>
             <span className="text-[10px] text-muted-foreground font-bold truncate uppercase tracking-tighter">{user?.email}</span>
           </div>
-        </div>
+        )}
       </div>
 
       <style jsx global>{`
         .custom-scrollbar::-webkit-scrollbar {
-          width: 4px;
+          width: 0px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
           background: transparent;
