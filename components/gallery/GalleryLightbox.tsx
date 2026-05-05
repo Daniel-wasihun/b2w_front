@@ -36,7 +36,7 @@ export const GalleryLightbox = ({ selectedImage, onClose }: GalleryLightboxProps
               onClick={(e) => e.stopPropagation()}
            >
               <div className="lg:w-2/3 h-[400px] lg:h-[600px]">
-                 <img src={selectedImage.image} className="w-full h-full object-cover" alt={selectedImage.title} />
+                  <img src={selectedImage.image} className="w-full h-full object-cover rounded-[7.5px]" alt={selectedImage.title} />
               </div>
               <div className="lg:w-1/3 p-12 flex flex-col justify-center space-y-8">
                  <div className="space-y-4">

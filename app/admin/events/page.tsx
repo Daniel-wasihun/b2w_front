@@ -184,13 +184,13 @@ export default function AdminEventsPage() {
                     <TableCell className="pl-6 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg bg-muted overflow-hidden border border-border group-hover:border-primary/20 transition-all">
-                      {isValidAssetUrl(ev.image) ? (
-                        <img src={ev.image} alt="" className="w-full h-full object-cover" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-primary/5">
-                            <Calendar className="w-4 h-4 text-primary/40" />
-                        </div>
-                      )}
+                       {isValidAssetUrl(ev.image) ? (
+                         <img src={ev.image} alt="" className="w-full h-full object-cover rounded-[7.5px]" />
+                       ) : (
+                         <div className="w-full h-full flex items-center justify-center bg-primary/5">
+                             <Calendar className="w-4 h-4 text-primary/40" />
+                         </div>
+                       )}
                         </div>
                         <div className="flex flex-col">
                           <span className="font-bold text-sm text-foreground">{ev.title}</span>

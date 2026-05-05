@@ -71,7 +71,7 @@ export const Testimonial = ({ data }: TestimonialProps) => {
               <div className="mt-8 flex items-center gap-4">
                 <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/20 overflow-hidden shrink-0 shadow-xl">
                   {testimonial.avatar ? (
-                    <img src={testimonial.avatar} alt={testimonial.name} className="w-full h-full object-cover" />
+                     <img src={testimonial.avatar} alt={testimonial.name} className="w-full h-full object-cover rounded-[7.5px]" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center font-bold text-xl">{testimonial.name?.[0] || 'A'}</div>
                   )}

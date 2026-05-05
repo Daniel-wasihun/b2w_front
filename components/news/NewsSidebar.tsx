@@ -16,7 +16,7 @@ export const NewsSidebar = () => {
           <input 
             type="text" 
             placeholder="Keywords..." 
-            className="w-full h-12 bg-muted rounded-[5px] px-4 text-sm outline-none border border-border focus:border-primary/50"
+            className="w-full h-12 bg-muted rounded-[8px] px-4 text-sm outline-none border border-border focus:border-primary/50"
           />
        </div>
 
@@ -29,18 +29,18 @@ export const NewsSidebar = () => {
              {["All News", "Competition Updates", "Success Stories", "Tech Trends", "Announcements"].map((cat) => (
                <div key={cat} className="flex items-center justify-between group cursor-pointer">
                   <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{cat}</span>
-                  <Badge variant="outline" className="text-[10px] rounded-[5px]">12</Badge>
+                  <Badge variant="outline" className="text-[10px] rounded-[8px]">12</Badge>
                </div>
              ))}
           </div>
        </div>
 
-       <div className="bg-primary/5 p-8 rounded-[5px] border border-primary/10">
+       <div className="bg-primary/5 p-8 rounded-[8px] border border-primary/10">
           <h3 className="font-bold text-primary mb-4">Newsletter</h3>
           <p className="text-xs text-muted-foreground mb-6 leading-relaxed">
             Get the latest winning strategies delivered to your inbox every week.
           </p>
-          <Button className="w-full rounded-[5px] shadow-glow-primary">Subscribe</Button>
+          <Button className="w-full rounded-[8px] shadow-glow-primary">Subscribe</Button>
        </div>
     </div>
   );

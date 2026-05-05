@@ -26,7 +26,7 @@ export const NewsList = ({ posts, loading, currentLanguage }: NewsListProps) => 
 
   if (posts.length === 0) {
     return (
-      <div className="text-center py-20 bg-card rounded-[5px] border-2 border-dashed border-border/50">
+      <div className="text-center py-20 bg-card rounded-[8px] border-2 border-dashed border-border/50">
          <Bookmark className="w-16 h-16 text-muted-foreground/30 mx-auto mb-6" />
          <h2 className="text-2xl font-serif font-bold">No articles found</h2>
       </div>

@@ -22,9 +22,9 @@
 
   --color-border: var(--card-border);
 
-  --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
-  --radius-3xl: 2rem;
+  --radius-xl: 8px;
+  --radius-2xl: 8px;
+  --radius-3xl: 8px;
 
   /* Global Animation Tokens */
   --animate-float-slow: floatSlow 8s ease-in-out infinite;
@@ -81,6 +81,8 @@
     --glass-blur: blur(16px);
   }
 
+  /* Target dark mode specifically for Tailwind v4 compatibility */
+  :root.dark,
   .dark {
     --bg-main: #0a0e1a;
     --text-main: #f1f5f9;
@@ -93,8 +95,17 @@
     --glass-blur: blur(24px);
   }
 
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
   body {
     @apply bg-background text-foreground transition-colors duration-300 antialiased font-sans;
+    max-width: 100%;
+    overflow-x: clip;
+    position: relative;
   }
 }
 
@@ -152,12 +163,12 @@
 }
 
 .premium-card {
-  background-color: var(--card-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--card-border);
-  @apply rounded-[5px] shadow-2xl;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+   background-color: var(--card-bg);
+   backdrop-filter: var(--glass-blur);
+   -webkit-backdrop-filter: var(--glass-blur);
+   border: 1px solid var(--card-border);
+   @apply rounded-[8px] shadow-2xl;
+   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
 }
 
 .shadow-glow-primary {

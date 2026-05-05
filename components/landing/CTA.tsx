@@ -16,12 +16,12 @@ export const CTA = () => {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
              <Link href="/register">
-               <Button size="lg" className="h-16 px-12 rounded-[5px] text-lg font-bold shadow-glow-primary">
+               <Button size="lg" className="h-16 px-12 rounded-[8px] text-lg font-bold shadow-glow-primary">
                   Register Now
                </Button>
              </Link>
              <Link href="/contact">
-               <Button size="lg" variant="outline" className="h-16 px-12 rounded-[5px] text-lg font-bold">
+               <Button size="lg" variant="outline" className="h-16 px-12 rounded-[8px] text-lg font-bold">
                   Talk to Us
                </Button>
              </Link>

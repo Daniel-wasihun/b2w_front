@@ -124,7 +124,7 @@ export const Sidebar = ({ user, isSidebarOpen }: SidebarProps) => {
     )}>
       {/* Branding */}
       <div className={cn("p-8 border-b border-border shrink-0 flex items-center", isSidebarOpen ? "gap-4" : "justify-center")}>
-        <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white font-black text-xl shadow-lg shadow-primary/30 shrink-0">
+        <div className="w-10 h-10 rounded-[8px] bg-primary flex items-center justify-center text-white font-black text-xl shadow-lg shadow-primary/30 shrink-0">
           B
         </div>
         {isSidebarOpen && (
@@ -158,7 +158,7 @@ export const Sidebar = ({ user, isSidebarOpen }: SidebarProps) => {
                       href={item.href}
                       title={!isSidebarOpen ? item.label : undefined}
                       className={cn(
-                        "flex items-center rounded-xl text-[12px] font-bold transition-all duration-200 group relative",
+                        "flex items-center rounded-[8px] text-[12px] font-bold transition-all duration-200 group relative",
                         isSidebarOpen ? "px-4 py-2.5 gap-3" : "p-3 justify-center",
                         isActive
                           ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"

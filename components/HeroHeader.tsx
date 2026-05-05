@@ -13,7 +13,7 @@ interface HeroHeaderProps {
 
 export const HeroHeader = ({ title, subtitle, badge, italicWord }: HeroHeaderProps) => {
   return (
-    <section className="pt-40 pb-24 bg-primary text-white relative overflow-hidden">
+    <section className="pt-40 pb-24 bg-primary text-white relative overflow-hidden w-full">
       <div className="absolute inset-0 z-0">
         <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-secondary/10 blur-[120px] rounded-full" />
         <div className="absolute -bottom-[20%] -right-[10%] w-[50%] h-[50%] bg-accent/10 blur-[120px] rounded-full" />

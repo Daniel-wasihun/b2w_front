@@ -62,7 +62,7 @@ export const Navbar = () => {
   return (
     <nav
       className={cn(
-        "fixed top-0 w-full z-50 transition-all duration-500",
+        "fixed top-0 w-full max-w-full z-50 transition-all duration-500",
         scrolled 
           ? "py-3 bg-background/90 backdrop-blur-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]" 
           : "py-6 bg-transparent"
@@ -121,7 +121,7 @@ export const Navbar = () => {
                 <motion.div 
                   layoutId="nav-active"
                   className={cn(
-                    "absolute -bottom-1 left-0 w-full h-0.5 rounded-[5px]",
+                    "absolute -bottom-1 left-0 w-full h-0.5 rounded-[8px]",
                     scrolled ? "bg-primary" : "bg-secondary"
                   )}
                 />
@@ -154,7 +154,7 @@ export const Navbar = () => {
             size="icon"
             onClick={() => setIsOpen(!isOpen)}
             className={cn(
-              "rounded-[5px]",
+              "rounded-[8px]",
               scrolled ? "text-primary" : "text-white hover:bg-white/10"
             )}
           >
@@ -171,6 +171,8 @@ export const Navbar = () => {
             activeLinks={activeLinks}
             setIsOpen={setIsOpen}
             isLoggedIn={isLoggedIn}
+            isAdmin={isAdmin}
+            user={user}
             logout={logout}
             theme={theme || "light"}
             setTheme={setTheme}

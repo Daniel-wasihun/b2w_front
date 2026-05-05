@@ -77,12 +77,12 @@ export default function EventsPage() {
                </p>
             </div>
 
-            <div className="flex p-1 bg-white/50 backdrop-blur-sm border border-border/50 rounded-[5px] shadow-inner">
+            <div className="flex p-1 bg-white/50 backdrop-blur-sm border border-border/50 rounded-[8px] shadow-inner">
                {categories.map((cat) => (
                  <button
                    key={cat.id}
                    onClick={() => setActiveCategory(cat.id as any)}
-                   className={`px-6 py-2.5 text-sm font-bold transition-all rounded-[5px] ${
+                   className={`px-6 py-2.5 text-sm font-bold transition-all rounded-[8px] ${
                      activeCategory === cat.id 
                        ? "bg-primary text-white shadow-lg" 
                        : "text-muted-foreground hover:text-primary"

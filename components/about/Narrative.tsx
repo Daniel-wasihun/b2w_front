@@ -34,8 +34,8 @@ export const Narrative = ({ narratives }: NarrativeProps) => {
                  { icon: Star, title: "Recognition", desc: "Top performers get global visibility and rewards." },
                  { icon: Target, title: "Precision", desc: "Focused programs designed for specific talent tracks." },
                ].map((item, i) => (
-                 <div key={i} className="flex items-start space-x-4">
-                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                  <div key={i} className="flex items-start space-x-4">
+                    <div className="w-10 h-10 rounded-[8px] bg-primary/10 flex items-center justify-center text-primary shrink-0">
                        <item.icon size={20} />
                     </div>
                     <div>
@@ -48,14 +48,14 @@ export const Narrative = ({ narratives }: NarrativeProps) => {
           </div>
           
           <div className="relative">
-            <div className="aspect-square rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-card">
-               <img 
-                  src={main.image || "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1000"} 
-                  className="w-full h-full object-cover"
-                  alt="Team collaboration"
-               />
+            <div className="aspect-square rounded-[8px] overflow-hidden shadow-2xl border-[0.7px] border-primary/20">
+                 <img 
+                    src={main.image || "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1000"} 
+                    className="w-full h-full object-cover rounded-[7.5px]"
+                    alt="Team collaboration"
+                 />
             </div>
-            <div className="absolute -bottom-10 -left-10 bg-card p-10 rounded-[2.5rem] shadow-2xl border border-border/50 max-w-xs">
+            <div className="absolute -bottom-10 -left-10 bg-card p-10 rounded-[8px] shadow-2xl border border-border/50 max-w-xs">
                <p className="text-5xl font-serif font-bold text-secondary">2026</p>
                <p className="font-bold text-primary capitalize text-[10px] mt-2">The Year Everything Changed</p>
             </div>

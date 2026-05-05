@@ -15,6 +15,8 @@ interface MobileMenuProps {
   activeLinks: any[];
   setIsOpen: (open: boolean) => void;
   isLoggedIn: boolean;
+  isAdmin: boolean;
+  user: any;
   logout: () => void;
   theme: string;
   setTheme: (theme: string) => void;
@@ -25,6 +27,8 @@ export const MobileMenu = ({
   activeLinks, 
   setIsOpen, 
   isLoggedIn, 
+  isAdmin,
+  user,
   logout, 
   theme, 
   setTheme 
@@ -61,7 +65,7 @@ export const MobileMenu = ({
                 key={t}
                 onClick={() => { setTheme(t); setIsOpen(false); }}
                 className={cn(
-                  "py-3 rounded-[5px] text-[10px] font-bold uppercase transition-all",
+                   "py-3 rounded-[8px] text-[10px] font-bold uppercase transition-all",
                   theme === t ? "bg-primary text-white shadow-lg shadow-primary/20" : "bg-muted text-muted-foreground hover:bg-primary/5"
                 )}
               >
@@ -72,12 +76,25 @@ export const MobileMenu = ({
         </div>
 
         {isLoggedIn ? (
-          <div className="space-y-4 pt-6 border-t border-border/50">
-            <Link href="/dashboard" className="flex items-center text-xl font-bold text-primary" onClick={() => setIsOpen(false)}>
-              <LayoutDashboard className="mr-4 w-6 h-6" />
-              Dashboard
-            </Link>
-            <Button variant="ghost" onClick={logout} className="justify-start px-0 text-destructive font-bold text-xl h-auto">
+          <div className="space-y-6 pt-6 border-t border-border/50">
+            <div className="flex items-center space-x-4 mb-4">
+              <div className="w-12 h-12 rounded-[8px] premium-gradient flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-primary/20">
+                {user?.name?.[0]}
+              </div>
+              <div>
+                <p className="font-bold text-foreground">{user?.name}</p>
+                <p className="text-xs text-muted-foreground">{user?.email}</p>
+              </div>
+            </div>
+            
+            {isAdmin && (
+              <Link href="/dashboard" className="flex items-center text-xl font-bold text-primary" onClick={() => setIsOpen(false)}>
+                <LayoutDashboard className="mr-4 w-6 h-6" />
+                Dashboard
+              </Link>
+            )}
+            
+            <Button variant="ghost" onClick={logout} className="justify-start px-0 text-destructive font-bold text-xl h-auto w-full">
               <LogOut className="mr-4 w-6 h-6" />
               Logout
             </Button>
@@ -85,10 +102,10 @@ export const MobileMenu = ({
         ) : (
           <div className="grid grid-cols-1 gap-4 pt-6 border-t border-border/50">
             <Link href="/login" className="w-full" onClick={() => setIsOpen(false)}>
-              <Button variant="outline" className="w-full rounded-[5px] font-bold h-14 text-lg">Login</Button>
+              <Button variant="outline" className="w-full rounded-[8px] font-bold h-14 text-lg">Login</Button>
             </Link>
             <Link href="/register" className="w-full" onClick={() => setIsOpen(false)}>
-              <Button className="w-full rounded-[5px] font-bold h-14 text-lg shadow-xl shadow-primary/20">Register</Button>
+              <Button className="w-full rounded-[8px] font-bold h-14 text-lg shadow-xl shadow-primary/20">Register</Button>
             </Link>
           </div>
         )}

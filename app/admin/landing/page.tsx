@@ -239,13 +239,13 @@ function HeroTable({ data, loading }: any) {
               <TableRow key={hero.id} className="border-border/50 hover:bg-muted/30 transition-colors">
                 <TableCell className="pl-6 py-4">
                   <div className="flex items-center gap-3">
-                    {isValidAssetUrl(hero.image) ? (
-                      <img src={hero.image} className="w-10 h-10 rounded-lg object-cover border border-border bg-muted" alt="" />
-                    ) : (
-                      <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center border border-border">
-                        <Sparkles className="w-4 h-4 text-muted-foreground/40" />
-                      </div>
-                    )}
+                   {isValidAssetUrl(hero.image) ? (
+                     <img src={hero.image} className="w-10 h-10 rounded-lg object-cover border border-border bg-muted rounded-[7.5px]" alt="" />
+                   ) : (
+                     <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center border border-border">
+                       <Sparkles className="w-4 h-4 text-muted-foreground/40" />
+                     </div>
+                   )}
                     <span className="font-bold text-sm text-foreground">{hero.title}</span>
                   </div>
                 </TableCell>

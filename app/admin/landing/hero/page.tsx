@@ -66,13 +66,13 @@ export default function AdminHeroPage() {
       render: (val: string, item: any) => (
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-lg bg-muted overflow-hidden border border-border shadow-sm group-hover:border-primary/20 transition-all">
-            {isValidAssetUrl(item.image) ? (
-              <img src={item.image} className="w-full h-full object-cover" alt="" />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center bg-primary/5">
-                <Sparkles className="w-5 h-5 text-primary/40" />
-              </div>
-            )}
+             {isValidAssetUrl(item.image) ? (
+               <img src={item.image} className="w-full h-full object-cover rounded-[7.5px]" alt="" />
+             ) : (
+               <div className="w-full h-full flex items-center justify-center bg-primary/5">
+                 <Sparkles className="w-5 h-5 text-primary/40" />
+               </div>
+             )}
           </div>
           <div className="flex flex-col">
             <span className="font-bold text-sm text-foreground">{localize(val)}</span>

@@ -73,7 +73,7 @@ export default function LandingPage() {
                </motion.h2>
             </div>
             <Link href="/programs">
-              <Button className="rounded-[5px] bg-primary hover:bg-secondary text-white font-bold group">
+              <Button className="rounded-[8px] bg-primary hover:bg-secondary text-white font-bold group">
                 View All Programs <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
@@ -117,7 +117,7 @@ export default function LandingPage() {
                </motion.h2>
             </div>
             <Link href="/events">
-              <Button variant="outline" className="rounded-[5px] border-primary text-primary hover:bg-primary hover:text-white font-bold group">
+              <Button variant="outline" className="rounded-[8px] border-primary text-primary hover:bg-primary hover:text-white font-bold group">
                 View All Events <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
@@ -160,7 +160,7 @@ export default function LandingPage() {
                </motion.h2>
             </div>
             <Link href="/races">
-              <Button className="rounded-[5px] bg-primary hover:bg-secondary text-white font-bold group">
+              <Button className="rounded-[8px] bg-primary hover:bg-secondary text-white font-bold group">
                 View All Challenges <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
@@ -203,7 +203,7 @@ export default function LandingPage() {
                </motion.h2>
             </div>
             <Link href="/news">
-              <Button className="rounded-[5px] bg-secondary hover:bg-primary text-white font-bold group">
+              <Button className="rounded-[8px] bg-secondary hover:bg-primary text-white font-bold group">
                 View All News <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>

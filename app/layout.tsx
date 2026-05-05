@@ -22,12 +22,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${playfair.variable} h-full antialiased`}
+      className={`${inter.variable} ${playfair.variable} h-full antialiased overflow-x-hidden`}
       suppressHydrationWarning
     >
-      <body className={cn(inter.variable, playfair.variable, "min-h-screen flex flex-col font-sans antialiased")} suppressHydrationWarning>
+      <body className={cn(inter.variable, playfair.variable, "min-h-screen flex flex-col font-sans antialiased overflow-x-hidden")} suppressHydrationWarning>
         <Providers>
-          <div className="flex-grow flex flex-col">
+          <div className="flex-grow flex flex-col overflow-x-hidden">
             {children}
           </div>
           <Footer />

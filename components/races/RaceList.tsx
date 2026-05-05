@@ -30,7 +30,7 @@ export const RaceList = ({ races, loading, currentLanguage }: RaceListProps) => 
 
   if (races.length === 0) {
     return (
-      <div className="text-center py-24 bg-card rounded-[5px] border-2 border-dashed border-border/50 flex flex-col items-center">
+      <div className="text-center py-24 bg-card rounded-[8px] border-2 border-dashed border-border/50 flex flex-col items-center">
          <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center mb-8">
             <Trophy className="w-12 h-12 text-muted-foreground/30" />
          </div>
@@ -38,7 +38,7 @@ export const RaceList = ({ races, loading, currentLanguage }: RaceListProps) => 
          <p className="text-muted-foreground mt-4 max-w-md mx-auto">
            We are currently curating the next set of elite challenges. Check back soon for upcoming opportunities.
          </p>
-         <Button variant="outline" className="mt-10 rounded-[5px] h-14 px-10">Back to Dashboard</Button>
+         <Button variant="outline" className="mt-10 rounded-[8px] h-14 px-10">Back to Dashboard</Button>
       </div>
     );
   }
@@ -82,6 +82,12 @@ export const RaceList = ({ races, loading, currentLanguage }: RaceListProps) => 
             badge={localize(race.category?.name, currentLanguage) || "Global Arena"}
             badgeVariant="success"
             onClick={() => window.location.href = `/races/${race.id}`}
+            action={
+              <Button className="w-full h-12 rounded-[8px] font-bold shadow-lg shadow-primary/20 mt-4 group">
+                Register Now
+                <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+            }
           />
         </motion.div>
       ))}

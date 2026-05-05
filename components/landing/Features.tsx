@@ -57,7 +57,7 @@ export const Features = ({ data }: FeaturesProps) => {
                   className="h-full flex flex-col justify-between group"
                 >
                   <div className="space-y-6">
-                    <div className="w-14 h-14 rounded-2xl bg-primary/5 flex items-center justify-center border border-primary/10 group-hover:bg-primary group-hover:scale-110 transition-all duration-500 shadow-xl shadow-primary/5">
+                    <div className="w-14 h-14 rounded-[8px] bg-primary/5 flex items-center justify-center border border-primary/10 group-hover:bg-primary group-hover:scale-110 transition-all duration-500 shadow-xl shadow-primary/5">
                       <Icon className="w-7 h-7 text-primary group-hover:text-white transition-colors duration-500" />
                     </div>
                     <div className="space-y-3">

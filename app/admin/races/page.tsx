@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { DashboardLayout } from "@/components/DashboardLayout";
-import { Trophy, Plus, Edit2, Trash2, Search, Filter, Eye, Save, Calendar } from "lucide-react";
+import { Trophy, Plus, Edit2, Trash2, Search, Filter, Eye, Save, Calendar, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -22,6 +22,10 @@ export default function AdminRacesPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingRace, setEditingRace] = useState<any>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [viewingParticipants, setViewingParticipants] = useState<any[]>([]);
+  const [loadingParticipants, setLoadingParticipants] = useState(false);
+  const [selectedRaceName, setSelectedRaceName] = useState("");
 
   // Form State
   const [formData, setFormData] = useState({
@@ -108,6 +112,20 @@ export default function AdminRacesPage() {
     }
   };
 
+  const openViewParticipantsModal = async (race: any) => {
+    setSelectedRaceName(localize(race.title));
+    setIsViewModalOpen(true);
+    setLoadingParticipants(true);
+    try {
+      const res = await apiClient.get(`/v1/admin/races/${race.id}/participants`);
+      setViewingParticipants(res.data.data || []);
+    } catch (err) {
+      toast.error("Failed to fetch participants");
+    } finally {
+      setLoadingParticipants(false);
+    }
+  };
+
   const deleteRace = async (id: number) => {
     if (!confirm("Are you sure you want to delete this race?")) return;
     try {
@@ -144,7 +162,7 @@ export default function AdminRacesPage() {
             <input
               type="text"
               placeholder="Search races by title..."
-              className="h-10 w-full rounded-md border border-input bg-background pl-10 pr-4 text-sm outline-none focus:border-primary transition-all placeholder:text-muted-foreground text-foreground"
+              className="h-10 w-full rounded-[8px] border border-input bg-background pl-10 pr-4 text-sm outline-none focus:border-primary transition-all placeholder:text-muted-foreground text-foreground"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -154,7 +172,7 @@ export default function AdminRacesPage() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-border bg-card overflow-hidden shadow-sm transition-colors duration-300">
+        <div className="rounded-[8px] border border-border bg-card overflow-hidden shadow-sm transition-colors duration-300">
           <Table>
             <TableHeader className="bg-muted/50">
               <TableRow className="border-border hover:bg-transparent">
@@ -169,7 +187,7 @@ export default function AdminRacesPage() {
               {loading ? (
                 Array(5).fill(0).map((_, i) => (
                   <TableRow key={i} className="border-border/50">
-                    <TableCell colSpan={5} className="px-6 py-4"><Skeleton className="h-10 w-full rounded-md" /></TableCell>
+                    <TableCell colSpan={5} className="px-6 py-4"><Skeleton className="h-10 w-full rounded-[8px]" /></TableCell>
                   </TableRow>
                 ))
               ) : filteredRaces.length > 0 ? (
@@ -202,7 +220,12 @@ export default function AdminRacesPage() {
                     </TableCell>
                     <TableCell className="pr-6 text-right">
                       <div className="flex items-center justify-end gap-1">
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all">
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all"
+                          onClick={() => openViewParticipantsModal(race)}
+                        >
                           <Eye className="w-4 h-4" />
                         </Button>
                         <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all" onClick={() => openEditModal(race)}>
@@ -252,7 +275,7 @@ export default function AdminRacesPage() {
           <div className="space-y-2">
             <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest px-1">Description</label>
             <textarea 
-              className="w-full min-h-[120px] rounded-xl border border-input bg-background px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium placeholder:text-muted-foreground"
+              className="w-full min-h-[120px] rounded-[8px] border border-input bg-background px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium placeholder:text-muted-foreground"
               value={formData.description}
               onChange={(e) => setFormData({...formData, description: e.target.value})}
               placeholder="Provide a detailed race briefing..."
@@ -268,7 +291,7 @@ export default function AdminRacesPage() {
             <div className="space-y-2">
               <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest px-1">Operational Status</label>
               <select 
-                className="w-full h-11 rounded-xl border border-input bg-background px-3 text-sm font-bold text-foreground outline-none focus:ring-2 focus:ring-primary/20 transition-all appearance-none cursor-pointer"
+                className="w-full h-11 rounded-[8px] border border-input bg-background px-3 text-sm font-bold text-foreground outline-none focus:ring-2 focus:ring-primary/20 transition-all appearance-none cursor-pointer"
                 value={formData.status}
                 onChange={(e) => setFormData({...formData, status: e.target.value})}
               >
@@ -299,6 +322,57 @@ export default function AdminRacesPage() {
               onChange={(e) => setFormData({...formData, end_date: e.target.value})}
             />
           </div>
+        </div>
+      </Modal>
+
+      {/* View Participants Modal */}
+      <Modal
+        isOpen={isViewModalOpen}
+        onClose={() => setIsViewModalOpen(false)}
+        title={`Registered Participants: ${selectedRaceName}`}
+        footer={
+          <Button variant="outline" onClick={() => setIsViewModalOpen(false)} className="font-bold text-[10px] uppercase tracking-widest">Close</Button>
+        }
+      >
+        <div className="min-h-[300px]">
+          {loadingParticipants ? (
+            <div className="space-y-3">
+              {Array(4).fill(0).map((_, i) => (
+                <Skeleton key={i} className="h-12 w-full rounded-[8px]" />
+              ))}
+            </div>
+          ) : viewingParticipants.length > 0 ? (
+            <div className="rounded-[8px] border border-border overflow-hidden">
+              <Table>
+                <TableHeader className="bg-muted/50">
+                  <TableRow className="border-border">
+                    <TableHead className="text-[10px] font-black uppercase tracking-widest h-10">User</TableHead>
+                    <TableHead className="text-[10px] font-black uppercase tracking-widest h-10 text-right">Joined At</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {viewingParticipants.map((p: any) => (
+                    <TableRow key={p.id} className="border-border/50">
+                      <TableCell>
+                        <div className="flex flex-col">
+                          <span className="font-bold text-xs">{p.name}</span>
+                          <span className="text-[10px] text-muted-foreground">{p.email}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-right text-[10px] font-medium text-muted-foreground">
+                        {p.pivot?.joined_at ? new Date(p.pivot.joined_at).toLocaleDateString() : 'N/A'}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <Users className="w-12 h-12 text-muted-foreground/20 mb-4" />
+              <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">No participants registered yet</p>
+            </div>
+          )}
         </div>
       </Modal>
     </DashboardLayout>

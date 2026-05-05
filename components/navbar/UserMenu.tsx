@@ -32,37 +32,40 @@ export const UserMenu = ({ user, logout, scrolled, currentLanguage, isAdmin }: U
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className="flex items-center space-x-3 cursor-pointer group">
-          <div className="w-10 h-10 rounded-[5px] premium-gradient flex items-center justify-center text-white font-bold shadow-lg shadow-primary/20 transition-transform group-hover:scale-105">
+          <div className="w-10 h-10 rounded-[8px] premium-gradient flex items-center justify-center text-white font-bold shadow-lg shadow-primary/20 transition-transform group-hover:scale-105">
             {localize(user?.name, currentLanguage)?.[0]}
           </div>
           <ChevronDown className={cn("w-4 h-4 transition-transform group-data-[state=open]:rotate-180", scrolled ? "text-primary" : "text-white")} />
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56 p-2 rounded-[5px]">
+      <DropdownMenuContent align="end" className="w-56 p-2 rounded-[8px]">
         <DropdownMenuLabel className="text-xs font-bold uppercase tracking-widest text-muted-foreground p-3">Account Hub</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <Link href="/dashboard">
-          <DropdownMenuItem className="rounded-[5px] py-3 cursor-pointer">
-            <LayoutDashboard className="w-4 h-4 mr-3 text-primary" />
-            Dashboard
-          </DropdownMenuItem>
-        </Link>
-        <Link href="/dashboard/certificates">
-          <DropdownMenuItem className="rounded-[5px] py-3 cursor-pointer">
-            <Award className="w-4 h-4 mr-3 text-primary" />
-            My Certificates
-          </DropdownMenuItem>
-        </Link>
-        <DropdownMenuSeparator />
         {isAdmin && (
-          <Link href="/admin/users">
-            <DropdownMenuItem className="rounded-[5px] py-3 cursor-pointer text-secondary">
-              <ShieldCheck className="w-4 h-4 mr-3" />
-              Admin Control
-            </DropdownMenuItem>
-          </Link>
+          <>
+            <Link href="/dashboard">
+              <DropdownMenuItem className="rounded-[8px] py-3 cursor-pointer">
+                <LayoutDashboard className="w-4 h-4 mr-3 text-primary" />
+                Dashboard
+              </DropdownMenuItem>
+            </Link>
+            <Link href="/dashboard/certificates">
+              <DropdownMenuItem className="rounded-[8px] py-3 cursor-pointer">
+                <Award className="w-4 h-4 mr-3 text-primary" />
+                My Certificates
+              </DropdownMenuItem>
+            </Link>
+            <DropdownMenuSeparator />
+            <Link href="/admin/users">
+              <DropdownMenuItem className="rounded-[8px] py-3 cursor-pointer text-secondary">
+                <ShieldCheck className="w-4 h-4 mr-3" />
+                Admin Control
+              </DropdownMenuItem>
+            </Link>
+            <DropdownMenuSeparator />
+          </>
         )}
-        <DropdownMenuItem onClick={logout} className="rounded-[5px] py-3 cursor-pointer text-destructive">
+        <DropdownMenuItem onClick={logout} className="rounded-[8px] py-3 cursor-pointer text-destructive">
           <LogOut className="w-4 h-4 mr-3" />
           Logout
         </DropdownMenuItem>

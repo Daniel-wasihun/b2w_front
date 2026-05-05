@@ -153,7 +153,7 @@ export default function AdminPartnerNetworkPage() {
                     <TableCell className="pl-6 py-4">
                       <div className="flex items-center gap-3">
                          <div className="w-16 h-10 rounded-lg bg-muted p-2 flex items-center justify-center border border-border group-hover:border-primary/20 transition-all shadow-sm">
-                            {isValidAssetUrl(partner.logo) ? <img src={partner.logo} className="w-full h-full object-contain" alt="" /> : <ImageIcon className="w-5 h-5 text-muted-foreground/40" />}
+                             {isValidAssetUrl(partner.logo) ? <img src={partner.logo} className="w-full h-full object-contain rounded-[7.5px]" alt="" /> : <ImageIcon className="w-5 h-5 text-muted-foreground/40" />}
                         </div>
                          <span className="font-bold text-sm text-foreground">{localize(partner.name)}</span>
                       </div>

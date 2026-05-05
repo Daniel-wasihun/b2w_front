@@ -18,7 +18,7 @@ interface HeroProps {
 
 export const Hero = ({ data }: HeroProps) => {
   return (
-    <section className="relative py-32 overflow-hidden bg-primary text-white">
+    <section className="relative py-32 overflow-hidden bg-primary text-white w-full max-w-full">
       <div className="absolute inset-0 z-0">
         {data?.image ? (
           <div 
@@ -67,13 +67,13 @@ export const Hero = ({ data }: HeroProps) => {
           className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8"
         >
           <Link href={data?.cta_link || "/register"}>
-            <Button variant="premium" className="h-16 px-10 rounded-2xl text-lg font-bold shadow-2xl group">
+            <Button variant="premium" className="h-16 px-10 rounded-[8px] text-lg font-bold shadow-2xl group">
               {data?.cta_text || "Join the Initiative"}
               <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
             </Button>
           </Link>
           <Link href="/races">
-            <Button variant="outline" className="h-16 px-10 rounded-2xl text-lg font-bold border-white/20 hover:bg-white/10 backdrop-blur-md">
+            <Button variant="outline" className="h-16 px-10 rounded-[8px] text-lg font-bold border-white/20 hover:bg-white/10 backdrop-blur-md">
               Explore Arena
             </Button>
           </Link>

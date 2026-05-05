@@ -36,7 +36,7 @@ export const PremiumCard = ({
     <div
       onClick={onClick}
       className={cn(
-        "rounded-[20px] border border-border bg-card dark:bg-muted/10 p-6 shadow-sm transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-1",
+        "rounded-[8px] border border-border bg-card dark:bg-muted/10 p-6 shadow-sm transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-1",
         onClick && "cursor-pointer",
         className
       )}
@@ -45,21 +45,21 @@ export const PremiumCard = ({
         children
       ) : (
         <div className="space-y-4">
-          {image && (
-            <div className="relative aspect-video rounded-xl overflow-hidden bg-muted border border-border">
-              <Image
-                src={image}
-                alt={title || ""}
-                fill
-                className="object-cover transition-transform duration-500 hover:scale-105"
-              />
-              {badge && (
-                <span className="absolute top-3 left-3 bg-primary/90 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full shadow-lg">
-                  {badge}
-                </span>
-              )}
-            </div>
-          )}
+           {image && (
+             <div className="relative aspect-video rounded-[8px] overflow-hidden bg-muted border border-border">
+               <Image
+                 src={image}
+                 alt={title || ""}
+                 fill
+                 className="object-cover transition-transform duration-500 hover:scale-105 rounded-[8px]"
+               />
+               {/* {badge && (
+                 <span className="absolute top-3 left-3 bg-primary/90 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full shadow-lg">
+                   {badge}
+                 </span>
+               )} */}
+             </div>
+           )}
           <div className="space-y-2">
             {title && <h3 className="font-bold text-lg text-foreground tracking-tight leading-tight">{title}</h3>}
             {description && <div className="text-sm text-muted-foreground leading-relaxed font-medium">{description}</div>}

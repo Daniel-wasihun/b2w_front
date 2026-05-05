@@ -15,7 +15,7 @@ export const AboutCTA = () => {
                 Join the most prestigious student initiative and start your path to recognition today.
              </p>
              <Link href="/register">
-                <Button className="h-16 px-12 rounded-[5px] bg-primary text-white font-bold text-lg hover:scale-105 transition-transform shadow-glow-primary border-none">
+                <Button className="h-16 px-12 rounded-[8px] bg-primary text-white font-bold text-lg hover:scale-105 transition-transform shadow-glow-primary border-none">
                    Join the Initiative
                 </Button>
              </Link>

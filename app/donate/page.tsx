@@ -72,9 +72,9 @@ export default function DonatePage() {
                   <motion.div 
                     key={i}
                     whileHover={{ scale: 1.02 }}
-                    className="p-6 bg-card border border-border/50 rounded-[5px] space-y-4 shadow-sm"
+                    className="p-6 bg-card border border-border/50 rounded-[8px] space-y-4 shadow-sm"
                   >
-                    <div className={`${area.bg} w-10 h-10 rounded-[5px] flex items-center justify-center ${area.color}`}>
+                    <div className={`${area.bg} w-10 h-10 rounded-[8px] flex items-center justify-center ${area.color}`}>
                       <area.icon size={20} />
                     </div>
                     <h4 className="font-bold text-primary">{area.title}</h4>
@@ -85,14 +85,14 @@ export default function DonatePage() {
             </div>
 
             <div className="relative">
-              <div className="aspect-[4/5] rounded-[5px] overflow-hidden shadow-2xl border-8 border-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=1000" 
-                  className="w-full h-full object-cover"
-                  alt="Financial growth and support"
-                />
+              <div className="aspect-[4/5] rounded-[8px] overflow-hidden shadow-2xl border-8 border-card">
+                 <img 
+                   src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=1000" 
+                   className="w-full h-full object-cover rounded-[7.5px]"
+                   alt="Financial growth and support"
+                 />
               </div>
-              <div className="absolute -bottom-10 -right-10 bg-primary p-8 rounded-[5px] shadow-2xl space-y-2 max-w-[200px]">
+              <div className="absolute -bottom-10 -right-10 bg-primary p-8 rounded-[8px] shadow-2xl space-y-2 max-w-[200px]">
                 <p className="text-3xl font-serif font-bold text-secondary">100%</p>
                 <p className="text-white text-[10px] uppercase font-bold tracking-widest leading-tight">Proceeds go to programs</p>
               </div>
@@ -115,7 +115,7 @@ export default function DonatePage() {
                  key={i}
                  whileHover={{ y: -10 }}
                  className={cn(
-                   "p-10 bg-card rounded-[5px] border border-border/50 shadow-xl space-y-6 relative overflow-hidden",
+                   "p-10 bg-card rounded-[8px] border border-border/50 shadow-xl space-y-6 relative overflow-hidden",
                    tier.featured && "border-secondary/50 ring-2 ring-secondary/10"
                  )}
                >
@@ -130,7 +130,7 @@ export default function DonatePage() {
                  </div>
                  <p className="text-sm text-muted-foreground leading-relaxed">{tier.desc}</p>
                  <Button className={cn(
-                   "w-full h-12 rounded-[5px] font-bold shadow-glow-primary",
+                   "w-full h-12 rounded-[8px] font-bold shadow-glow-primary",
                    tier.featured ? "bg-secondary text-primary hover:bg-secondary/90" : "bg-primary text-white"
                  )}>
                    Donate Now
@@ -144,29 +144,29 @@ export default function DonatePage() {
       {/* Payment Information */}
       <section className="py-24 bg-primary text-white">
         <div className="container mx-auto px-6 max-w-4xl">
-           <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-12 rounded-[5px] space-y-10 text-center">
+           <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-12 rounded-[8px] space-y-10 text-center">
               <div className="space-y-4">
                  <h2 className="text-3xl font-serif font-bold">Direct Support Channels</h2>
                  <p className="text-white/60">If you prefer direct bank transfer or local mobile payment methods.</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                 <div className="p-6 bg-white/5 rounded-[5px] border border-white/5 space-y-4">
-                   <div className="w-10 h-10 rounded-[5px] bg-sky-500/20 flex items-center justify-center text-sky-400 mx-auto">
+                 <div className="p-6 bg-white/5 rounded-[8px] border border-white/5 space-y-4">
+                   <div className="w-10 h-10 rounded-[8px] bg-sky-500/20 flex items-center justify-center text-sky-400 mx-auto">
                      <Globe size={20} />
                    </div>
                    <h4 className="font-bold">Telebirr</h4>
                    <p className="text-[10px] text-white/50 leading-relaxed font-mono">+251 98 980 6310</p>
                  </div>
-                 <div className="p-6 bg-white/5 rounded-[5px] border border-white/5 space-y-4">
-                   <div className="w-10 h-10 rounded-[5px] bg-amber-500/20 flex items-center justify-center text-amber-400 mx-auto">
+                 <div className="p-6 bg-white/5 rounded-[8px] border border-white/5 space-y-4">
+                   <div className="w-10 h-10 rounded-[8px] bg-amber-500/20 flex items-center justify-center text-amber-400 mx-auto">
                      <ShieldCheck size={20} />
                    </div>
                    <h4 className="font-bold">CBE Bank</h4>
                    <p className="text-[10px] text-white/50 leading-relaxed font-mono">1000123456789</p>
                  </div>
-                 <div className="p-6 bg-white/5 rounded-[5px] border border-white/5 space-y-4">
-                   <div className="w-10 h-10 rounded-[5px] bg-rose-500/20 flex items-center justify-center text-rose-400 mx-auto">
+                 <div className="p-6 bg-white/5 rounded-[8px] border border-white/5 space-y-4">
+                   <div className="w-10 h-10 rounded-[8px] bg-rose-500/20 flex items-center justify-center text-rose-400 mx-auto">
                       <Heart size={20} />
                    </div>
                    <h4 className="font-bold">PayPal</h4>

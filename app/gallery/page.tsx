@@ -99,11 +99,11 @@ export default function GalleryPage() {
                     className="relative group overflow-hidden rounded-[8px] border border-border bg-card shadow-sm hover:shadow-2xl transition-all"
                   >
                     <div className="aspect-video overflow-hidden">
-                      <img 
-                        src={item.url} 
-                        alt={item.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
+                       <img 
+                         src={item.url} 
+                         alt={item.title}
+                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 rounded-[7.5px]"
+                       />
                     </div>
                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-6 h-1/2">
                        <span className="text-secondary text-[10px] font-bold uppercase tracking-widest mb-1">{item.albumTitle}</span>

@@ -69,7 +69,7 @@ export default function ForgotPasswordPage() {
             className="hidden lg:flex flex-col items-center lg:items-start text-center lg:text-left"
           >
             <Link href="/" className="flex items-center space-x-3 mb-8 group cursor-pointer">
-              <div className="p-3 premium-gradient rounded-2xl shadow-xl shadow-primary/20 group-hover:scale-105 transition-transform">
+              <div className="p-3 premium-gradient rounded-[8px] shadow-xl shadow-primary/20 group-hover:scale-105 transition-transform">
                 <Trophy className="text-white w-8 h-8" />
               </div>
               <h1 className="text-4xl font-bold tracking-tighter text-foreground group-hover:text-primary transition-colors">
@@ -90,7 +90,7 @@ export default function ForgotPasswordPage() {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-lg">
               {features.map((f, i) => (
                 <div key={i} className="flex flex-col items-center space-y-3 group">
-                  <div className="w-20 h-20 bg-card border border-border rounded-2xl flex items-center justify-center shadow-lg shadow-primary/5 group-hover:border-primary/30 group-hover:shadow-primary/10 transition-all duration-300 transform group-hover:-translate-y-1">
+                  <div className="w-20 h-20 bg-card border border-border rounded-[8px] flex items-center justify-center shadow-lg shadow-primary/5 group-hover:border-primary/30 group-hover:shadow-primary/10 transition-all duration-300 transform group-hover:-translate-y-1">
                     <f.icon className="w-8 h-8 text-primary" />
                   </div>
                   <span className="text-[10px] font-bold text-muted-foreground tracking-widest text-center uppercase">{f.label}</span>
@@ -168,7 +168,7 @@ export default function ForgotPasswordPage() {
                   </div>
                   <Button 
                     variant="outline" 
-                    className="w-full h-12 rounded-xl"
+                    className="w-full h-12 rounded-[8px]"
                     onClick={() => setSubmitted(false)}
                   >
                     Try a different email

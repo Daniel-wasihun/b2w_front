@@ -154,9 +154,9 @@ export default function AdminLeadershipPage() {
                   <TableRow key={member.id} className="border-border/50 hover:bg-muted/30 transition-colors">
                     <TableCell className="pl-6 py-4">
                       <div className="flex items-center gap-3">
-                         <div className="w-12 h-12 rounded-full bg-muted overflow-hidden border border-border shadow-sm group-hover:border-primary/20 transition-all flex items-center justify-center">
-                            {isValidAssetUrl(member.image) ? <img src={member.image} className="w-full h-full object-cover" alt="" /> : <User className="w-5 h-5 text-muted-foreground" />}
-                         </div>
+                          <div className="w-12 h-12 rounded-full bg-muted overflow-hidden border border-border shadow-sm group-hover:border-primary/20 transition-all flex items-center justify-center">
+                             {isValidAssetUrl(member.image) ? <img src={member.image} className="w-full h-full object-cover rounded-[7.5px]" alt="" /> : <User className="w-5 h-5 text-muted-foreground" />}
+                          </div>
                          <div className="flex flex-col">
                             <span className="font-bold text-sm text-foreground">{localize(member.name)}</span>
                             <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest line-clamp-1 max-w-[200px]">{localize(member.bio)}</span>

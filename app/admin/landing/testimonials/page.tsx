@@ -99,15 +99,15 @@ export default function AdminTestimonialsPage() {
         const isValidUrl = item.avatar && (item.avatar.startsWith('http') || item.avatar.startsWith('/'));
         return (
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-full bg-muted overflow-hidden border border-border shadow-sm">
-              {isValidUrl ? (
-                <img src={item.avatar} className="w-full h-full object-cover" alt="" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-primary/5">
-                  <UserIcon className="w-5 h-5 text-primary/40" />
-                </div>
-              )}
-            </div>
+             <div className="w-10 h-10 rounded-full bg-muted overflow-hidden border border-border shadow-sm">
+               {isValidUrl ? (
+                 <img src={item.avatar} className="w-full h-full object-cover rounded-[7.5px]" alt="" />
+               ) : (
+                 <div className="w-full h-full flex items-center justify-center bg-primary/5">
+                   <UserIcon className="w-5 h-5 text-primary/40" />
+                 </div>
+               )}
+             </div>
             <div className="flex flex-col">
               <span className="font-bold text-sm text-foreground">{localize(val)}</span>
               <span className="text-[10px] text-muted-foreground font-black uppercase tracking-widest">{localize(item.role) || 'Member Node'}</span>

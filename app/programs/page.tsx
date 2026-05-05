@@ -72,7 +72,7 @@ export default function ProgramsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               {(data?.benefits || []).map((benefit: any, i: number) => (
                 <div key={i} className="flex items-start space-x-6 group">
-                  <div className="text-4xl bg-white/10 p-4 rounded-[5px] group-hover:bg-secondary transition-colors">
+                  <div className="text-4xl bg-white/10 p-4 rounded-[8px] group-hover:bg-secondary transition-colors">
                     {benefit.icon}
                   </div>
                   <div>

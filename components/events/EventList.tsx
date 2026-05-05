@@ -30,7 +30,7 @@ export const EventList = ({ events, loading, currentLanguage, category }: EventL
 
   if (events.length === 0) {
     return (
-      <div className="bg-card/50 p-20 rounded-[5px] border border-dashed border-border text-center backdrop-blur-sm">
+      <div className="bg-card/50 p-20 rounded-[8px] border border-dashed border-border text-center backdrop-blur-sm">
          <Bell className="w-16 h-16 text-muted-foreground/30 mx-auto mb-6" />
          <h3 className="text-xl font-serif font-bold text-primary mb-2">No {category} events</h3>
          <p className="text-muted-foreground font-medium italic">
@@ -87,7 +87,7 @@ export const EventList = ({ events, loading, currentLanguage, category }: EventL
                     e.stopPropagation();
                     router.push('/register');
                   }}
-                  className="w-full h-11 rounded-[5px] font-bold shadow-glow-primary bg-primary text-white hover:bg-primary/90 mt-2"
+                  className="w-full h-11 rounded-[8px] font-bold shadow-glow-primary bg-primary text-white hover:bg-primary/90 mt-2"
                 >
                   <UserPlus size={16} className="mr-2" />
                   Register Now

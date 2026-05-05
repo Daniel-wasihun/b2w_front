@@ -193,7 +193,7 @@ export default function AdminNewsPage() {
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-muted overflow-hidden border border-border group-hover:border-primary/20 transition-all shadow-sm">
                       {isValidAssetUrl(post.cover_image) ? (
-                        <img src={post.cover_image} alt="" className="w-full h-full object-cover" />
+                         <img src={post.cover_image} alt="" className="w-full h-full object-cover rounded-[7.5px]" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-primary/5">
                           <Layers className="w-4 h-4 text-primary/40" />
