@@ -21,7 +21,10 @@
   --color-muted-foreground: #64748b;
 
   --color-border: var(--card-border);
-
+  --radius: 8px;
+  --radius-sm: 8px;
+  --radius-md: 8px;
+  --radius-lg: 8px;
   --radius-xl: 8px;
   --radius-2xl: 8px;
   --radius-3xl: 8px;
