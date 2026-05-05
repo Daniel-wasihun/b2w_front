@@ -4,6 +4,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Maximize2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { localize } from "@/lib/utils";
+import { useLanguageStore } from "@/lib/languageStore";
 
 interface GalleryGridProps {
   items: any[];
@@ -11,6 +13,7 @@ interface GalleryGridProps {
 }
 
 export const GalleryGrid = ({ items, onSelectItem }: GalleryGridProps) => {
+  const currentLanguage = useLanguageStore((state) => state.currentLanguage);
   return (
     <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
        {items.map((item) => (
